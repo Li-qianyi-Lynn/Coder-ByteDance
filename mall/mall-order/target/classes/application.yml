@@ -1,0 +1,83 @@
+server:
+  port: 8082  # 订单服务端口
+
+spring:
+  application:
+    name: mall-order-service
+
+  # MongoDB配置
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/mall_order
+
+  # MySQL配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://114.55.129.110:3306/mall_order?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 132133
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 15
+      idle-timeout: 30000
+      pool-name: OrderHikariCP
+
+
+  # Redis配置
+  redis:
+    host: 114.55.129.110
+    port: 6379
+    password: 132133  # Redis密码
+    database: 0  # 使用的数据库编号
+    timeout: 10000ms
+    lettuce:
+      pool:
+        max-active: 8  # 连接池最大连接数
+        max-wait: -1ms  # 连接池最大阻塞等待时间
+        max-idle: 8    # 连接池中的最大空闲连接
+        min-idle: 0    # 连接池中的最小空闲连接
+
+
+
+
+
+  # Nacos配置
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        namespace: public
+
+  # 日志配置
+  logging:
+    level:
+      com.douyin.orderservice: INFO
+      org.springframework: WARN
+
+
+
+  # RabbitMQ配置
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+
+
+  # RabbitMQ自定义队列配置
+    order:
+      queue-name: order.queue
+      exchange-name: order.exchange
+      routing-key: order.routing.key
+
+  # Sa-Token配置
+  sa-token:
+    token-name: token
+    timeout: 2592000
+    active-timeout: -1
+    is-concurrent: true
+    is-share: true
+    token-style: uuid
+    is-log: true
+

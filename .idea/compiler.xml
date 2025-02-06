@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="mall-spring-boot-starter-biz-operationlog" />
+        <module name="mall-cart" />
+        <module name="mall-user" />
+        <module name="mall-auth" />
+        <module name="mall-oss" />
+        <module name="mall-test" />
+        <module name="mall-order" />
+        <module name="mall-checkout" />
+        <module name="mall-spring-boot-starter-jackson" />
+        <module name="mall-common" />
+        <module name="mall-product" />
+        <module name="mall-gateway" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="mall" target="17" />
+      <module name="mall-auth" target="17" />
+      <module name="mall-cart" target="17" />
+      <module name="mall-checkout" target="17" />
+      <module name="mall-common" target="17" />
+      <module name="mall-framework" target="17" />
+      <module name="mall-gateway" target="17" />
+      <module name="mall-order" target="17" />
+      <module name="mall-oss" target="17" />
+      <module name="mall-product" target="17" />
+      <module name="mall-spring-boot-starter-biz-operationlog" target="17" />
+      <module name="mall-spring-boot-starter-jackson" target="17" />
+      <module name="mall-test" target="17" />
+      <module name="mall-user" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

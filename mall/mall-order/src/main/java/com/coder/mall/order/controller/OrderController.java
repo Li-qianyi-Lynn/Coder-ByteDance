@@ -7,6 +7,7 @@ import com.coder.mall.order.model.entity.CustomerOrder;
 import com.coder.mall.order.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,5 +66,17 @@ public class OrderController {
             log.error("Cancel order failed for orderId: {}", orderId, e);
             return Response.fail(OrderErrorEnum.ORDER_CANCEL_FAILED);
         }
+    }
+
+    @GetMapping
+    public Response<Page<CustomerOrder>> listOrders(
+            @RequestHeader("X-User-ID") String userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        log.info("Listing orders for user: {}, page: {}, size: {}", userId, page, size);
+
+        Page<CustomerOrder> orderPage = orderService.listCustomerOrders(userId, page, size);
+
+        return Response.success(orderPage);
     }
 }

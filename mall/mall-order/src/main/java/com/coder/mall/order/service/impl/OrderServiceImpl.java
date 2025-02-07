@@ -17,6 +17,10 @@ import com.coder.mall.order.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -197,4 +201,43 @@ public class OrderServiceImpl implements OrderService {
         String cartKey = "cart:" + userId;
         redisTemplate.delete(cartKey);
     }
+
+
+public  void testOrderData(String userId) {
+    //分页查询
+    Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createTime"));
+    Page<CustomerOrder> orderPage = customerOrderRepository.findByUserId(userId, pageable);
+
+    log.info("Total elements: {}", orderPage.getTotalElements());
+    log.info("Total pages: {}", orderPage.getTotalPages());
+    log.info("Current page number: {}", orderPage.getNumber());
+
+    List<CustomerOrder> orders = orderPage.getContent();
+    orders.forEach(order -> {
+        log.info("Order ID: {}", order.getOrderId());
+        log.info("Total Cost: {}", order.getTotalCost());
+        log.info("Status: {}", order.getStatus());
+        log.info("Items count: {}", order.getOrderItems().size());
+    });
+
+}
+
+    @Override
+    public Page<CustomerOrder> listCustomerOrders(String userId, int page, int size) {
+        log.info("Fetching orders for user: {}, page: {}, size: {}", userId, page, size);
+
+        // 创建分页请求
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createTime"));
+
+        // 执行分页查询
+        Page<CustomerOrder> orderPage = customerOrderRepository.findByUserId(userId, pageable);
+
+        log.info("Found {} orders, total pages: {}",
+                orderPage.getNumberOfElements(),
+                orderPage.getTotalPages());
+
+        return orderPage;
+    }
+
+
 }

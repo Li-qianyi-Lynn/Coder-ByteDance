@@ -3,6 +3,7 @@ package com.coder.mall.order.service;
 import com.coder.mall.order.model.dto.PaymentInfo;
 import com.coder.mall.order.model.dto.RecipientInfo;
 import com.coder.mall.order.model.entity.*;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,6 +21,11 @@ public interface OrderService {
                               PaymentInfo paymentInfo, String extraInfo);
     void cancelOrder(String userId, String orderId);
     void placeOrder(String userId, String orderId);
+    Page<CustomerOrder> listCustomerOrders(String userId, int page, int size);
+
+
+
+
 
 
 

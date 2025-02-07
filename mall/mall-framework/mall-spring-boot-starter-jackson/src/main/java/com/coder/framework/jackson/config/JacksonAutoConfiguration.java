@@ -1,7 +1,7 @@
 package com.coder.framework.jackson.config;
 
-import com.coder.common.constant.DateConstants;
-import com.coder.common.util.JsonUtils;
+import com.coder.framework.common.constant.DateConstants;
+import com.coder.framework.common.util.JsonUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

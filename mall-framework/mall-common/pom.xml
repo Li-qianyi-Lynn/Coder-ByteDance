@@ -66,6 +66,19 @@
             <artifactId>hibernate-validator</artifactId>
         </dependency>
 
+        <!--        Redis依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <!--阿里云短信客户端，用于发送短信验证码-->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>dysmsapi20170525</artifactId>
+        </dependency>
+
+
     </dependencies>
 
 </project>

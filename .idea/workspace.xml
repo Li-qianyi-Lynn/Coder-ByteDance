@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2ca6b2cc-de6c-4205-9517-d11695b57f7d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/mall-framework/mall-common/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/mall-framework/mall-common/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mall-user/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/mall-user/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mall-user/src/main/java/com/coder/mall/user/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-user/src/main/java/com/coder/mall/user/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Exception" />
+        <option value="AnnotationType" />
+        <option value="package-info" />
+        <option value="Interface" />
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;JUSTgyx&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/JUSTgyx/mall.git&quot;,
+    &quot;accountId&quot;: &quot;7965cd61-a2d1-475d-a310-79f8bf5bcef4&quot;
+  }
+}</component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="customMavenHome" value="D:\env\Maven\apache-maven-3.6.3" />
+        <option name="mavenHomeTypeForPersistence" value="CUSTOM" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="MavenRunner">
+    <option name="skipTests" value="true" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2sA7zdS2sAqIr0NnPNI3aAY1dQP" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="showExcludedFiles" value="false" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showScratchesAndConsoles" value="false" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.App.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.All in mall-spring-boot-starter-biz-redis.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.All in mall-test (1).executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.All in mall-test.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.TestCRUD.test.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.testRedis.testString.executor&quot;: &quot;Run&quot;,
+    &quot;Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.mall [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.mall [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.mall-common [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.mall-common [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.mall-framework [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.mall-framework [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.mall-spring-boot-starter-jackson [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.mall-spring-boot-starter-jackson [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.mall-spring-boot-starter-redis [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.mall-user [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.xiaoha-framework [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.xiaoha-framework [install].executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.App (1).executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.App.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Kevin/Desktop/实习/豆包MarsCode青训营/mall/mall-user/src/main/java/com/coder/mall/user/custom&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;项目&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.28886846&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;inlay.hints&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
+    &quot;应用程序.JwtUtil.executor&quot;: &quot;Run&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;,
+      &quot;redis&quot;
+    ]
+  }
+}</component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Kevin\Desktop\实习\豆包MarsCode青训营\mall\mall-user\src\main\java\com\coder\mall\user\custom" />
+      <recent name="C:\Users\Kevin\Desktop\实习\豆包MarsCode青训营\mall\mall-user\src\main" />
+      <recent name="D:\workspace\java_workspace\mall\mall-framework\mall-common\src\main\java\com\coder\common" />
+      <recent name="D:\workspace\java_workspace\mall\mall-framework\xiaoha-spring-boot-starter-jackson\src\main" />
+      <recent name="D:\workspace\java_workspace\mall\mall-framework\mall-spring-boot-starter-biz-operationlog\src\main" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Kevin\Desktop\实习\豆包MarsCode青训营\mall\mall-user\src\main\resources" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.coder.mall.user.custom.config" />
+      <recent name="com.coder.mall.user.utils" />
+      <recent name="com.coder.mall.user.enums" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.App (1)">
+    <configuration default="true" type="lua.app" factoryName="Lua Application">
+      <option name="program" value="lua.exe" />
+      <option name="file" value="" />
+      <option name="workingDir" value="$PROJECT_DIR$/src/main/java" />
+      <option name="debuggerType" value="1" />
+      <option name="params" value="" />
+      <option name="charset" value="UTF-8" />
+      <option name="showConsole" value="true" />
+      <method v="2" />
+    </configuration>
+    <configuration name="JwtUtil" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.coder.mall.user.utils.JwtUtil" />
+      <module name="mall-user" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.coder.mall.user.utils.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="All in mall-test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="mall-test" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestCRUD.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="mall-user" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.coder.mall.user.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.coder.mall.user" />
+      <option name="MAIN_CLASS_NAME" value="com.coder.mall.user.TestCRUD" />
+      <option name="METHOD_NAME" value="test" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="testRedis.testString" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="mall-user" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.coder.mall.user.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.coder.mall.user" />
+      <option name="MAIN_CLASS_NAME" value="com.coder.mall.user.testRedis" />
+      <option name="METHOD_NAME" value="testString" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="App (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="mall-user" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.coder.mall.user.App" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.coder.mall.user.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.App (1)" />
+        <item itemvalue="应用程序.JwtUtil" />
+        <item itemvalue="JUnit.TestCRUD.test" />
+        <item itemvalue="JUnit.testRedis.testString" />
+        <item itemvalue="JUnit.All in mall-test" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.20224.419" />
+        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-IU-242.20224.419" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2ca6b2cc-de6c-4205-9517-d11695b57f7d" name="Changes" comment="" />
+      <created>1737886790580</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1737886790580</updated>
+      <workItem from="1737886791525" duration="1197000" />
+      <workItem from="1737887995870" duration="3220000" />
+      <workItem from="1737891235550" duration="3077000" />
+      <workItem from="1737894325610" duration="1829000" />
+      <workItem from="1738309690768" duration="856000" />
+      <workItem from="1738494214040" duration="8610000" />
+      <workItem from="1738589584833" duration="56000" />
+      <workItem from="1738744183328" duration="2760000" />
+      <workItem from="1738827322250" duration="24474000" />
+      <workItem from="1738853757385" duration="56000" />
+      <workItem from="1738900608489" duration="1230000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Initial commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="com.fasterxml.jackson.databind.exc.InvalidDefinitionException" package="com.fasterxml.jackson.databind.exc" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

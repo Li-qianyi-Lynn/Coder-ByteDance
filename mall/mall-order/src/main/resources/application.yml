@@ -9,6 +9,9 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/mall_order
+    redis:
+      host: 114.55.129.110
+      port: 6379
 
   # MySQL配置
   datasource:
@@ -24,18 +27,17 @@ spring:
 
 
   # Redis配置
-  redis:
-    host: 114.55.129.110
-    port: 6379
-    password: 132133  # Redis密码
-    database: 0  # 使用的数据库编号
-    timeout: 10000ms
-    lettuce:
-      pool:
-        max-active: 8  # 连接池最大连接数
-        max-wait: -1ms  # 连接池最大阻塞等待时间
-        max-idle: 8    # 连接池中的最大空闲连接
-        min-idle: 0    # 连接池中的最小空闲连接
+    redis:
+      port: 6379
+      password: 132133  # Redis密码
+      database: 0  # 使用的数据库编号
+      timeout: 10000ms
+      lettuce:
+        pool:
+          max-active: 8  # 连接池最大连接数
+          max-wait: -1ms  # 连接池最大阻塞等待时间
+          max-idle: 8    # 连接池中的最大空闲连接
+          min-idle: 0    # 连接池中的最小空闲连接
 
 
 

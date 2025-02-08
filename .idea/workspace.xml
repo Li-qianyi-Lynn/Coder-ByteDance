@@ -5,10 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2ca6b2cc-de6c-4205-9517-d11695b57f7d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/mall-framework/mall-common/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/mall-framework/mall-common/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mall-user/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/mall-user/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mall-user/src/main/java/com/coder/mall/user/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-user/src/main/java/com/coder/mall/user/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mall-user/src/main/java/com/coder/mall/user/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-user/src/main/java/com/coder/mall/user/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mall-user/src/main/java/com/coder/mall/user/custom/config/WebMvcConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-user/src/main/java/com/coder/mall/user/custom/config/WebMvcConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mall-user/src/main/java/com/coder/mall/user/custom/converter/StringToUserTypeConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-user/src/main/java/com/coder/mall/user/custom/converter/StringToBaseEnumConverterFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mall-user/src/main/java/com/coder/mall/user/exception/UserExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-user/src/main/java/com/coder/mall/user/exception/UserExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mall-user/src/main/java/com/coder/mall/user/model/vo/RegisterVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-user/src/main/java/com/coder/mall/user/model/vo/RegisterVo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mall-user/src/main/java/com/coder/mall/user/utils/JwtUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/mall-user/src/main/java/com/coder/mall/user/utils/JwtUtil.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,18 +31,23 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;JUSTgyx&quot;
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Ye-Gong"
   }
-}</component>
+}]]></component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/JUSTgyx/mall.git&quot;,
-    &quot;accountId&quot;: &quot;7965cd61-a2d1-475d-a310-79f8bf5bcef4&quot;
+    &quot;url&quot;: &quot;https://github.com/Li-qianyi-Lynn/Coder-ByteDance.git&quot;,
+    &quot;accountId&quot;: &quot;1c8a6035-bb52-4338-b95f-c614e416a8e6&quot;
   }
 }</component>
   <component name="KubernetesApiPersistence">{}</component>
@@ -95,7 +103,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;Spring Boot.App (1).executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.App.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature-user&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Kevin/Desktop/实习/豆包MarsCode青训营/mall/mall-user/src/main/java/com/coder/mall/user/custom&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -132,6 +140,7 @@
       <recent name="C:\Users\Kevin\Desktop\实习\豆包MarsCode青训营\mall\mall-user\src\main\resources" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.coder.mall.user.custom.mybatisplus" />
       <recent name="com.coder.mall.user.custom.config" />
       <recent name="com.coder.mall.user.utils" />
       <recent name="com.coder.mall.user.enums" />
@@ -250,7 +259,10 @@
       <workItem from="1738744183328" duration="2760000" />
       <workItem from="1738827322250" duration="24474000" />
       <workItem from="1738853757385" duration="56000" />
-      <workItem from="1738900608489" duration="1230000" />
+      <workItem from="1738900608489" duration="4487000" />
+      <workItem from="1738931999224" duration="3082000" />
+      <workItem from="1738937631561" duration="55000" />
+      <workItem from="1738982901666" duration="6870000" />
     </task>
     <servers />
   </component>

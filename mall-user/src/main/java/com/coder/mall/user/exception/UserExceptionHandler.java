@@ -1,8 +1,6 @@
 package com.coder.mall.user.exception;
 
-import com.coder.common.exception.BizException;
 import com.coder.common.response.Response;
-import com.coder.mall.user.service.UsersService;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 

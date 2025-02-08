@@ -37,4 +37,5 @@ public class UserController {
         String result = usersService.register(registerVo);
         return Response.success(result);
     }
+
 }

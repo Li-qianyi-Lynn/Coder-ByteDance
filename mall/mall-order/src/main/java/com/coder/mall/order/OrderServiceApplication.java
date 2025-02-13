@@ -1,9 +1,10 @@
 package com.coder.mall.order;
 
 
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
@@ -11,6 +12,8 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableRabbit
 @EnableFeignClients
 @EnableMongoRepositories(basePackages = "com.coder.mall.order.repository")
+@MapperScan("com.coder.mall.order.mapper")
+
 
 
 public class OrderServiceApplication {

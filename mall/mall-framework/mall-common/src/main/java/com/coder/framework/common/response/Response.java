@@ -1,12 +1,13 @@
 package com.coder.framework.common.response;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
 import com.coder.framework.common.exception.BaseExceptionInterface;
 import com.coder.framework.common.exception.BizException;
 import com.coder.framework.common.util.DateUtils;
-import lombok.Data;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import lombok.Data;
 
 @Data
 public class Response<T> implements Serializable {
@@ -70,6 +71,7 @@ public class Response<T> implements Serializable {
         response.setMessage(errorMessage);
         return response;
     }
+
 
     public static <T> Response<T> fail(BizException bizException) {
         Response<T> response = new Response<>();

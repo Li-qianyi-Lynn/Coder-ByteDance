@@ -1,5 +1,6 @@
 package com.coder.framework.common.exception;
 
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,5 +15,9 @@ public class BizException extends RuntimeException {
     public BizException(BaseExceptionInterface baseExceptionInterface) {
         this.errorCode = baseExceptionInterface.getErrorCode();
         this.errorMessage = baseExceptionInterface.getErrorMessage();
+    }
+
+    public BizException(String errorCode2, String errorMessage2) {
+        //TODO Auto-generated constructor stub
     }
 }

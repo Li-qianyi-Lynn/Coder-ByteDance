@@ -31,8 +31,19 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public ResponseEntity<GetCartResp> getCart(GetCartReq request) {
-        Cart cart = findOrCreateCart(request.getUserId());
-        return ResponseEntity.ok(new GetCartResp(cart));  // 返回 200 OK 和购物车内容
+        // 获取当前用户的所有购物车数量
+        Map<object, objext> entries = getOpHash().entries(uid + "");
+        Set<Map.Entry<object, object>> entries = entries.entrySet();
+        // 获取内部的所有值
+        List<Cart> carts = new ArrayList<>();
+        for (Map.Entry<object, object> objectobjectEntry : entries) {
+            Cart cart = (Cart) objectobjectEntry.getValue();
+            carts.add(cart);
+        }
+        return carts;
+
+//        Cart cart = findOrCreateCart(request.getUserId());
+//        return ResponseEntity.ok(new GetCartResp(cart));  // 返回 200 OK 和购物车内容
     }
 
     @Override

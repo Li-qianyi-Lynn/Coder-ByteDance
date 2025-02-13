@@ -16,11 +16,14 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>17</java.version>  <!-- 如果使用 Java 17，设置合适的版本 -->
+        <java.version>17</java.version>
+
+        <!-- Redis 相关版本 -->
+        <spring-data-redis.version>2.7.0</spring-data-redis.version> <!-- 根据实际需要调整 -->
     </properties>
 
     <dependencies>
-        <!-- Spring Boot Starter Web 依赖，用于构建 Web 应用 -->
+        <!-- Spring Boot Starter Web 依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -32,6 +35,25 @@
             <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
 
+        <!-- Spring Boot Redis Starter -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <!-- Redis 客户端 -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>${jedis.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-pool2</artifactId>
+                    <groupId>org.apache.commons</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <!-- JUnit 测试框架 -->
         <dependency>
             <groupId>junit</groupId>
@@ -40,17 +62,15 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Spring Web 支持 -->
+        <!-- JSON 处理 (如果需要使用 Fastjson) -->
+        <!-- 如果希望使用 Fastjson 替代 Jackson，取消注释以下部分 -->
+        <!--
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
+            <groupId>com.alibaba.fastjson2</groupId>
+            <artifactId>fastjson2</artifactId>
+            <version>2.0.47</version>
         </dependency>
-
-        <!-- Spring Context 支持 -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
+        -->
     </dependencies>
 
     <build>
@@ -62,5 +82,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

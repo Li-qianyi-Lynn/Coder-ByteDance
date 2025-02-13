@@ -1,0 +1,43 @@
+package com.coder.mall.cart.service;
+
+import com.coder.mall.cart.model.Cart;
+
+import java.util.List;
+
+public interface ICartRedisService {
+
+    /**
+     * 添加购物车方法
+     * @param cart 购物车对象
+     * @return 操作结果
+     */
+    Integer addCart(Cart cart);
+
+    /**
+     * 查看购物车方法
+     * @param uid 用户 ID
+     * @return 购物车列表
+     */
+    List<Cart> listCart(Integer uid);
+
+    /**
+     * 删除单个商品
+     * @param cart 购物车对象
+     * @return 操作结果
+     */
+    Boolean delCart(Cart cart);
+
+    /**
+     * 修改购物车商品
+     * @param cart 购物车对象
+     * @param type 操作类型（如添加或修改）
+     */
+    void updateCart(Cart cart, String type);
+
+    /**
+     * 删除所有购物车商品
+     * @param cart 购物车对象
+     * @return 操作结果
+     */
+    void delAll(Cart cart);
+}

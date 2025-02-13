@@ -16,24 +16,102 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
-    // 添加商品到购物车
+    @Autowired
+    private RedisService redisService;
+
+    @Autowired
+    private ICartRedisService cartRedisService;
+
+
+    /**
+     * 添加商品到购物车
+     * @param request
+     * @return
+     */
     @PostMapping("/add")
     public ResponseEntity<Void> addItem(@RequestBody AddItemReq request) {
-        return cartService.addItem(request);
+        // 调用 cartService 处理添加商品的业务逻辑
+        cartService.addItem(request);
+
+        // 通过 cartRedisService 更新购物车数据到 Redis
+        Cart cart = new Cart(request.getUserId(), request.getGoodsId(), request.getCartNum());
+        cartRedisService.addCart(cart);  // 更新 Redis
+
+        log.info("Added item to cart: " + item.getProductId());
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    // 获取购物车内容
-    @GetMapping("/{userId}")
+    /**
+     * 获取购物车列表
+     * @param userId
+     * @return
+     */
+    @GetMapping("/list/{userId}")
     public ResponseEntity<GetCartResp> getCart(@PathVariable int userId) {
         GetCartReq request = new GetCartReq(userId);
         return cartService.getCart(request);
     }
 
-    // 清空购物车
+    @GetMapping("/list/{userId}")
+    public ResponseEntity<GetCartResp> getCart(@PathVariable int userId) {
+        // 从 Redis 获取购物车数据
+        List<Cart> cartList = cartRedisService.listCart(userId);
+
+        // 创建响应对象
+        GetCartResp response = new GetCartResp(cartList);
+
+        return ResponseEntity.ok(response);
+    }
+
+
+    /**
+     * 清空购物车
+     * @param userId
+     * @return
+     */
     @DeleteMapping("/empty/{userId}")
     public ResponseEntity<Void> emptyCart(@PathVariable int userId) {
         EmptyCartReq request = new EmptyCartReq(userId);
         return cartService.emptyCart(request);
+    }
+
+    @DeleteMapping("/empty/{userId}")
+    public ResponseEntity<Void> emptyCart(@PathVariable int userId) {
+        // 调用 RedisService 来清空购物车
+        cartRedisService.delAll(new Cart(userId));
+
+        log.info("Cart emptied for user: " + userId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+
+    /**
+     * 删除购物车某件商品
+     * @param cart
+     * @return
+     */
+    @DeleteMapping("/delete")
+    public Boolean delCart(@RequestBody Cart cart) {
+        return cartRedisService.delCart(cart);
+    }
+
+    /**
+     * 删除购物车所有商品
+     * @param cart
+     */
+    @DeleteMapping("/deleteAll")
+    public void delAll(@RequestBody Cart cart) {
+        cartRedisService.delAll(cart);
+    }
+
+    /**
+     * 更新购物车商品数量
+     * @param cart
+     * @param type
+     */
+    @PutMapping("/update")
+    public void updateCart(@RequestBody Cart cart, @RequestParam String type) {
+        cartRedisService.updateCart(cart, type);
     }
 }
 

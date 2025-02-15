@@ -1,13 +1,16 @@
 package com.coder.mall.cart.controller;
 
+import com.coder.mall.cart.model.dto.CartResponse;
 import com.coder.mall.cart.model.entity.Cart;
 import com.coder.mall.cart.request.AddProductItemReq;
 import com.coder.mall.cart.request.DeleteItemRequest;
 import com.coder.mall.cart.request.UpdateItemRequest;
+import com.coder.mall.cart.response.AddProductItemResp;
 import com.coder.mall.cart.response.GetCartResp;
 import com.coder.mall.cart.service.CartService;
 import com.coder.mall.cart.service.ICartRedisService;
 import com.coder.mall.cart.service.RedisService;
+import org.apache.catalina.connector.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static javax.security.auth.callback.ConfirmationCallback.OK;
 
 @RestController
 @RequestMapping("/cart")
@@ -38,12 +43,12 @@ public class CartController {
      * @return
      */
     @PostMapping("/addProductItemForCart")
-    public ResponseEntity<Void> addProductItem(@RequestBody @Validated AddProductItemReq request) {
+    public ResponseEntity<AddProductItemResp> addProductItem(@RequestBody @Validated AddProductItemReq request) {
 //        // 调用 cartService 处理添加商品的业务逻辑
 //        cartService.addProductItem(request);
         cartRedisService.addProductItem(request);
         logger.info("Added item to cart: " + request.getProductId());
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.ok(new AddProductItemResp(HttpStatus.OK.value(),"Item added to cart successfully."));
     }
 
     /**

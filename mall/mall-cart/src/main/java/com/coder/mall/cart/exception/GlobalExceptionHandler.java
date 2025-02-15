@@ -17,4 +17,6 @@ public class GlobalExceptionHandler {
         // 可以根据需要返回更详细的错误信息
         return new ResponseEntity<>(new CartResponse(false, ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    // 处理其他类型的异常，可以根据需要扩展
 }

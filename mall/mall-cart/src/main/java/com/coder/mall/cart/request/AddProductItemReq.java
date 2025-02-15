@@ -2,11 +2,13 @@ package com.coder.mall.cart.request;
 
 import com.coder.mall.cart.model.dto.CartProductItem;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 添加商品请求。
  */
 @Data
+@NoArgsConstructor
 public class AddProductItemReq {
     private Long userId;
     private Long productId;

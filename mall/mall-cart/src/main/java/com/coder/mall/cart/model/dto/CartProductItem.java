@@ -1,6 +1,7 @@
 package com.coder.mall.cart.model.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -10,6 +11,7 @@ import java.math.BigDecimal;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 public class CartProductItem {
     // 商品ID
     private Long productId;

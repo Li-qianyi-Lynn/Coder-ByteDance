@@ -1,17 +1,26 @@
 package com.coder.mall.cart.controller;
 
-import com.coder.mall.cart.request.AddItemReq;
-import com.coder.mall.cart.request.EmptyCartReq;
-import com.coder.mall.cart.request.GetCartReq;
+import com.coder.mall.cart.model.dto.CartProductItem;
+import com.coder.mall.cart.model.entity.Cart;
+import com.coder.mall.cart.request.AddProductItemReq;
 import com.coder.mall.cart.response.GetCartResp;
 import com.coder.mall.cart.service.CartService;
+import com.coder.mall.cart.service.ICartRedisService;
+import com.coder.mall.cart.service.RedisService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/cart")
 public class CartController {
+
+    private static final Logger logger = LoggerFactory.getLogger(CartController.class);
 
     @Autowired
     private CartService cartService;
@@ -22,36 +31,37 @@ public class CartController {
     @Autowired
     private ICartRedisService cartRedisService;
 
-
     /**
      * 添加商品到购物车
+     *
      * @param request
      * @return
      */
     @PostMapping("/add")
-    public ResponseEntity<Void> addItem(@RequestBody AddItemReq request) {
+    public ResponseEntity<Void> addProductItem(@RequestBody AddProductItemReq request) {
         // 调用 cartService 处理添加商品的业务逻辑
-        cartService.addItem(request);
+        cartService.addProductItem(request);
 
         // 通过 cartRedisService 更新购物车数据到 Redis
-        Cart cart = new Cart(request.getUserId(), request.getGoodsId(), request.getCartNum());
-        cartRedisService.addCart(cart);  // 更新 Redis
+        CartProductItem productItem = request.getProductItem();
+        Cart cart = new Cart(request.getUserId(), productItem.getProductId(), productItem.getQuantity());
+        cartRedisService.addCart(cart);
 
-        log.info("Added item to cart: " + item.getProductId());
+        logger.info("Added item to cart: " + productItem.getProductId());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     /**
      * 获取购物车列表
+     *
      * @param userId
      * @return
      */
-    @GetMapping("/list/{userId}")
-    public ResponseEntity<GetCartResp> getCart(@PathVariable int userId) {
-        GetCartReq request = new GetCartReq(userId);
-        return cartService.getCart(request);
-    }
-
+//    @GetMapping("/list/{userId}")
+//    public ResponseEntity<GetCartResp> getCart(@PathVariable int userId) {
+//        GetCartReq request = new GetCartReq(userId);
+//        return cartService.getCart(request);
+//    }
     @GetMapping("/list/{userId}")
     public ResponseEntity<GetCartResp> getCart(@PathVariable int userId) {
         // 从 Redis 获取购物车数据
@@ -66,27 +76,28 @@ public class CartController {
 
     /**
      * 清空购物车
+     *
      * @param userId
      * @return
      */
-    @DeleteMapping("/empty/{userId}")
-    public ResponseEntity<Void> emptyCart(@PathVariable int userId) {
-        EmptyCartReq request = new EmptyCartReq(userId);
-        return cartService.emptyCart(request);
-    }
-
+//    @DeleteMapping("/empty/{userId}")
+//    public ResponseEntity<Void> emptyCart(@PathVariable int userId) {
+//        EmptyCartReq request = new EmptyCartReq(userId);
+//        return cartService.emptyCart(request);
+//    }
     @DeleteMapping("/empty/{userId}")
     public ResponseEntity<Void> emptyCart(@PathVariable int userId) {
         // 调用 RedisService 来清空购物车
         cartRedisService.delAll(new Cart(userId));
 
-        log.info("Cart emptied for user: " + userId);
+//        log.info("Cart emptied for user: " + userId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 
     /**
      * 删除购物车某件商品
+     *
      * @param cart
      * @return
      */
@@ -97,6 +108,7 @@ public class CartController {
 
     /**
      * 删除购物车所有商品
+     *
      * @param cart
      */
     @DeleteMapping("/deleteAll")
@@ -106,6 +118,7 @@ public class CartController {
 
     /**
      * 更新购物车商品数量
+     *
      * @param cart
      * @param type
      */
@@ -114,10 +127,6 @@ public class CartController {
         cartRedisService.updateCart(cart, type);
     }
 }
-
-
-
-
 
 
 //@RestController

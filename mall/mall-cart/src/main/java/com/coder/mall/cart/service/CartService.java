@@ -1,6 +1,6 @@
 package com.coder.mall.cart.service;
 
-import com.coder.mall.cart.request.AddItemReq;
+import com.coder.mall.cart.request.AddProductItemReq;
 import com.coder.mall.cart.request.EmptyCartReq;
 import com.coder.mall.cart.request.GetCartReq;
 import com.coder.mall.cart.response.GetCartResp;
@@ -13,7 +13,7 @@ public interface CartService {
     /**
      * 添加商品到购物车。
      */
-    ResponseEntity<Void> addItem(AddItemReq request);
+    ResponseEntity<Void> addProductItem(AddProductItemReq request);
 
     /**
      * 获取购物车内容。

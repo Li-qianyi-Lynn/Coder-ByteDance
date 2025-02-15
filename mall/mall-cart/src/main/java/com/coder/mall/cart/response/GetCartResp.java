@@ -2,17 +2,20 @@ package com.coder.mall.cart.response;
 
 import com.coder.mall.cart.model.entity.Cart;
 
+import java.util.List;
+
 /**
  * 获取购物车响应，包含购物车内容。
  */
 public class GetCartResp {
-    private Cart cart;
+    private List<Cart> carts;
 
-    public GetCartResp(Cart cart) {
-        this.cart = cart;
+    public GetCartResp(List<Cart> carts) {
+        this.carts = carts;
     }
 
-    public Cart getCart() {
-        return cart;
+    public List<Cart> getCarts() {
+        return carts;
     }
 }
+

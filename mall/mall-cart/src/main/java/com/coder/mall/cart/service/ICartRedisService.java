@@ -1,11 +1,10 @@
 package com.coder.mall.cart.service;
 
-import com.coder.mall.cart.model.Cart;
+import com.coder.mall.cart.model.entity.Cart;
 
 import java.util.List;
 
 public interface ICartRedisService {
-
     /**
      * 添加购物车方法
      * @param cart 购物车对象

@@ -11,14 +11,3 @@ public class CartApplication {
         SpringApplication.run(CartApplication.class, args);
     }
 }
-
-
- ///**
- // * Hello world!
- // *
- // */
-//public class CartApplication {
-//    public static void main(String[] args) {
-//        System.out.println("Hello World!");
-//    }
-//}

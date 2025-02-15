@@ -20,6 +20,7 @@
 
         <!-- Redis 相关版本 -->
         <spring-data-redis.version>2.7.0</spring-data-redis.version> <!-- 根据实际需要调整 -->
+        <jedis.version>3.7.1</jedis.version> <!-- 添加 jedis.version -->
     </properties>
 
     <dependencies>
@@ -45,7 +46,7 @@
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
-            <version>${jedis.version}</version>
+            <version>${jedis.version}</version> <!-- 使用 ${jedis.version} -->
             <exclusions>
                 <exclusion>
                     <artifactId>commons-pool2</artifactId>
@@ -62,15 +63,33 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- JSON 处理 (如果需要使用 Fastjson) -->
-        <!-- 如果希望使用 Fastjson 替代 Jackson，取消注释以下部分 -->
-        <!--
+        <!-- SLF4J 日志框架 -->
         <dependency>
-            <groupId>com.alibaba.fastjson2</groupId>
-            <artifactId>fastjson2</artifactId>
-            <version>2.0.47</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.32</version>
         </dependency>
-        -->
+
+        <!-- Logback 日志实现 -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.6</version>
+        </dependency>
+
+        <!-- Spring Boot AOP 支持 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+        <!-- AspectJ 依赖 -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.9.7</version> <!-- You can check for the latest version -->
+        </dependency>
+
     </dependencies>
 
     <build>

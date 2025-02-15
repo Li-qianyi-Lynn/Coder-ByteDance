@@ -11,16 +11,18 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import static com.coder.mall.cart.constant.CartConstants.CART_KEY;
 
 @Service
 public class CartRedisServiceImpl implements ICartRedisService {
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
-
-    public static final String CART_KEY = "cart";
 
     public HashOperations<String, Object, Object> getOpsHash() {
         return redisTemplate.opsForHash();
@@ -32,6 +34,10 @@ public class CartRedisServiceImpl implements ICartRedisService {
         Object userCart = redisTemplate.opsForValue().get(CART_KEY + request.getUserId().toString());
         // 将购物车数据转换为Map类型，Key值是商品的id，value是商品信息，但不包括价格信息
         Map<Long, CartProductItem> redisData = (Map<Long, CartProductItem>) userCart;
+
+        if (redisData == null) {
+            redisData = new HashMap<>();
+        }
         // 获取对应Item
         CartProductItem cartProductItem = redisData.get(request.getProductId());
         if (cartProductItem == null) {
@@ -42,7 +48,12 @@ public class CartRedisServiceImpl implements ICartRedisService {
             cartProductItem.setQuantity(cartProductItem.getQuantity() + request.getQuantity());
             redisData.put(request.getProductId(), cartProductItem);
         }
+
+        // 将购物车数据存入Redis
         redisTemplate.opsForValue().set(CART_KEY + request.getUserId().toString(), redisData);
+
+        // 设置过期时间，例如：过期时间为1小时（3600秒）
+        redisTemplate.expire(CART_KEY + request.getUserId().toString(), 1, TimeUnit.HOURS);
     }
 
     @Override
@@ -51,6 +62,7 @@ public class CartRedisServiceImpl implements ICartRedisService {
         Object userCart = redisTemplate.opsForValue().get(CART_KEY + userId.toString());
         // 将购物车数据转换为Map类型，Key值是商品的id，value是商品信息，但不包括价格信息
         Map<Long, CartProductItem> redisData = (Map<Long, CartProductItem>) userCart;
+
         if (redisData != null) {
             List<CartProductItem> values = redisData.values().stream().toList();
             // todo: 根据product表获取商品价格
@@ -66,10 +78,11 @@ public class CartRedisServiceImpl implements ICartRedisService {
         Object userCart = redisTemplate.opsForValue().get(CART_KEY + deleteItemRequest.getUserId());
         // 将购物车数据转换为Map类型，Key值是商品的id，value是商品信息，但不包括价格信息
         Map<Long, CartProductItem> redisData = (Map<Long, CartProductItem>) userCart;
-        if (redisData == null) {
-            return;
+
+        if (redisData != null) {
+            redisData.remove(deleteItemRequest.getProductId());
+            redisTemplate.opsForValue().set(CART_KEY + deleteItemRequest.getUserId(), redisData);
         }
-        redisData.remove(deleteItemRequest.getProductId());
     }
 
     @Override
@@ -85,68 +98,12 @@ public class CartRedisServiceImpl implements ICartRedisService {
         // 将购物车数据转换为Map类型，Key值是商品的id，value是商品信息，但不包括价格信息
         Map<Long, CartProductItem> redisData = (Map<Long, CartProductItem>) userCart;
 
-        // 不管之前购物车中有没有对应的数据，都进行put操作（有就覆盖，没有则添加）
-        redisData.put(request.getProductId(), new CartProductItem(request.getProductId(), request.getQuantity()));
+        if (redisData != null) {
+            redisData.put(request.getProductId(), new CartProductItem(request.getProductId(), request.getQuantity()));
+            redisTemplate.opsForValue().set(CART_KEY + request.getUserId(), redisData);
 
-        // 添加完之后，重新将map写入redis
-        redisTemplate.opsForValue().set(CART_KEY + request.getUserId(), redisData);
+            // 更新缓存过期时间（如1小时）
+            redisTemplate.expire(CART_KEY + request.getUserId(), 1, TimeUnit.HOURS);
+        }
     }
-
-
-//    @Override
-//    public Integer addCart(Cart cart) {
-//        Cart existingCart = (Cart) getOpsHash().get(cart.getUsersId() + "", cart.getGoodsId() + "");
-////        if (existingCart != null) {
-//            // 如果商品已存在，更新数量
-//            existingCart.setCartNum(cart.getCartNum() + existingCart.getCartNum());
-//            getOpsHash().put(cart.getUsersId() + "", cart.getGoodsId() + "", existingCart);
-//            return 1;
-//        } else {
-//            // 如果商品不存在，添加新商品
-//            getOpsHash().put(cart.getUsersId() + "", cart.getGoodsId() + "", cart);
-//            return 2;
-//        }
-//    }
-//
-//    @Override
-//    public List<Cart> listCart(Integer uid) {
-//        return new ArrayList<>((Collection<? extends Cart>) getOpsHash().values(uid + ""));
-//    }
-//
-//    @Override
-//    public Boolean delCart(Cart cart) {
-//        Long deleteCount = getOpsHash().delete(cart.getUsersId() + "", cart.getGoodsId() + "");
-//        return deleteCount > 0;
-//    }
-
-
-//    @Override
-//    public void updateCart(Cart cart, CartUpdateType type) {
-//        Cart existingCart = (Cart) getOpsHash().get(cart.getUsersId() + "", cart.getGoodsId() + "");
-//        if (existingCart == null) {
-//            return;
-//        }
-//
-//        switch (type) {
-//            case ADD:
-//                existingCart.setCartNum(existingCart.getCartNum() + 1);
-//                break;
-//            case SUBTRACT:
-//                existingCart.setCartNum(existingCart.getCartNum() - 1);
-//                break;
-//            case UPDATE:
-//                existingCart.setCartNum(cart.getCartNum());
-//                break;
-//        }
-//
-//        getOpsHash().put(cart.getUsersId() + "", cart.getGoodsId() + "", existingCart);
-//    }
-//
-//    @Override
-//    public void delAll(Cart cart) {
-//        Map<Object, Object> entries = getOpsHash().entries(cart.getUsersId() + "");
-//        for (Map.Entry<Object, Object> entry : entries.entrySet()) {
-//            getOpsHash().delete(cart.getUsersId() + "", entry.getKey());
-//        }
-//    }
 }

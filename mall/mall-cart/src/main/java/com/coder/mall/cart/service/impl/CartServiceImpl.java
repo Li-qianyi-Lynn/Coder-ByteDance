@@ -1,6 +1,5 @@
 package com.coder.mall.cart.service.impl;
 
-import com.coder.mall.cart.controller.CartController;
 import com.coder.mall.cart.model.dto.CartProductItem;
 import com.coder.mall.cart.model.entity.Cart;
 import com.coder.mall.cart.request.AddProductItemReq;
@@ -10,18 +9,27 @@ import com.coder.mall.cart.response.GetCartResp;
 import com.coder.mall.cart.service.CartService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+import static com.coder.mall.cart.constant.CartConstants.CART_KEY;
+
 @Service
 public class CartServiceImpl implements CartService {
 
     private static final Logger logger = LoggerFactory.getLogger(CartService.class);
+    private final RedisTemplate redisTemplate;
 
     // 模拟购物车存储
     private List<Cart> carts = new ArrayList<>();
+
+    public CartServiceImpl(@Qualifier("redisTemplate") RedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
     @Override
     public ResponseEntity<Void> addProductItem(AddProductItemReq request) {
@@ -75,4 +83,10 @@ public class CartServiceImpl implements CartService {
         }
         return map;
     }
+
+    private Map<Long, CartProductItem> getCartData(Long userId) {
+        Object userCart = redisTemplate.opsForValue().get(CART_KEY + userId.toString());
+        return userCart == null ? new HashMap<>() : (Map<Long, CartProductItem>) userCart;
+    }
+
 }

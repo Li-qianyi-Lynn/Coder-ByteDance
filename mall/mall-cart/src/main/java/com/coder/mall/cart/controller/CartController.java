@@ -38,7 +38,7 @@ public class CartController {
      * @return
      */
     @PostMapping("/addProductItemForCart")
-    public ResponseEntity<Void> addProductItem(@RequestBody AddProductItemReq request) {
+    public ResponseEntity<Void> addProductItem(@RequestBody @Validated AddProductItemReq request) {
 //        // 调用 cartService 处理添加商品的业务逻辑
 //        cartService.addProductItem(request);
         cartRedisService.addProductItem(request);
@@ -71,7 +71,7 @@ public class CartController {
      * @return
      */
     @DeleteMapping("/delete")
-    public ResponseEntity delCart(@RequestBody DeleteItemRequest deleteItem) {
+    public ResponseEntity<String> deleteProductOfCart(@RequestBody DeleteItemRequest deleteItem) {
         cartRedisService.deleteCartItem(deleteItem);
         return ResponseEntity.ok("Cart item deleted successfully.");
     }

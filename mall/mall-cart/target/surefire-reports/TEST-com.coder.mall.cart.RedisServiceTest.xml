@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="1" failures="0" name="com.coder.mall.cart.AppTest" time="0.001" errors="0" skipped="0">
+<testsuite tests="0" failures="0" name="com.coder.mall.cart.RedisServiceTest" time="0" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="java.vm.version" value="17.0.11+7-LTS-207"/>
@@ -63,5 +63,4 @@
     <property name="socksNonProxyHosts" value="FE80::/64|*.FE80::/64|127.0.0.1|::1|FD00::/8|*.FD00::/8|192.168.0.0/16|*.192.168.0.0/16|10.0.0.0/8|*.10.0.0.0/8|localhost|*.localhost"/>
     <property name="ftp.nonProxyHosts" value="FE80::/64|*.FE80::/64|127.0.0.1|::1|FD00::/8|*.FD00::/8|192.168.0.0/16|*.192.168.0.0/16|10.0.0.0/8|*.10.0.0.0/8|localhost|*.localhost"/>
   </properties>
-  <testcase classname="com.coder.mall.cart.AppTest" name="testApp" time="0.001"/>
 </testsuite>

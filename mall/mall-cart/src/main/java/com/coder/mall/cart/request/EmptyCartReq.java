@@ -4,13 +4,13 @@ package com.coder.mall.cart.request;
  * 清空购物车请求。
  */
 public class EmptyCartReq {
-    private int userId;
+    private Long userId;
 
-    public EmptyCartReq(int userId) {
+    public EmptyCartReq(Long userId) {
         this.userId = userId;
     }
 
-    public int getUserId() {
+    public Long getUserId() {
         return userId;
     }
 }

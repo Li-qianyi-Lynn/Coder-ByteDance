@@ -1,42 +1,52 @@
 package com.coder.mall.cart.service;
 
 import com.coder.mall.cart.model.entity.Cart;
-
-import java.util.List;
+import com.coder.mall.cart.request.AddProductItemReq;
+import com.coder.mall.cart.request.DeleteItemRequest;
+import com.coder.mall.cart.request.UpdateItemRequest;
 
 public interface ICartRedisService {
-    /**
-     * 添加购物车方法
-     * @param cart 购物车对象
-     * @return 操作结果
-     */
-    Integer addCart(Cart cart);
 
     /**
-     * 查看购物车方法
-     * @param uid 用户 ID
-     * @return 购物车列表
+     * 添加购物车商品
+     *
+     * @param request
      */
-    List<Cart> listCart(Integer uid);
+    void addProductItem(AddProductItemReq request);
 
     /**
-     * 删除单个商品
-     * @param cart 购物车对象
-     * @return 操作结果
+     * 查看购物车商品
+     *
+     * @param userId
+     * @return
      */
-    Boolean delCart(Cart cart);
+    Cart getCart(Long userId);
 
     /**
-     * 修改购物车商品
-     * @param cart 购物车对象
-     * @param type 操作类型（如添加或修改）
+     * 删除购物车单个商品
+     *
+     * @param deleteItem
      */
-    void updateCart(Cart cart, String type);
+    void deleteCartItem(DeleteItemRequest deleteItem);
+
+//    /**
+//     * 删除购物车单/多个商品
+//     * @param deleteItems
+//     */
+//    void deleteCartItems(List<DeleteItemRequest> deleteItems);
 
     /**
-     * 删除所有购物车商品
-     * @param cart 购物车对象
-     * @return 操作结果
+     * 删除购物车所有商品
+     *
+     * @param userId
      */
-    void delAll(Cart cart);
+    void clearCart(Long userId);
+
+    /**
+     * 更新购物车商品数量
+     *
+     * @param cartProductItem
+     */
+    void updateCart(UpdateItemRequest cartProductItem);
+
 }

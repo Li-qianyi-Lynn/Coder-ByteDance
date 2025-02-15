@@ -25,10 +25,10 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public ResponseEntity<Void> addProductItem(AddProductItemReq request) {
-        CartProductItem productItem = request.getProductItem();
-        Cart cart = findOrCreateCart(request.getUserId());
-        cart.getProductItems().add(productItem);
-        // 日志打印移至AOP或日志框架处理
+//        CartProductItem productItem = request.getProductItem();
+//        Cart cart = findOrCreateCart(request.getUserId());
+//        cart.getProductItems().add(productItem);
+//        // 日志打印移至AOP或日志框架处理
         return ResponseEntity.ok().build();  // 返回 200 OK，无返回内容
     }
 
@@ -55,7 +55,7 @@ public class CartServiceImpl implements CartService {
     }
 
     // 辅助方法：根据用户 ID 查找或创建购物车
-    private Cart findOrCreateCart(int userId) {
+    private Cart findOrCreateCart(Long userId) {
         Optional<Cart> cartOpt = carts.stream()
                 .filter(cart -> cart.getUserId() == userId)
                 .findFirst();

@@ -1,41 +1,40 @@
 package com.coder.mall.cart.model.entity;
 
 import com.coder.mall.cart.model.dto.CartProductItem;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 购物车实体，包含用户 ID 和商品项列表。
  */
+@Getter
+@Setter
+@AllArgsConstructor
 public class Cart {
 
+    // 购物车ID
     private Integer cartId;
-    private int userId;
+    // 用户ID
+    private Long userId;
+    // 购物车中商品总数（可以在添加商品时动态更新）
     private Integer cartNum;
+    // 购物车商品项列表
     private List<CartProductItem> productItems;
+    // 购物车总价，初始化为零
+    private BigDecimal totalCost = BigDecimal.ZERO;
 
-    public Cart(int userId) {
+    public Cart(Long userId) {
         this.userId = userId;
         this.productItems = new ArrayList<>();
     }
 
-    public Cart(int userId, List<CartProductItem> productItems) {
+    public Cart(Long userId, List<CartProductItem> productItems) {
         this.userId = userId;
         this.productItems = productItems;
-    }
-
-    public Cart(int userId, int productId, int quantity) {
-        this.userId = userId;
-        this.productItems = new ArrayList<>();
-        this.productItems.add(new CartProductItem(productId, quantity));  // 将 CartItem 添加到 items 列表中
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public List<CartProductItem> getProductItems() {
-        return productItems;
     }
 }

@@ -1,4 +1,5 @@
 /Users/wisteria/team/Coder-ByteDance/mall/mall-cart/src/main/java/com/coder/mall/cart/response/AddProductItemResp.java
+/Users/wisteria/team/Coder-ByteDance/mall/mall-cart/src/main/java/com/coder/mall/cart/config/RedisConfig.java
 /Users/wisteria/team/Coder-ByteDance/mall/mall-cart/src/main/java/com/coder/mall/cart/service/CartService.java
 /Users/wisteria/team/Coder-ByteDance/mall/mall-cart/src/main/java/com/coder/mall/cart/CartApplication.java
 /Users/wisteria/team/Coder-ByteDance/mall/mall-cart/src/main/java/com/coder/mall/cart/service/RedisService.java

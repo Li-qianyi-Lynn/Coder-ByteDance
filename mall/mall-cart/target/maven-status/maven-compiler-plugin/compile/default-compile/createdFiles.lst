@@ -3,6 +3,7 @@ com/coder/mall/cart/service/impl/CartRedisServiceImpl.class
 com/coder/mall/cart/CartApplication.class
 com/coder/mall/cart/model/dto/CartProductItem.class
 com/coder/mall/cart/service/CartService.class
+com/coder/mall/cart/config/RedisConfig.class
 com/coder/mall/cart/controller/CartController.class
 com/coder/mall/cart/service/RedisService.class
 com/coder/mall/cart/request/EmptyCartReq.class

@@ -19,8 +19,8 @@
         <java.version>17</java.version>
 
         <!-- Redis 相关版本 -->
-        <spring-data-redis.version>2.7.0</spring-data-redis.version> <!-- 根据实际需要调整 -->
-        <jedis.version>3.7.1</jedis.version> <!-- 添加 jedis.version -->
+        <spring-data-redis.version>3.0.0</spring-data-redis.version>
+        <!-- 移除了 Jedis 相关的版本 -->
     </properties>
 
     <dependencies>
@@ -36,23 +36,10 @@
             <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
 
-        <!-- Spring Boot Redis Starter -->
+        <!-- Spring Boot Redis Starter (默认使用 Lettuce) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-
-        <!-- Redis 客户端 -->
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>${jedis.version}</version> <!-- 使用 ${jedis.version} -->
-            <exclusions>
-                <exclusion>
-                    <artifactId>commons-pool2</artifactId>
-                    <groupId>org.apache.commons</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- JUnit 测试框架 -->
@@ -87,7 +74,18 @@
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
-            <version>1.9.7</version> <!-- You can check for the latest version -->
+            <version>1.9.7</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>4.0.0</version>
         </dependency>
 
     </dependencies>

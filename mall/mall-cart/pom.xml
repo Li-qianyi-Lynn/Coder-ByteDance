@@ -77,11 +77,14 @@
             <version>1.9.7</version>
         </dependency>
 
+        <!-- Spring Data Redis -->
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-redis</artifactId>
             <version>3.0.2</version>
         </dependency>
+
+        <!-- Jedis 客户端 -->
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>

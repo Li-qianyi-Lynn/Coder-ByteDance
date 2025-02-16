@@ -9,7 +9,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 public class CartApplication {
 
     public static void main(String[] args) {
-        // 启动 Spring Boot 应用
+        // 启动 Cart Spring Boot 应用
         SpringApplication.run(CartApplication.class, args);
     }
 }

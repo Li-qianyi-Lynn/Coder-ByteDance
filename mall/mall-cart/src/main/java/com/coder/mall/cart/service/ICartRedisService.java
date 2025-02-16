@@ -43,10 +43,15 @@ public interface ICartRedisService {
     void clearCart(Long userId);
 
     /**
-     * 更新购物车商品数量
+     * 更新购物车某件商品数量
      *
      * @param cartProductItem
      */
     void updateCart(UpdateItemRequest cartProductItem);
 
+    /**
+     * 保存购物车数据
+     * @param userId
+     */
+    void saveCart(Long userId);
 }

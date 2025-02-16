@@ -16,6 +16,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowCredentials(true);
     }
 
-    // 其他配置，如拦截器等...
+    // 其他配置，如拦截器等
 }
 

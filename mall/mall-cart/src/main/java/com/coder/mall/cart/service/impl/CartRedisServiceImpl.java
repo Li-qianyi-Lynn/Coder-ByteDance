@@ -1,5 +1,6 @@
 package com.coder.mall.cart.service.impl;
 
+import com.coder.mall.cart.dao.CartDao;
 import com.coder.mall.cart.model.dto.CartProductItem;
 import com.coder.mall.cart.model.entity.Cart;
 import com.coder.mall.cart.request.AddProductItemReq;
@@ -24,6 +25,9 @@ public class CartRedisServiceImpl implements ICartRedisService {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
+    @Autowired
+    private CartDao cartDao;
+
     public HashOperations<String, Object, Object> getOpsHash() {
         return redisTemplate.opsForHash();
     }
@@ -33,20 +37,21 @@ public class CartRedisServiceImpl implements ICartRedisService {
         // 获取购物车数据
         Object userCart = redisTemplate.opsForValue().get(CART_KEY + request.getUserId().toString());
         // 将购物车数据转换为Map类型，Key值是商品的id，value是商品信息，但不包括价格信息
-        Map<Long, CartProductItem> redisData = (Map<Long, CartProductItem>) userCart;
+        Map<String, CartProductItem> redisData = (Map<String, CartProductItem>) userCart;
 
         if (redisData == null) {
             redisData = new HashMap<>();
         }
         // 获取对应Item
-        CartProductItem cartProductItem = redisData.get(request.getProductId());
+        CartProductItem cartProductItem = redisData.get(request.getProductId().toString());
         if (cartProductItem == null) {
             // 如果没有item，那么直接put
-            redisData.put(request.getProductId(), new CartProductItem(request.getProductId(), request.getQuantity()));
+            redisData.put(request.getProductId().toString(),
+                    new CartProductItem(request.getProductId(), request.getQuantity()));
         } else {
             // 如果有item，那么对数量进行更新
             cartProductItem.setQuantity(cartProductItem.getQuantity() + request.getQuantity());
-            redisData.put(request.getProductId(), cartProductItem);
+            redisData.put(request.getProductId().toString(), cartProductItem);
         }
 
         // 将购物车数据存入Redis
@@ -61,7 +66,7 @@ public class CartRedisServiceImpl implements ICartRedisService {
         // 获取购物车数据
         Object userCart = redisTemplate.opsForValue().get(CART_KEY + userId.toString());
         // 将购物车数据转换为Map类型，Key值是商品的id，value是商品信息，但不包括价格信息
-        Map<Long, CartProductItem> redisData = (Map<Long, CartProductItem>) userCart;
+        Map<String, CartProductItem> redisData = (Map<String, CartProductItem>) userCart;
 
         if (redisData != null) {
             List<CartProductItem> values = redisData.values().stream().toList();
@@ -77,10 +82,10 @@ public class CartRedisServiceImpl implements ICartRedisService {
         // 获取购物车数据
         Object userCart = redisTemplate.opsForValue().get(CART_KEY + deleteItemRequest.getUserId());
         // 将购物车数据转换为Map类型，Key值是商品的id，value是商品信息，但不包括价格信息
-        Map<Long, CartProductItem> redisData = (Map<Long, CartProductItem>) userCart;
+        Map<String, CartProductItem> redisData = (Map<String, CartProductItem>) userCart;
 
         if (redisData != null) {
-            redisData.remove(deleteItemRequest.getProductId());
+            redisData.remove(deleteItemRequest.getProductId().toString());
             redisTemplate.opsForValue().set(CART_KEY + deleteItemRequest.getUserId(), redisData);
         }
     }
@@ -89,6 +94,8 @@ public class CartRedisServiceImpl implements ICartRedisService {
     public void clearCart(Long userId) {
         // 获取购物车数据
         redisTemplate.delete(CART_KEY + userId);
+        // 持久化-同时删除数据库中的数据
+        cartDao.deleteByUserId(userId);
     }
 
     @Override
@@ -96,14 +103,31 @@ public class CartRedisServiceImpl implements ICartRedisService {
         // 获取购物车数据
         Object userCart = redisTemplate.opsForValue().get(CART_KEY + request.getUserId());
         // 将购物车数据转换为Map类型，Key值是商品的id，value是商品信息，但不包括价格信息
-        Map<Long, CartProductItem> redisData = (Map<Long, CartProductItem>) userCart;
+        Map<String, CartProductItem> redisData = (Map<String, CartProductItem>) userCart;
+
+        // 如果redisData为空，那么应该先初始化
+        if (redisData != null) {
+            redisData = new HashMap<>();
+        }
+        redisData.put(request.getProductId().toString(),
+                new CartProductItem(request.getProductId(), request.getQuantity()));
+        redisTemplate.opsForValue().set(CART_KEY + request.getUserId(), redisData);
+
+        // 更新缓存过期时间（如1小时）
+        redisTemplate.expire(CART_KEY + request.getUserId(), 1, TimeUnit.HOURS);
+    }
+
+    @Override
+    public void saveCart(Long userId){
+        // 获取购物车数据
+        Object userCart = redisTemplate.opsForValue().get(CART_KEY + userId.toString());
+        // 将购物车数据转换为Map类型，Key值是商品的id，value是商品信息，但不包括价格信息
+        Map<String, CartProductItem> redisData = (Map<String, CartProductItem>) userCart;
 
         if (redisData != null) {
-            redisData.put(request.getProductId(), new CartProductItem(request.getProductId(), request.getQuantity()));
-            redisTemplate.opsForValue().set(CART_KEY + request.getUserId(), redisData);
-
-            // 更新缓存过期时间（如1小时）
-            redisTemplate.expire(CART_KEY + request.getUserId(), 1, TimeUnit.HOURS);
+            List<CartProductItem> productItems = redisData.values().stream().toList();
+            Cart cart = new Cart(userId, productItems);
+            cartDao.saveOrUpdate(cart);
         }
     }
 }

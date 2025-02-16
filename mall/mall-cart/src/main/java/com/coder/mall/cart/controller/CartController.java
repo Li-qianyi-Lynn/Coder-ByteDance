@@ -10,6 +10,7 @@ import com.coder.mall.cart.response.GetCartResp;
 import com.coder.mall.cart.service.CartService;
 import com.coder.mall.cart.service.ICartRedisService;
 import com.coder.mall.cart.service.RedisService;
+import lombok.NonNull;
 import org.apache.catalina.connector.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,8 +45,6 @@ public class CartController {
      */
     @PostMapping("/addProductItemForCart")
     public ResponseEntity<AddProductItemResp> addProductItem(@RequestBody @Validated AddProductItemReq request) {
-//        // 调用 cartService 处理添加商品的业务逻辑
-//        cartService.addProductItem(request);
         cartRedisService.addProductItem(request);
         logger.info("Added item to cart: " + request.getProductId());
         return ResponseEntity.ok(new AddProductItemResp(HttpStatus.OK.value(),"Item added to cart successfully."));
@@ -59,9 +58,6 @@ public class CartController {
      */
     @GetMapping("/listOfCart/{userId}")
     public ResponseEntity<GetCartResp> getCart(@PathVariable Long userId) {
-        // 原方案：调用 cartService 获取购物车数据
-        // return cartService.getCart(new GetCartReq(userId));
-
         // 从 Redis 获取购物车数据
         Cart cart = cartRedisService.getCart(userId);
         List<Cart> carts = new ArrayList<>();
@@ -77,6 +73,7 @@ public class CartController {
      */
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteProductOfCart(@RequestBody DeleteItemRequest deleteItem) {
+        // 删除购物车中的某商品项
         cartRedisService.deleteCartItem(deleteItem);
         return ResponseEntity.ok("Cart item deleted successfully.");
     }
@@ -102,24 +99,34 @@ public class CartController {
      */
     @DeleteMapping("/empty/{userId}")
     public ResponseEntity<Void> emptyCart(@PathVariable Long userId) {
-        // 原方案：调用 cartService 清空购物车
-        // return cartService.emptyCart(new EmptyCartReq(userId));
-
-        // 调用 RedisService 来清空购物车
+        // 调用 RedisService 来清空购物车数据
         cartRedisService.clearCart(userId);
         logger.info("Cart emptied for user: " + userId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     /**
-     * 更新购物车商品数量
+     * 更新购物车某件商品的数量
      *
      * @param request
      * @return
      */
     @PutMapping("/update")
     public ResponseEntity updateCart(@RequestBody @Validated UpdateItemRequest request) {
+        // 更新购物车中某商品的数量
         cartRedisService.updateCart(request);
         return ResponseEntity.ok("Cart item updated successfully.");
+    }
+
+    /**
+     * 保存购物车数据到MongoDB
+     * @param userId
+     * @return
+     */
+    @PostMapping("/save/{userId}")
+    public ResponseEntity<AddProductItemResp> saveCart(@PathVariable @NonNull Long userId) {
+        cartRedisService.saveCart(userId);
+        logger.info("Save cart to mongoDB: " + userId);
+        return ResponseEntity.ok(new AddProductItemResp(HttpStatus.OK.value(),"save cart to mongoDB successfully."));
     }
 }

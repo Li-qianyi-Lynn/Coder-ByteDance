@@ -37,13 +37,13 @@ public class CartServiceImpl implements CartService {
 //        Cart cart = findOrCreateCart(request.getUserId());
 //        cart.getProductItems().add(productItem);
 //        // 日志打印移至AOP或日志框架处理
-        return ResponseEntity.ok().build();  // 返回 200 OK，无返回内容
+        return ResponseEntity.ok().build();
     }
 
     @Override
     public ResponseEntity<GetCartResp> getCart(GetCartReq request) {
         // 获取当前用户的所有购物车数量
-        Map<Object, Object> entries = getOpHash();  // 修改为正确的方法
+        Map<Object, Object> entries = getOpHash();
         Set<Map.Entry<Object, Object>> entrySet = entries.entrySet();
         // 获取内部的所有值
         List<Cart> carts = new ArrayList<>();
@@ -59,7 +59,7 @@ public class CartServiceImpl implements CartService {
         Cart cart = findOrCreateCart(request.getUserId());
         cart.getProductItems().clear();
         System.out.println("Cart has been emptied.");
-        return ResponseEntity.ok().build();  // 返回 200 OK，无返回内容
+        return ResponseEntity.ok().build();
     }
 
     // 辅助方法：根据用户 ID 查找或创建购物车
@@ -79,7 +79,8 @@ public class CartServiceImpl implements CartService {
     private Map<Object, Object> getOpHash() {
         Map<Object, Object> map = new HashMap<>();
         for (Cart cart : carts) {
-            map.put(cart.getUserId(), cart);  // 假设 cart.getUserId() 作为 key
+            // cart.getUserId() 作为 key
+            map.put(cart.getUserId(), cart);
         }
         return map;
     }

@@ -11,7 +11,7 @@ public class CartUtils {
     public static BigDecimal calculateTotalPrice(List<CartProductItem> cartItems) {
         return cartItems.stream()
                 .map(item -> item.getUnitPrice().multiply(new BigDecimal(item.getQuantity())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add); // 累加总价
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
 

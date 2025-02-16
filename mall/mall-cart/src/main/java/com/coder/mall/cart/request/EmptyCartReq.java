@@ -1,7 +1,7 @@
 package com.coder.mall.cart.request;
 
 /**
- * 清空购物车请求。
+ * 清空购物车请求
  */
 public class EmptyCartReq {
     private Long userId;

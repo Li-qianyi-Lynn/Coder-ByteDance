@@ -1,46 +1,128 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.coder.mall.order.mapper.CustomerOrderMapper">
-    
     <resultMap id="BaseResultMap" type="com.coder.mall.order.model.entity.CustomerOrder">
         <id column="order_id" property="orderId"/>
         <result column="order_no" property="orderNo"/>
         <result column="user_id" property="userId"/>
         <result column="total_cost" property="totalCost"/>
+        <result column="actual" property="actual"/>
         <result column="status" property="status"/>
         <result column="recipient_info" property="recipientInfo"/>
         <result column="order_items" property="orderItems"/>
         <result column="payment_info" property="paymentInfo"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
+        <result column="pay_time" property="payTime"/>
+        <result column="delivery_time" property="deliveryTime"/>
+        <result column="complete_time" property="completeTime"/>
+        <result column="deleted" property="deleted"/>
     </resultMap>
 
-    <insert id="insert" parameterType="com.coder.mall.order.model.entity.CustomerOrder" useGeneratedKeys="true" keyProperty="orderId">
+    <sql id="Base_Column_List">
+        order_id, order_no, user_id, total_cost, actual, status,
+        recipient_info, order_items, payment_info, create_time, update_time,
+        pay_time, delivery_time, complete_time, deleted
+    </sql>
+
+    <insert id="insert" parameterType="com.coder.mall.order.model.entity.CustomerOrder">
         INSERT INTO customer_orders (
-            order_no, user_id, total_cost, status,
-            recipient_info, order_items, payment_info,
-            create_time, update_time
+            order_no, user_id, total_cost, actual, status,
+            recipient_info, order_items, payment_info, create_time, update_time, deleted
         ) VALUES (
-            #{orderNo}, #{userId}, #{totalCost}, #{status},
-            #{recipientInfo}, #{orderItems}, #{paymentInfo},
-            #{createTime}, #{updateTime}
+            #{orderNo}, #{userId}, #{totalCost}, #{actual}, #{status},
+            #{recipientInfo}, #{orderItems}, #{paymentInfo}, #{createTime}, #{updateTime},
+            COALESCE(#{deleted}, 0)
         )
     </insert>
 
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM customer_orders 
+        WHERE order_id = #{orderId} AND deleted = 0
+    </select>
+
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM customer_orders 
+        WHERE user_id = #{userId} AND deleted = 0
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="selectByUserIdWithPage" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM customer_orders 
+        WHERE user_id = #{userId} AND deleted = 0
+        ORDER BY create_time DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <update id="updateStatus">
+        UPDATE customer_orders 
+        SET status = #{status}, 
+            update_time = NOW()
+        WHERE order_no = #{orderNo} 
+        AND deleted = 0
+    </update>
+
     <select id="selectByOrderNoAndUserId" resultMap="BaseResultMap">
-    SELECT *
-    FROM customer_orders
-    WHERE order_no = #{orderNo}
-    AND user_id = #{userId}
-    AND deleted = 0
+        SELECT <include refid="Base_Column_List" />
+        FROM customer_orders 
+        WHERE order_no = #{orderNo} 
+        AND user_id = #{userId} 
+        AND deleted = 0
     </select>
 
     <update id="updateStatusAndDeletedByOrderNo">
-    UPDATE customer_orders 
-    SET status = #{status},
-        deleted = #{deleted},
-        update_time = NOW()
-    WHERE order_no = #{orderNo}
-    AND deleted = 0
+        UPDATE customer_orders 
+        SET status = #{status},
+            deleted = #{deleted},
+            update_time = NOW()
+        WHERE order_no = #{orderNo} 
+        AND deleted = 0
     </update>
+
+    <select id="selectByOrderNo" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM customer_orders 
+        WHERE order_no = #{orderNo} 
+        AND deleted = 0
+    </select>
+
+    <select id="countByUserId" resultType="int">
+        SELECT COUNT(*)
+        FROM customer_orders
+        WHERE user_id = #{userId} 
+        AND deleted = 0
+    </select>
+
+    <select id="selectHistoryOrders" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM customer_orders
+        WHERE user_id = #{userId}
+        AND deleted = 0
+        <if test="startDate != null">
+            AND create_time >= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND create_time &lt;= #{endDate}
+        </if>
+        ORDER BY create_time DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="countHistoryOrders" resultType="int">
+        SELECT COUNT(*)
+        FROM customer_orders
+        WHERE user_id = #{userId}
+        AND deleted = 0
+        <if test="startDate != null">
+            AND create_time >= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND create_time &lt;= #{endDate}
+        </if>
+    </select>
 </mapper>

@@ -2,46 +2,44 @@ package com.coder.mall.order.model.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Map;
-
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.coder.mall.order.constant.OrderStatus;
 
 import lombok.Data;
 
 @Data
-@Document(collection = "customer_orders")
 public class CustomerOrder {
-    @Id
-    private String id;          
-    private Long orderId;       // 自增订单ID（新增）
-    private String orderNo;     // 订单号（新增）
+    private Long orderId;
+    private String orderNo;
     private String userId;
-    private String recipientInfo;  // JSON 格式
-    private String orderItems;     // JSON 格式
-    private String paymentInfo;    // JSON 格式
     private BigDecimal totalCost;
+    private BigDecimal actual;
     private String status;
-    private Map<String, String> extraInfo;
-
-    @CreatedDate
+    private String recipientInfo;
+    private String orderItems;
+    private String paymentInfo;
     private Date createTime;
-    @LastModifiedDate
     private Date updateTime;
+    private Date payTime;
+    private Date deliveryTime;
+    private Date completeTime;
+    private String remark;
+    private Boolean deleted;
 
-    public void setStatus(String status) {
-        this.status = status;
+
+    protected void onCreate() {
+        createTime = new Date();
+        updateTime = new Date();
+        if (deleted == null) {
+            deleted = false;
+        }
+    }
+    protected void onUpdate() {
+        updateTime = new Date();
     }
 
-    @SuppressWarnings("unlikely-arg-type")
     public boolean canCancel() {
-        return OrderStatus.CREATED.equals(status) || OrderStatus.PENDING_PAYMENT.equals(status);
+        return OrderStatus.CREATED.equals(status) || 
+               OrderStatus.PENDING_PAYMENT.equals(status);
     }
-
-        
-    
 }

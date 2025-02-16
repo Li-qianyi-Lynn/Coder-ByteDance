@@ -5,10 +5,10 @@ spring:
   application:
     name: mall-order-service
 
-  # MongoDB配置
-  data:
-    mongodb:
-      uri: mongodb://root:root@localhost:27017/mall_order?authSource=admin
+  #  MongoDB配置
+  # data:
+  #   mongodb:
+  #     uri: mongodb://root:root@localhost:27017/mall_order?authSource=admin
     
   # Redis配置
   redis:
@@ -35,6 +35,15 @@ spring:
       maximum-pool-size: 15
       idle-timeout: 30000
       pool-name: OrderHikariCP
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
 
   # Nacos配置
   cloud:
@@ -75,18 +84,29 @@ spring:
     token-style: uuid
     is-log: true
 
+# 订单配置
+  order:
+    auto-cancel-timeout: 30  # 订单自动取消超时时间（分钟）
+
+# 任务调度配置
+  task:
+    scheduling:
+      pool:
+        size: 5
+      thread-name-prefix: OrderSchedule-
+
 # MyBatis配置
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.coder.mall.order.model.entity
   configuration:
     map-underscore-to-camel-case: true
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 # MyBatis-Plus配置
-mybatis-plus:
-  mapper-locations: classpath:mapper/*.xml
-  type-aliases-package: com.coder.mall.order.model.entity
-  configuration:
-    map-underscore-to-camel-case: true
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+# mybatis-plus:
+#   configuration:
+#     map-underscore-to-camel-case: true
+#     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#   type-aliases-package: com.coder.mall.order.model.entity
+
+

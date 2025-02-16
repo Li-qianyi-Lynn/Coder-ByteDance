@@ -1,7 +1,7 @@
 package com.coder.mall.order.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
+// import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -10,8 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class SequenceGenerator {
-    @Autowired
-    private MongoTemplate mongoTemplate;
+    // @Autowired
+    // private MongoTemplate mongoTemplate;
     
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;

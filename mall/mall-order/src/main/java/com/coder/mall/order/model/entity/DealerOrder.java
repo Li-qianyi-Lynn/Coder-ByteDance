@@ -1,16 +1,18 @@
 package com.coder.mall.order.model.entity;
 
-import com.coder.mall.order.model.dto.RecipientInfo;
-import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.annotation.Id;
+// import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.coder.mall.order.model.dto.RecipientInfo;
+
+import lombok.Data;
+
 @Data
-@Document(collection = "dealer_orders")
+// @Document(collection = "dealer_orders")
 public class DealerOrder {
     @Id
     private String orderId;

@@ -1,12 +1,12 @@
 package com.coder.mall.order.model.dto;
 
-import lombok.Data;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import java.math.BigDecimal;
 
+import lombok.Data;
+// import org.springframework.data.mongodb.core.mapping.Document;
+
 @Data
-@Document
+// @Document
 public class PaymentInfo {
     private String firstName;
     private String lastName;

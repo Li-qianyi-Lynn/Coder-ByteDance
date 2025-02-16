@@ -2,6 +2,7 @@ package com.coder.mall.order.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,9 @@ import lombok.extern.slf4j.Slf4j;
 public class OrderController {
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     @PostMapping("/from-cart")
     public Response<CustomerOrder> createOrderFromCart(@RequestHeader("X-User-ID") String userId) {
@@ -83,8 +87,19 @@ public class OrderController {
     public Response<OrderCancelResponseDTO> cancelOrder(
             @RequestHeader("X-User-ID") String userId,
             @PathVariable String orderNo) {
+        log.info("开始取消订单 - userId: {}, orderNo: {}", userId, orderNo);
         try {
+            // 添加Redis连接测试
+            try {
+                stringRedisTemplate.opsForValue().get("test-key");
+                log.info("Redis连接正常");
+            } catch (Exception e) {
+                log.error("Redis连接异常", e);
+            }
+
             orderService.cancelOrder(userId, orderNo);
+            log.info("订单取消成功 - orderNo: {}", orderNo);
+            
             OrderCancelResponseDTO responseDTO = OrderCancelResponseDTO.builder()
                     .code("200")
                     .message("订单取消成功")
@@ -93,7 +108,8 @@ public class OrderController {
                     .build();
             return Response.success(responseDTO);
         } catch (BizException e) {
-            log.error("Cancel order failed for orderNo: {}, error: {}", orderNo, e.getMessage());
+            log.error("取消订单业务异常 - orderNo: {}, errorCode: {}, errorMessage: {}", 
+                    orderNo, e.getErrorCode(), e.getErrorMessage());
             OrderCancelResponseDTO responseDTO = OrderCancelResponseDTO.builder()
                     .code(e.getErrorCode())
                     .message(e.getErrorMessage())
@@ -102,7 +118,7 @@ public class OrderController {
                     .build();
             return Response.fail(e);
         } catch (Exception e) {
-            log.error("Cancel order failed for orderNo: {}", orderNo, e);
+            log.error("取消订单系统异常 - orderNo: {}", orderNo, e);
             OrderCancelResponseDTO responseDTO = OrderCancelResponseDTO.builder()
                     .code(OrderErrorEnum.ORDER_CANCEL_FAILED.getErrorCode())
                     .message(OrderErrorEnum.ORDER_CANCEL_FAILED.getErrorMessage())
@@ -123,5 +139,20 @@ public class OrderController {
         Page<CustomerOrder> orderPage = orderService.listCustomerOrders(userId, page, size);
 
         return Response.success(orderPage);
+    }
+
+    // 添加Redis测试端点
+    @GetMapping("/redis-test")
+    public Response<String> testRedis() {
+        try {
+            String testKey = "test:connection:" + System.currentTimeMillis();
+            stringRedisTemplate.opsForValue().set(testKey, "test");
+            String value = stringRedisTemplate.opsForValue().get(testKey);
+            log.info("Redis测试成功 - key: {}, value: {}", testKey, value);
+            return Response.success("Redis连接正常: " + value);
+        } catch (Exception e) {
+            log.error("Redis测试失败", e);
+            return Response.fail("Redis连接失败: " + e.getMessage());
+        }
     }
 }

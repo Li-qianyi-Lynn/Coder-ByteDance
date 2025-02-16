@@ -9,8 +9,20 @@ spring:
   data:
     mongodb:
       uri: mongodb://root:root@localhost:27017/mall_order?authSource=admin
-    redis:
-      host: 114.55.129.110
+    
+  # Redis配置
+  redis:
+    host: 114.55.129.110  # 云服务器地址
+    port: 6379
+    password: 132133
+    database: 0
+    timeout: 5000
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
 
   # MySQL配置
   datasource:
@@ -23,24 +35,6 @@ spring:
       maximum-pool-size: 15
       idle-timeout: 30000
       pool-name: OrderHikariCP
-
-
-  # Redis配置
-    redis:
-      port: 6379
-      password: 132133
-      database: 0
-      timeout: 5000
-      lettuce:
-        pool:
-          max-active: 8
-          max-wait: -1
-          max-idle: 8
-          min-idle: 0
-
-
-
-
 
   # Nacos配置
   cloud:
@@ -55,8 +49,6 @@ spring:
       com.douyin.orderservice: INFO
       org.springframework: WARN
       com.coder.mall.order: DEBUG
-
-
 
   # RabbitMQ配置
   rabbitmq:
@@ -83,18 +75,18 @@ spring:
     token-style: uuid
     is-log: true
 
-  # MyBatis配置
-  mybatis:
-    mapper-locations: classpath:mapper/*.xml
-    type-aliases-package: com.coder.mall.order.model.entity
-    configuration:
-      map-underscore-to-camel-case: true
-      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+# MyBatis配置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.coder.mall.order.model.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
-  # MyBatis-Plus配置
-  mybatis-plus:
-    mapper-locations: classpath:mapper/*.xml
-    type-aliases-package: com.coder.mall.order.model.entity
-    configuration:
-      map-underscore-to-camel-case: true
-      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+# MyBatis-Plus配置
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.coder.mall.order.model.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

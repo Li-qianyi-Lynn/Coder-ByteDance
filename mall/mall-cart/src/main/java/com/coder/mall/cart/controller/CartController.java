@@ -1,6 +1,8 @@
 package com.coder.mall.cart.controller;
 
+import com.coder.mall.cart.model.dto.CartProductItem;
 import com.coder.mall.cart.model.dto.CartResponse;
+import com.coder.mall.cart.model.dto.ProductDTO;
 import com.coder.mall.cart.model.entity.Cart;
 import com.coder.mall.cart.request.AddProductItemReq;
 import com.coder.mall.cart.request.DeleteItemRequest;
@@ -10,6 +12,7 @@ import com.coder.mall.cart.response.ApiResponse;
 import com.coder.mall.cart.response.GetCartResp;
 import com.coder.mall.cart.service.CartService;
 import com.coder.mall.cart.service.ICartRedisService;
+import com.coder.mall.cart.service.ProductService;
 import com.coder.mall.cart.service.RedisService;
 import lombok.NonNull;
 import org.apache.catalina.connector.Response;
@@ -22,7 +25,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static javax.security.auth.callback.ConfirmationCallback.OK;
 
@@ -38,6 +44,10 @@ public class CartController {
     @Autowired
     private ICartRedisService cartRedisService;
 
+    @Autowired
+    private ProductService productService;
+
+
     /**
      * 添加商品到购物车
      *
@@ -48,7 +58,7 @@ public class CartController {
     public ResponseEntity<AddProductItemResp> addProductItem(@RequestBody @Validated AddProductItemReq request) {
         cartRedisService.addProductItem(request);
         logger.info("Added item to cart: " + request.getProductId());
-        return ResponseEntity.ok(new AddProductItemResp(HttpStatus.OK.value(),"Item added to cart successfully."));
+        return ResponseEntity.ok(new AddProductItemResp(HttpStatus.OK.value(), "Item added to cart successfully."));
     }
 
     /**
@@ -61,10 +71,50 @@ public class CartController {
     public ResponseEntity<GetCartResp> getCart(@PathVariable Long userId) {
         // 从 Redis 获取购物车数据
         Cart cart = cartRedisService.getCart(userId);
+        // 在获取购物车数据时，处理失效商品的逻辑：
+        // 根据userId得到该用户下的购物车中的所有商品id列表
+        // 根据得到的商品id列表调用根据商品id列表获取商品信息列表的接口，获取商品信息列表
+        // 遍历商品信息列表，遍历过滤得到每一个商品信息中status为AVAILABLE（有效）的商品列表
+        // 将得到的有效商品列表放到新建的一个map中
+        // 将新map对象赋值到改userId对应的redis的value中，即更新redis
         List<Cart> carts = new ArrayList<>();
+        // 并且将得到的有效商品列表放到carts中返回
         carts.add(cart);
         return ResponseEntity.ok(new GetCartResp(carts));
     }
+
+
+//    /**
+//     * 获取购物车列表
+//     *
+//     * @param userId 用户ID
+//     * @return 购物车响应对象
+//     */
+//    @GetMapping("/listOfCart/{userId}")
+//    public ResponseEntity<GetCartResp> getCart(@PathVariable Long userId) {
+//        // 从 Redis 获取购物车数据
+//        Cart cart = cartRedisService.getCart(userId);
+//        // 根据 userId 获取该用户下的购物车中的所有商品id列表
+//        List<Long> productIds = cart.getProductItems().stream()
+//                .map(CartProductItem::getProductId)
+//                .collect(Collectors.toList());
+//        // 根据商品id列表调用商品信息接口获取商品信息列表
+//        List<ProductDTO> productDTOList = productService.listProductsByIds(productIds);
+//        // 将商品信息按商品id组织成一个 Map
+//        Map<Long, ProductDTO> productMap = productDTOList.stream()
+//                .collect(Collectors.toMap(ProductDTO::getProductId, productDTO -> productDTO));
+//        // 遍历购物车中的商品项，过滤出有效商品，并更新购物车
+//        List<CartProductItem> validItems = cart.getProductItems().stream()
+//                .filter(item -> productMap.containsKey(item.getProductId())
+//                        && "AVAILABLE".equals(productMap.get(item.getProductId()).getStatus()))
+//                .collect(Collectors.toList());
+//        // 更新购物车商品项列表
+//        cart.setProductItems(validItems);
+//        // 更新 Redis 中的购物车数据
+//        cartRedisService.updateCart(userId, cart);
+//        // 返回有效商品列表
+//        return ResponseEntity.ok(new GetCartResp(Collections.singletonList(cart)));
+//    }
 
     /**
      * 删除购物车某件商品
@@ -123,7 +173,10 @@ public class CartController {
     }
 
     /**
-     * 保存购物车数据到MongoDB
+     * 保存购物车数据到MongoDB。在以下情况中调用该方法：
+     * 1. 清空购物车
+     * 2. 用户退出登陆的时候
+     *
      * @param userId
      * @return
      */
@@ -131,6 +184,6 @@ public class CartController {
     public ResponseEntity<AddProductItemResp> saveCart(@PathVariable @NonNull Long userId) {
         cartRedisService.saveCart(userId);
         logger.info("Save cart to mongoDB: " + userId);
-        return ResponseEntity.ok(new AddProductItemResp(HttpStatus.OK.value(),"save cart to mongoDB successfully."));
+        return ResponseEntity.ok(new AddProductItemResp(HttpStatus.OK.value(), "save cart to mongoDB successfully."));
     }
 }

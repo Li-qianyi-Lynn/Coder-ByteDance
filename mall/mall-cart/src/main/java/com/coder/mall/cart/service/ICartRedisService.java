@@ -50,6 +50,12 @@ public interface ICartRedisService {
     void updateCart(UpdateItemRequest cartProductItem);
 
     /**
+     * 更新整个购物车
+     */
+    void updateCart(Long userId, Cart cart);
+
+
+    /**
      * 保存购物车数据
      * @param userId
      */

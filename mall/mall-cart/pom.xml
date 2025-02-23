@@ -30,16 +30,16 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- Spring Boot 自动配置支持 -->
+        <!-- Spring Boot AOP 支持 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-autoconfigure</artifactId>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
-        <!-- Spring Boot Redis Starter (默认使用 Lettuce) -->
+        <!-- Spring Boot MongoDB Starter -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
 
         <!-- JUnit 测试框架 -->
@@ -64,17 +64,11 @@
             <version>1.2.6</version>
         </dependency>
 
-        <!-- Spring Boot AOP 支持 -->
+        <!-- Hibernate Core -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
-
-        <!-- AspectJ 依赖 -->
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>1.9.7</version>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>6.5.2.Final</version>
         </dependency>
 
         <!-- Spring Data Redis -->
@@ -84,64 +78,32 @@
             <version>3.0.2</version>
         </dependency>
 
-        <!-- Jedis 客户端 -->
+        <!-- Spring Cloud OpenFeign Dependency -->
         <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>4.3.1</version>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
+
+        <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
+
+        <!-- Spring Data JPA -->
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
             <version>3.3.1</version>
         </dependency>
 
-        <!-- MongoDB Java Driver -->
+        <!-- Jedis 客户端 -->
         <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongodb-driver-sync</artifactId>
-            <version>4.10.2</version>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>4.3.1</version>
         </dependency>
-
-        <!-- MongoDB Driver Core -->
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongodb-driver-core</artifactId>
-            <version>4.10.2</version>
-        </dependency>
-
-        <!-- Spring Boot MongoDB Starter -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-mongodb</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.mongodb</groupId>
-                    <artifactId>mongodb-driver-sync</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.mongodb</groupId>
-                    <artifactId>mongodb-driver-core</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <!-- Spring Cloud OpenFeign Dependency -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate.orm</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>6.5.2.Final</version>
-        </dependency>
-
     </dependencies>
 
     <build>

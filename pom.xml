@@ -16,18 +16,25 @@
 
   <!-- 子模块管理 -->
   <modules>
-
+    <!-- 平台基础设施层：封装一些常用功能，供各个业务线拿来即用 -->
     <module>mall-framework</module>
-    <module>mall-framework/mall-common</module>
-    <module>mall-framework/mall-spring-boot-starter-biz-operationlog</module>
+    <!-- 没用，瞎写的 -->
     <module>mall-test</module>
+    <!-- 认证模块，包括验证码发送与登录认证，调用 user 模块来创建用户 -->
     <module>mall-auth</module>
+    <!-- 用户模块 -->
     <module>mall-user</module>
+    <!-- 网关 -->
     <module>mall-gateway</module>
+    <!-- 对象存储 -->
     <module>mall-oss</module>
+    <!-- 商品模块 -->
     <module>mall-product</module>
+    <!-- 购物车模块 -->
     <module>mall-cart</module>
+    <!-- 订单模块 -->
     <module>mall-order</module>
+    <!-- 结算模块 -->
     <module>mall-checkout</module>
   </modules>
 

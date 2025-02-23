@@ -71,50 +71,11 @@ public class CartController {
     public ResponseEntity<GetCartResp> getCart(@PathVariable Long userId) {
         // 从 Redis 获取购物车数据
         Cart cart = cartRedisService.getCart(userId);
-        // 在获取购物车数据时，处理失效商品的逻辑：
-        // 根据userId得到该用户下的购物车中的所有商品id列表
-        // 根据得到的商品id列表调用根据商品id列表获取商品信息列表的接口，获取商品信息列表
-        // 遍历商品信息列表，遍历过滤得到每一个商品信息中status为AVAILABLE（有效）的商品列表
-        // 将得到的有效商品列表放到新建的一个map中
-        // 将新map对象赋值到改userId对应的redis的value中，即更新redis
         List<Cart> carts = new ArrayList<>();
         // 并且将得到的有效商品列表放到carts中返回
         carts.add(cart);
         return ResponseEntity.ok(new GetCartResp(carts));
     }
-
-
-//    /**
-//     * 获取购物车列表
-//     *
-//     * @param userId 用户ID
-//     * @return 购物车响应对象
-//     */
-//    @GetMapping("/listOfCart/{userId}")
-//    public ResponseEntity<GetCartResp> getCart(@PathVariable Long userId) {
-//        // 从 Redis 获取购物车数据
-//        Cart cart = cartRedisService.getCart(userId);
-//        // 根据 userId 获取该用户下的购物车中的所有商品id列表
-//        List<Long> productIds = cart.getProductItems().stream()
-//                .map(CartProductItem::getProductId)
-//                .collect(Collectors.toList());
-//        // 根据商品id列表调用商品信息接口获取商品信息列表
-//        List<ProductDTO> productDTOList = productService.listProductsByIds(productIds);
-//        // 将商品信息按商品id组织成一个 Map
-//        Map<Long, ProductDTO> productMap = productDTOList.stream()
-//                .collect(Collectors.toMap(ProductDTO::getProductId, productDTO -> productDTO));
-//        // 遍历购物车中的商品项，过滤出有效商品，并更新购物车
-//        List<CartProductItem> validItems = cart.getProductItems().stream()
-//                .filter(item -> productMap.containsKey(item.getProductId())
-//                        && "AVAILABLE".equals(productMap.get(item.getProductId()).getStatus()))
-//                .collect(Collectors.toList());
-//        // 更新购物车商品项列表
-//        cart.setProductItems(validItems);
-//        // 更新 Redis 中的购物车数据
-//        cartRedisService.updateCart(userId, cart);
-//        // 返回有效商品列表
-//        return ResponseEntity.ok(new GetCartResp(Collections.singletonList(cart)));
-//    }
 
     /**
      * 删除购物车某件商品

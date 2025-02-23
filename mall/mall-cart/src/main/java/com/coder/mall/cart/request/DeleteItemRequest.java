@@ -7,6 +7,10 @@ public class DeleteItemRequest {
     private Long userId;
     private Long productId;
 
+    public DeleteItemRequest() {
+        // 无参构造方法，Spring 可以通过此方法创建对象
+    }
+
     public DeleteItemRequest(Long userId, Long productId){
         this.productId = productId;
         this.userId = userId;

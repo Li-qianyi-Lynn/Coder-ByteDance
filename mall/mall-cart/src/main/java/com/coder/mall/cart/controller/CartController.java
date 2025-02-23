@@ -6,6 +6,7 @@ import com.coder.mall.cart.request.AddProductItemReq;
 import com.coder.mall.cart.request.DeleteItemRequest;
 import com.coder.mall.cart.request.UpdateItemRequest;
 import com.coder.mall.cart.response.AddProductItemResp;
+import com.coder.mall.cart.response.ApiResponse;
 import com.coder.mall.cart.response.GetCartResp;
 import com.coder.mall.cart.service.CartService;
 import com.coder.mall.cart.service.ICartRedisService;
@@ -71,11 +72,14 @@ public class CartController {
      * @param deleteItem
      * @return
      */
-    @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteProductOfCart(@RequestBody DeleteItemRequest deleteItem) {
+    @DeleteMapping("/deleteItemOfCart")
+    public ResponseEntity<ApiResponse> deleteProductOfCart(@RequestBody DeleteItemRequest deleteItem) {
         // 删除购物车中的某商品项
         cartRedisService.deleteCartItem(deleteItem);
-        return ResponseEntity.ok("Cart item deleted successfully.");
+        // 创建 ApiResponse 对象，返回 code 和 message
+        ApiResponse response = new ApiResponse(200, "Cart item deleted successfully.");
+        // 返回 ResponseEntity 包装 ApiResponse
+        return ResponseEntity.ok(response);
     }
 
 //    /**
@@ -97,7 +101,7 @@ public class CartController {
      * @param userId
      * @return
      */
-    @DeleteMapping("/empty/{userId}")
+    @DeleteMapping("/emptyCart/{userId}")
     public ResponseEntity<Void> emptyCart(@PathVariable Long userId) {
         // 调用 RedisService 来清空购物车数据
         cartRedisService.clearCart(userId);
@@ -111,7 +115,7 @@ public class CartController {
      * @param request
      * @return
      */
-    @PutMapping("/update")
+    @PutMapping("/updateQuantityOfCart")
     public ResponseEntity updateCart(@RequestBody @Validated UpdateItemRequest request) {
         // 更新购物车中某商品的数量
         cartRedisService.updateCart(request);

@@ -1,8 +1,10 @@
 package com.coder.mall.cart.request;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class UpdateItemRequest {
     private Long userId;
     private Long productId;

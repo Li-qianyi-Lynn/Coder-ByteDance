@@ -1,0 +1,126 @@
+server:
+  port: 8080  # 订单服务端口
+
+spring:
+  application:
+    name: mall-checkout
+
+
+
+  # MySQL配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mall?useSSL=false&serverTimezone=UTC
+    username: root
+    password: 123456
+    jpa:
+      hibernate:
+        ddl-auto: update
+      show-sql: true
+      properties:
+        hibernate:
+          format_sql: true
+
+    logging:
+      level:
+        org:
+          hibernate:
+            SQL: DEBUG
+            type:
+              descriptor:
+                sql:
+                  BasicBinder: TRACE
+
+
+  # Redis配置
+    redis:
+      port: 6379
+      password: 132133
+      database: 0
+      timeout: 5000
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: -1
+          max-idle: 8
+          min-idle: 0
+
+
+
+
+
+  # Nacos配置
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        namespace: public
+
+  # 日志配置
+  logging:
+    level:
+      com.douyin.orderservice: INFO
+      org.springframework: WARN
+      com.coder.mall.order: DEBUG
+
+
+
+  # RabbitMQ配置
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+
+
+  # RabbitMQ自定义队列配置
+    order:
+      queue-name: order.queue
+      exchange-name: order.exchange
+      routing-key: order.routing.key
+
+  # Sa-Token配置
+  sa-token:
+    token-name: token
+    timeout: 2592000
+    active-timeout: -1
+    is-concurrent: true
+    is-share: true
+    token-style: uuid
+    is-log: true
+
+  # MyBatis配置
+  mybatis:
+    mapper-locations: classpath:mapper/*.xml
+    type-aliases-package: com.coder.mall.order.model.entity
+    configuration:
+      map-underscore-to-camel-case: true
+      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+  # MyBatis-Plus配置
+  mybatis-plus:
+    mapper-locations: classpath:mapper/*.xml
+    type-aliases-package: com.coder.mall.order.model.entity
+    configuration:
+      map-underscore-to-camel-case: true
+      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+alipay:
+  gatewayUrl: https://openapi-sandbox.dl.alipaydev.com/gateway.do
+  appId: your appId
+  alipayPublicKey: your alipayPublicKey
+  appPrivateKey: your appPrivateKey
+  returnUrl: http://localhost:8060/#/pages/money/paySuccess
+  notifyUrl:
+
+
+bank:
+  notify:
+    secret: 12345 # 银行提供的签名密钥
+    retry:
+      max-attempts: 5            # 最大重试次数
+      interval: 30000            # 重试间隔(ms)
+
+
+

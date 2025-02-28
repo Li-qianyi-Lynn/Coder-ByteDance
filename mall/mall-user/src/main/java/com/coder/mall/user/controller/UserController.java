@@ -33,8 +33,8 @@ public class UserController {
     @PostMapping("login")
     @Operation(summary = "登录")
     public Response<String> login(LoginVo loginVo) {
-        String token = usersService.login(loginVo);
-        return Response.success(token);
+        String res = usersService.login(loginVo);
+        return Response.success(res);
     }
 
     @PostMapping("register")
@@ -70,10 +70,8 @@ public class UserController {
 
     @GetMapping("logout")
     @Operation(summary = "退出登录")
-    public Response logout(@RequestHeader("token") String token) {
-        Claims claims = JwtUtil.parseToken(token);
-        Long userId = Long.parseLong(claims.getId());
-        usersService.logout(userId);
-        return Response.success();
+    public Response logout() {
+        String res= usersService.logout();
+        return Response.success(res);
     }
 }

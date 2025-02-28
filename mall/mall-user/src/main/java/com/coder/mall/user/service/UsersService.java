@@ -20,7 +20,7 @@ public interface UsersService extends IService<Users> {
 
     String register(RegisterVo registerVo);
 
-    void logout(Long userId);
+    String logout();
 
     List<Users> getBatchUsers(List<Long> userIds);
 }

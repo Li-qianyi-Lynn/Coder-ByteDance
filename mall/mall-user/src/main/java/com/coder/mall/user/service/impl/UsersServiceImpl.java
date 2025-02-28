@@ -1,5 +1,6 @@
 package com.coder.mall.user.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.coder.mall.user.custom.constant.RedisConstant;
@@ -13,7 +14,6 @@ import com.coder.mall.user.service.SmsService;
 import com.coder.mall.user.service.UsersService;
 import com.coder.mall.user.domain.mapper.UsersMapper;
 import com.coder.mall.user.utils.CodeUtil;
-import com.coder.mall.user.utils.JwtUtil;
 import com.coder.mall.user.utils.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -88,7 +88,9 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
             }
         }
         //6.如果存在，返回token
-        return JwtUtil.createToken(user.getId(), user.getMobile());
+        StpUtil.login(user.getId());
+        return "登录成功！";
+//        return JwtUtil.createToken(user.getId(), user.getMobile());
     }
 
     @Override
@@ -124,16 +126,15 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     }
 
     @Override
-    public void logout(Long userId) {
-        //不知道怎么实现
+    public String logout() {
+        StpUtil.logout();
+        return "欢迎下次光临！";
     }
 
     @Override
     public List<Users> getBatchUsers(List<Long> userIds) {
         return usersMapper.selectBatchIds(userIds);
     }
-
-
 }
 
 

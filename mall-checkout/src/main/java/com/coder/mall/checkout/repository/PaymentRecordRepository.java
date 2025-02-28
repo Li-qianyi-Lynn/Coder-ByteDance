@@ -1,6 +1,6 @@
 package com.coder.mall.checkout.repository;
 
-// src/main/java/com/coder/mall/payment/repository/PaymentRecordRepository.java
+
 
 import com.coder.mall.checkout.entity.PaymentRecord;
 import org.springframework.data.jpa.repository.JpaRepository;

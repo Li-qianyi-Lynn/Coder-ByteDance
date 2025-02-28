@@ -1,6 +1,6 @@
 package com.coder.mall.checkout.gateway;
 
-// src/main/java/com/coder/mall/payment/service/gateway/BankGatewayService.java
+
 
 
 import com.coder.mall.checkout.dto.PaymentResponse;

@@ -1,6 +1,5 @@
 package com.coder.mall.checkout.service;
 
-// src/main/java/com/coder/mall/payment/service/NotifyRetryService.java
 
 import com.coder.mall.checkout.entity.PaymentRecord;
 import com.coder.mall.checkout.gateway.BankGatewayService;

@@ -1,4 +1,3 @@
-// src/main/java/com/coder/mall/payment/controller/BankNotifyController.java
 package com.coder.mall.checkout.controller;
 
 import com.coder.mall.checkout.dto.BankNotifyRequest;

@@ -26,11 +26,7 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>com.coder.mall.checkout</groupId>
-            <artifactId>mall-checkout</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
+
 
         <dependency>
             <groupId>org.springframework</groupId>

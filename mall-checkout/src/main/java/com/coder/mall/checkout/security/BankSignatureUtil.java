@@ -1,6 +1,6 @@
 package com.coder.mall.checkout.security;
 
-// src/main/java/com/coder/mall/payment/security/BankSignatureUtil.java
+
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;

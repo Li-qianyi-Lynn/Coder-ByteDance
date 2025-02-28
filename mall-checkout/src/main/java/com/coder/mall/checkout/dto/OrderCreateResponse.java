@@ -1,6 +1,6 @@
 package com.coder.mall.checkout.dto;
 
-// OrderCreateResponse.java
+
 
 import lombok.Builder;
 import lombok.Data;

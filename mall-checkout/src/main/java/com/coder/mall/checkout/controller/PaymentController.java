@@ -4,9 +4,14 @@ import com.coder.common.exception.BizException;
 import com.coder.common.response.ApiResponse;
 import com.coder.mall.checkout.dto.*;
 import com.coder.mall.checkout.entity.CustomerOrder;
+import com.coder.mall.checkout.entity.OrderItem;
 import com.coder.mall.checkout.entity.PaymentRecord;
 import com.coder.mall.checkout.repository.CustomerOrderRepository;
+import com.coder.mall.checkout.service.ExternalOrderClient;
 import com.coder.mall.checkout.service.PaymentService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -26,6 +32,7 @@ public class PaymentController {
 
     private final PaymentService paymentService;
     private final CustomerOrderRepository orderRepository;
+    private final ExternalOrderClient externalOrderClient;
     @Value("${http://localhost:3000/pay?orderNo={orderNo}}")
     private String paymentUrlTemplate;
     private String OrderNo;
@@ -35,37 +42,33 @@ public class PaymentController {
 
 
     @Transactional
-    @PostMapping("/create")
+    @PostMapping("/createurl")
     public ApiResponse<OrderCreateResponse> createOrder(
-            @Valid @RequestBody OrderCreateDTO request) {
-        log.info("收到创建订单请求：{}", request.toString()); // 添加DTO的toString方法
-        log.info("开始创建订单，用户ID：{}", request.getUserId());
+            @RequestParam String orderNo,
+            @RequestHeader("X-User-ID") String userId,
+            @RequestHeader("Authorization") String token) {
 
-        // 生成唯一订单号
-        String orderNo = generateOrderNo();
-        log.info("订单号：{}",orderNo);
-        String paymentUrl = paymentUrlTemplate.replace("{orderNo}",orderNo);
-        // 创建订单实体
-        CustomerOrder order = new CustomerOrder();
-        order.setOrderNo(orderNo);
-        order.setUserId(request.getUserId());
-        order.setOrderItems(request.getOrderItems());
-        order.setRecipientInfo(request.getRecipientInfo());
-        order.setStatus("PENDING_PAYMENT");
-        order.setCreateTime(LocalDateTime.now());
-        // 计算订单总金额
-        calculateOrderTotal(order);
-        // 保存订单
+        // 调用外部订单服务
+        ApiResponse<ExternalOrderResponse> response = externalOrderClient.getOrder(orderNo, userId, token);
+        if (!response.isSuccess()) {
+            throw new BizException("获取订单失败: " + response.getMessage());
+        }
+
+        // 转换订单数据
+        CustomerOrder order = convertToOrder(response.getData());
+
+        // 保存到本地数据库
         orderRepository.save(order);
-        log.info("订单创建成功，订单号：{}", orderNo);
+
+        // 生成支付链接
+        String paymentUrl = paymentUrlTemplate.replace("{orderNo}", orderNo);
 
         return ApiResponse.success(
                 OrderCreateResponse.builder()
                         .orderNo(orderNo)
                         .totalAmount(order.getTotalCost())
                         .paymentUrl(paymentUrl)
-                        .build()
-        );
+                        .build());
     }
 
 
@@ -148,4 +151,39 @@ public class PaymentController {
             throw new BizException("订单不存在");
         }
     }
+
+    private CustomerOrder convertToOrder(ExternalOrderResponse external) {
+        CustomerOrder order = new CustomerOrder();
+        order.setOrderNo(external.getOrderNo());
+        order.setUserId(String.valueOf(external.getUserId()));
+        order.setTotalCost(external.getTotalCost());
+        order.setCreateTime(external.getCreateTime());
+
+        // 转换收货信息
+        RecipientInfo recipient = new RecipientInfo();
+        recipient.setName(external.getRecipientInfo().getName());
+        recipient.setPhone(external.getRecipientInfo().getPhone());
+
+        Address address = new Address();
+        address.setProvince(external.getRecipientInfo().getAddress().getProvince());
+        address.setCity(external.getRecipientInfo().getAddress().getCity());
+        address.setDistrict(external.getRecipientInfo().getAddress().getDistrict());
+        address.setDetail(external.getRecipientInfo().getAddress().getDetail());
+        recipient.setAddress(address);
+
+        order.setRecipientInfo(recipient);
+
+        // 转换订单项
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            List<OrderItem> items = mapper.readValue(external.getOrderItems(),
+                    new TypeReference<List<OrderItem>>() {});
+            order.setOrderItems(items);
+        } catch (JsonProcessingException e) {
+            throw new BizException("订单项解析失败");
+        }
+
+        return order;
+    }
+
 }

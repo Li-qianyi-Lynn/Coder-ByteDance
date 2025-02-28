@@ -1,5 +1,5 @@
 package com.coder.mall.checkout.dto;
-// src/main/java/com/coder/mall/payment/dto/BankNotifyRequest.java
+
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;

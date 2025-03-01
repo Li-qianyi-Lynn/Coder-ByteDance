@@ -1,0 +1,128 @@
+server:
+  port: 8080  # 使用不同的端口
+
+spring:
+  application:
+    name: mall-order-service
+
+
+  # Redis配置
+  data:
+    redis:
+      host: 114.55.129.110  # 云服务器地址
+      port: 6379
+      password: 132133
+      database: 0
+      timeout: 5000
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: -1
+          max-idle: 8
+          min-idle: 0
+
+  # Nacos配置
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: public
+        group: DEFAULT_GROUP
+        username: nacos
+        password: nacos
+        # 关闭 gRPC
+        grpc:
+          enabled: false
+        # 使用 HTTP 而不是 gRPC
+        use-grpc: false
+        cluster-name: DEFAULT
+        ephemeral: true
+        enabled: true
+        weight: 1
+        register-enabled: true
+        # 心跳超时时间
+        heart-beat-timeout: 15000
+        # 心跳间隔时间
+        heart-beat-interval: 5000
+        # IP地址
+        ip: 127.0.0.1
+      config:
+        server-addr: localhost:8848
+        file-extension: yaml
+        namespace: public
+        group: DEFAULT_GROUP
+
+  # MySQL配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://114.55.129.110:3306/mall?useSSL=false&serverTimezone=UTC
+    username: root
+    password: 132133
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 15
+      idle-timeout: 30000
+      pool-name: OrderHikariCP
+
+  # jpa:
+  #   hibernate:
+  #     ddl-auto: update
+  #   show-sql: true
+  #   properties:
+  #     hibernate:
+  #       dialect: org.hibernate.dialect.MySQL8Dialect
+  #       format_sql: true
+
+
+
+  # RabbitMQ配置
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+
+
+  # RabbitMQ自定义队列配置
+    order:
+      queue-name: order.queue
+      exchange-name: order.exchange
+      routing-key: order.routing.key
+
+  # Sa-Token配置
+  sa-token:
+    token-name: token
+    timeout: 2592000
+    active-timeout: -1
+    is-concurrent: true
+    is-share: true
+    token-style: uuid
+    is-log: true
+
+# 订单配置
+  order:
+    auto-cancel-timeout: 30  # 订单自动取消超时时间（分钟）
+
+# 任务调度配置
+  task:
+    scheduling:
+      pool:
+        size: 5
+      thread-name-prefix: OrderSchedule-
+
+# MyBatis配置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.coder.mall.order.model.entity
+  configuration:
+    map-underscore-to-camel-case: true
+
+# MyBatis-Plus配置
+# mybatis-plus:
+#   configuration:
+#     map-underscore-to-camel-case: true
+#     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#   type-aliases-package: com.coder.mall.order.model.entity
+
+

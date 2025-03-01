@@ -1,0 +1,48 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: mall-checkout
+  
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: public
+        group: DEFAULT_GROUP
+        username: nacos
+        password: nacos
+        # 关闭 gRPC
+        grpc:
+          enabled: false
+        # 使用 HTTP 而不是 gRPC
+        use-grpc: false
+        cluster-name: DEFAULT
+        ephemeral: true
+        enabled: true
+        weight: 1
+        register-enabled: true
+        # 心跳超时时间
+        heart-beat-timeout: 15000
+        # 心跳间隔时间
+        heart-beat-interval: 5000
+        # IP地址
+        ip: 127.0.0.1
+      config:
+        server-addr: localhost:8848
+        file-extension: yaml
+        namespace: public
+        group: DEFAULT_GROUP
+
+  # 其他配置
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    serialization:
+      write-dates-as-timestamps: false
+
+# 日志配置
+logging:
+  level:
+    com.alibaba.nacos: error 

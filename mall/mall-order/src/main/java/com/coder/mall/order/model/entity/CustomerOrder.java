@@ -11,13 +11,17 @@ import lombok.Data;
 public class CustomerOrder {
     private Long orderId;
     private String orderNo;
-    private String userId;
+    private Long userId;
     private BigDecimal totalCost;
     private BigDecimal actual;
-    private String status;
-    private String recipientInfo;
+    private OrderStatus status;
+    
+    private RecipientInfo recipientInfo;
+    
     private String orderItems;
+    
     private String paymentInfo;
+    
     private Date createTime;
     private Date updateTime;
     private Date payTime;
@@ -25,6 +29,8 @@ public class CustomerOrder {
     private Date completeTime;
     private String remark;
     private Boolean deleted;
+    private String paymentMethod;
+    private String extraInfo;
 
 
     protected void onCreate() {
@@ -42,4 +48,5 @@ public class CustomerOrder {
         return OrderStatus.CREATED.equals(status) || 
                OrderStatus.PENDING_PAYMENT.equals(status);
     }
+  
 }

@@ -8,7 +8,7 @@
         <result column="order_no" property="orderNo"/>
         <result column="user_id" property="userId"/>
         <result column="total_cost" property="totalCost"/>
-        <result column="actual" property="actual"/>
+        <!-- <result column="actual" property="actual"/> -->
         <result column="status" property="status"/>
         <result column="recipient_info" property="recipientInfo"/>
         <result column="order_items" property="orderItems"/>
@@ -22,33 +22,32 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        order_id, order_no, user_id, total_cost, actual, status,
+        order_id, order_no, user_id, total_cost, status,
         recipient_info, order_items, payment_info, create_time, update_time,
         pay_time, delivery_time, complete_time, deleted
     </sql>
 
     <insert id="insert" parameterType="com.coder.mall.order.model.entity.CustomerOrder">
         INSERT INTO customer_orders (
-            order_no, user_id, total_cost, actual, status,
+            order_no, user_id, total_cost, status,
             recipient_info, order_items, payment_info, create_time, update_time, deleted
         ) VALUES (
-            #{orderNo}, #{userId}, #{totalCost}, #{actual}, #{status},
+            #{orderNo}, #{userId}, #{totalCost}, #{status},
             #{recipientInfo}, #{orderItems}, #{paymentInfo}, #{createTime}, #{updateTime},
             COALESCE(#{deleted}, 0)
         )
     </insert>
 
-    <select id="selectById" resultMap="BaseResultMap">
-        SELECT <include refid="Base_Column_List" />
-        FROM customer_orders 
-        WHERE order_id = #{orderId} AND deleted = 0
-    </select>
 
     <select id="selectByUserId" resultMap="BaseResultMap">
-        SELECT <include refid="Base_Column_List" />
-        FROM customer_orders 
-        WHERE user_id = #{userId} AND deleted = 0
-        ORDER BY create_time DESC
+    SELECT * FROM customer_orders
+    WHERE user_id = #{userId,jdbcType=BIGINT}  <!-- 修改jdbcType -->
+    </select>
+
+    <select id="selectByOrderNoAndUserId" resultMap="BaseResultMap">
+    SELECT * FROM customer_orders
+    WHERE order_no = #{orderNo} 
+    AND user_id = #{userId,jdbcType=BIGINT}  <!-- 修改jdbcType -->
     </select>
 
     <select id="selectByUserIdWithPage" resultMap="BaseResultMap">
@@ -67,13 +66,6 @@
         AND deleted = 0
     </update>
 
-    <select id="selectByOrderNoAndUserId" resultMap="BaseResultMap">
-        SELECT <include refid="Base_Column_List" />
-        FROM customer_orders 
-        WHERE order_no = #{orderNo} 
-        AND user_id = #{userId} 
-        AND deleted = 0
-    </select>
 
     <update id="updateStatusAndDeletedByOrderNo">
         UPDATE customer_orders 
@@ -125,4 +117,63 @@
             AND create_time &lt;= #{endDate}
         </if>
     </select>
+
+
+    <select id="countHistoryOrdersForDealer" resultType="int">
+        SELECT COUNT(DISTINCT o.order_no)
+        FROM customer_orders o
+        JOIN order_item i ON o.order_no = i.order_no
+        JOIN product p ON i.product_id = p.product_id
+        WHERE p.dealer_id = #{dealerId}
+        AND o.create_time BETWEEN #{startDate} AND #{endDate}
+    </select>
+
+        <!-- 查询用户订单总数 -->
+    <select id="countCustomerOrders" resultType="int">
+        SELECT COUNT(*)
+        FROM customer_orders
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 查询用户订单列表 -->
+    <select id="selectCustomerOrders" resultType="com.coder.mall.order.model.entity.CustomerOrder">
+        SELECT *
+        FROM customer_orders
+        WHERE user_id = #{userId}
+        ORDER BY create_time DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <update id="updateOrder" parameterType="com.coder.mall.order.model.entity.CustomerOrder">
+    UPDATE customer_orders
+    SET 
+        total_cost = #{totalCost},
+        recipient_info = #{recipientInfo},
+        payment_info = #{paymentInfo},
+        order_items = #{orderItems},
+        extra_info = #{extraInfo},
+        update_time = #{updateTime}
+    WHERE 
+        order_no = #{orderNo}
+        AND user_id = #{userId}
+    </update>
+
+
+    <update id="updatePaymentInfo">
+        UPDATE customer_orders
+        SET payment_time = #{paymentTime},
+            status = #{paymentStatus},
+            update_time = NOW()
+        WHERE order_no = #{orderNo}
+    </update>
+ 
+    <update id="updatePaymentStatus">
+        UPDATE customer_orders
+        SET status = #{paymentStatus},
+            update_time = NOW()
+        WHERE order_no = #{orderNo}
+    </update>
+ 
+
+
 </mapper>

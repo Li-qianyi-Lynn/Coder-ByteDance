@@ -1,28 +1,56 @@
 server:
-  port: 8080  # 订单服务端口
+  port: 8080  # 使用不同的端口
 
 spring:
   application:
     name: mall-order-service
 
-  #  MongoDB配置
-  # data:
-  #   mongodb:
-  #     uri: mongodb://root:root@localhost:27017/mall_order?authSource=admin
-    
+
   # Redis配置
-  redis:
-    host: 114.55.129.110  # 云服务器地址
-    port: 6379
-    password: 132133
-    database: 0
-    timeout: 5000
-    lettuce:
-      pool:
-        max-active: 8
-        max-wait: -1
-        max-idle: 8
-        min-idle: 0
+  data:
+    redis:
+      host: 114.55.129.110  # 云服务器地址
+      port: 6379
+      password: 132133
+      database: 0
+      timeout: 5000
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: -1
+          max-idle: 8
+          min-idle: 0
+
+  # Nacos配置
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: public
+        group: DEFAULT_GROUP
+        username: nacos
+        password: nacos
+        # 关闭 gRPC
+        grpc:
+          enabled: false
+        # 使用 HTTP 而不是 gRPC
+        use-grpc: false
+        cluster-name: DEFAULT
+        ephemeral: true
+        enabled: true
+        weight: 1
+        register-enabled: true
+        # 心跳超时时间
+        heart-beat-timeout: 15000
+        # 心跳间隔时间
+        heart-beat-interval: 5000
+        # IP地址
+        ip: 127.0.0.1
+      config:
+        server-addr: localhost:8848
+        file-extension: yaml
+        namespace: public
+        group: DEFAULT_GROUP
 
   # MySQL配置
   datasource:
@@ -36,28 +64,16 @@ spring:
       idle-timeout: 30000
       pool-name: OrderHikariCP
 
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
-        format_sql: true
+  # jpa:
+  #   hibernate:
+  #     ddl-auto: update
+  #   show-sql: true
+  #   properties:
+  #     hibernate:
+  #       dialect: org.hibernate.dialect.MySQL8Dialect
+  #       format_sql: true
 
-  # Nacos配置
-  cloud:
-    nacos:
-      discovery:
-        server-addr: localhost:8848
-        namespace: public
 
-  # 日志配置
-  logging:
-    level:
-      com.douyin.orderservice: INFO
-      org.springframework: WARN
-      com.coder.mall.order: DEBUG
 
   # RabbitMQ配置
   rabbitmq:

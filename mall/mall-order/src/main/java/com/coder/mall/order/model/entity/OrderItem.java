@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import com.coder.mall.order.model.dto.CartItem;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;

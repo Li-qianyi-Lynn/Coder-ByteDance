@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.data.annotation.Id;
 // import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.coder.mall.order.model.dto.RecipientInfo;
+import com.coder.mall.order.constant.OrderStatus;
 
 import lombok.Data;
 
@@ -15,12 +15,14 @@ import lombok.Data;
 // @Document(collection = "dealer_orders")
 public class DealerOrder {
     @Id
-    private String orderId;
-    private String dealerId;
+    private String orderNo;
+    private Long dealerId;
     private String userId;
     private List<OrderItem> orderItems;
     private BigDecimal amount;
     private RecipientInfo recipientInfo;
     private Date createTime;
+    private OrderStatus status;
+   
 
 }

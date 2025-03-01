@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.core.env.Environment;
 // import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
@@ -15,6 +16,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootApplication
+@EnableDiscoveryClient
 @EnableRabbit
 @EnableFeignClients
 @EntityScan(basePackages = "com.coder.mall.order.model.entity")

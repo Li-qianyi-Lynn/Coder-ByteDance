@@ -2,18 +2,20 @@ package com.coder.mall.order.service.impl;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.coder.mall.order.constant.OrderStatus;
+import com.coder.framework.common.exception.BizException;
+import com.coder.mall.order.constant.OrderErrorEnum;
 import com.coder.mall.order.mapper.CustomerOrderMapper;
-import com.coder.mall.order.model.entity.CustomerOrder;
 import com.coder.mall.order.service.OrderScheduleService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,68 +28,84 @@ public class OrderScheduleServiceImpl implements OrderScheduleService {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     
     @Autowired
-    private StringRedisTemplate redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
     
     @Autowired
     private CustomerOrderMapper customerOrderMapper;
 
+    private static final int MAX_RETRY_ATTEMPTS = 3;
+    private static final long RETRY_DELAY_MS = 1000; // 1秒
+
     @Override
-    public void addOrderToTimeoutQueue(String orderNo, long timeout, TimeUnit unit) {
-        // 计算过期时间戳
-        double score = System.currentTimeMillis() + unit.toMillis(timeout);
-        redisTemplate.opsForZSet().add(ORDER_TIMEOUT_KEY, orderNo, score);
-        log.info("订单{}已加入延迟取消队列，将在{}后自动取消", orderNo, 
-                LocalDateTime.now().plusSeconds(unit.toSeconds(timeout))
-                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-    }
-
-    @Scheduled(fixedRate = 5000)
-    public void checkTimeoutOrders() {
+    public void addOrderToTimeoutQueue(String orderNo, long timeout, TimeUnit timeUnit) {
         try {
-            // 获取当前时间戳
-            double now = System.currentTimeMillis();
-            // 获取所有到期的订单
-            Set<String> timeoutOrders = redisTemplate.opsForZSet()
-                    .rangeByScore(ORDER_TIMEOUT_KEY, 0, now);
-
-            if (timeoutOrders == null || timeoutOrders.isEmpty()) {
-                return;
-            }
-
-            for (String orderNo : timeoutOrders) {
-                try {
-                    CustomerOrder order = customerOrderMapper.selectByOrderNo(orderNo);
-                    if (order != null && OrderStatus.PENDING_PAYMENT.name().equals(order.getStatus())) {
-                        int rows = customerOrderMapper.updateStatus(orderNo, OrderStatus.CANCELLED.name());
-                        if (rows > 0) {
-                            // 从集合中移除已处理的订单
-                            redisTemplate.opsForZSet().remove(ORDER_TIMEOUT_KEY, orderNo);
-                            log.info("订单{}已自动取消", orderNo);
-                        }
-                    } else {
-                        // 订单状态不符合取消条件，直接从队列移除
-                        redisTemplate.opsForZSet().remove(ORDER_TIMEOUT_KEY, orderNo);
-                        log.info("订单{}不需要取消，状态：{}", orderNo, order != null ? order.getStatus() : "不存在");
-                    }
-                } catch (Exception e) {
-                    log.error("处理订单{}时发生错误: {}", orderNo, e.getMessage(), e);
-                }
-            }
+            double score = System.currentTimeMillis() + timeUnit.toMillis(timeout);
+            redisTemplate.opsForZSet().add(ORDER_TIMEOUT_KEY, orderNo, score);
+            log.info("订单{}已添加到超时队列，将在{}{}后超时", orderNo, timeout, timeUnit);
         } catch (Exception e) {
-            log.error("检查超时订单时发生错误: {}", e.getMessage(), e);
+            log.error("添加订单到超时队列失败: {}", e.getMessage(), e);
+            throw new BizException(OrderErrorEnum.SYSTEM_ERROR);
         }
     }
 
     @Override
     public Set<String> getTimeoutOrders() {
-        double now = System.currentTimeMillis();
-        return redisTemplate.opsForZSet().rangeByScore(ORDER_TIMEOUT_KEY, 0, now);
+        int attempts = 0;
+        while (attempts < MAX_RETRY_ATTEMPTS) {
+            try {
+                double maxScore = System.currentTimeMillis();
+                Set<Object> timeoutOrders = redisTemplate.opsForZSet()
+                    .rangeByScore(ORDER_TIMEOUT_KEY, 0, maxScore);
+                
+                if (timeoutOrders == null) {
+                    return new HashSet<>();
+                }
+                return timeoutOrders.stream()
+                    .map(Object::toString)
+                    .collect(Collectors.toSet());
+                
+            } catch (Exception e) {
+                attempts++;
+                log.warn("获取超时订单失败，第{}次重试: {}", attempts, e.getMessage());
+                
+                if (attempts >= MAX_RETRY_ATTEMPTS) {
+                    log.error("获取超时订单最终失败", e);
+                    return new HashSet<>(); // 返回空集合而不是抛出异常
+                }
+                
+                try {
+                    Thread.sleep(RETRY_DELAY_MS);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    return new HashSet<>();
+                }
+            }
+        }
+        return new HashSet<>();
     }
 
     @Override
     public void removeFromTimeoutQueue(String orderNo) {
-        redisTemplate.opsForZSet().remove(ORDER_TIMEOUT_KEY, orderNo);
-        log.info("订单{}已从延迟取消队列中移除", orderNo);
+        try {
+            redisTemplate.opsForZSet().remove(ORDER_TIMEOUT_KEY, orderNo);
+            log.info("订单{}已从超时队列中移除", orderNo);
+        } catch (Exception e) {
+            log.error("从超时队列移除订单失败: {}", e.getMessage(), e);
+            // 这里选择记录日志但不抛出异常，因为订单已经处理完成
+        }
+    }
+
+    @Scheduled(fixedRate = 60000) // 每分钟执行一次
+    public void checkTimeoutOrders() {
+        try {
+            Set<String> timeoutOrders = getTimeoutOrders();
+            if (!timeoutOrders.isEmpty()) {
+                log.info("发现{}个超时订单", timeoutOrders.size());
+            }
+        } catch (Exception e) {
+            log.error("检查超时订单时发生错误: {}", e.getMessage(), e);
+            // 记录错误但不中断定时任务
+        }
     }
     
     /**

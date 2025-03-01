@@ -21,7 +21,16 @@ public enum OrderErrorEnum implements BaseExceptionInterface{
     PARAM_ERROR("ORDER011", "UserID错误"), 
     SYSTEM_ERROR("ORDER012", "系统错误"), 
     CART_EMPTY("ORDER013", "购物车为空"),
-    ORDER_QUERY_FAILED("ORDER014", "订单查询失败");
+    ORDER_QUERY_FAILED("ORDER014", "订单查询失败"), 
+    CART_ITEM_DELETE_FAILED("ORDER015", "购物车商品删除失败"),
+    ORDER_GET_FAILED("ORDER016", "获取订单失败"),
+    ORDER_LIST_FAILED("ORDER017", "获取订单列表失败"), 
+    PRODUCT_SERVICE_ERROR("ORDER018", "商品服务错误"), 
+    ORDER_PARSE_ERROR("ORDER019", "订单解析错误"),
+    CART_UPDATE_FAILED("ORDER020", "从购物车删除商品失败"),
+    ORDER_MESSAGE_SEND_FAILED("ORDER021", "发送订单消息失败"),
+    PAYMENT_URL_GENERATION_FAILED("ORDER022", "生成支付链接失败"),
+    ORDER_PLACE_FAILED("ORDER023", "订单创建失败");
 
 
     private final String errorCode;

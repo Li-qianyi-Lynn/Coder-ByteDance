@@ -9,7 +9,7 @@ public class RedisKeyConstant {
     public static final String ORDER_CACHE = APP_PREFIX + ":" + MODULE + ":cache";      // 订单缓存
     
     // 购物车相关
-    public static final String CART = APP_PREFIX + ":cart";                             // 购物车
+    public static final String CART = APP_PREFIX + ":cart";                          
     
     // 缓存时间
     public static final long ORDER_CACHE_HOURS = 24;

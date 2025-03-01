@@ -21,7 +21,10 @@ public enum OrderStatus {
     CANCELLED("已取消"),
 
     // 订单已退款
-    REFUNDED("已退款");
+    REFUNDED("已退款"), 
+
+    // 支付失败
+    FAILED("支付失败");
 
     private final String description;
 

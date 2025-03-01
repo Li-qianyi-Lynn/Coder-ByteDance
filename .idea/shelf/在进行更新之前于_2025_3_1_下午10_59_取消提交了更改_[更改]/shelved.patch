@@ -1,0 +1,819 @@
+Index: mall-framework/mall-common/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/mall-framework/mall-common/pom.xml b/mall-framework/mall-common/pom.xml
+deleted file mode 100644
+--- a/mall-framework/mall-common/pom.xml	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
++++ /dev/null	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
+@@ -1,75 +0,0 @@
+-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+-    <modelVersion>4.0.0</modelVersion>
+-
+-    <!-- 指定父项目 -->
+-    <parent>
+-        <groupId>com.coder</groupId>
+-        <artifactId>mall-framework</artifactId>
+-        <version>1.0-SNAPSHOT</version>
+-    </parent>
+-
+-    <!-- 指定打包方式 -->
+-    <packaging>jar</packaging>
+-
+-    <artifactId>mall-common</artifactId>
+-    <name>${project.artifactId}</name>
+-    <description>平台通用模块，如一些通用枚举、工具类等等</description>
+-
+-    <dependencies>
+-        <!-- 避免编写那些冗余的 Java 样板式代码，如 get、set 方法等 -->
+-        <dependency>
+-            <groupId>org.projectlombok</groupId>
+-            <artifactId>lombok</artifactId>
+-        </dependency>
+-
+-        <!-- 相关工具类 -->
+-        <dependency>
+-            <groupId>com.google.guava</groupId>
+-            <artifactId>guava</artifactId>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>cn.hutool</groupId>
+-            <artifactId>hutool-all</artifactId>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>org.apache.commons</groupId>
+-            <artifactId>commons-lang3</artifactId>
+-        </dependency>
+-
+-        <!-- Jackson -->
+-        <dependency>
+-            <groupId>com.fasterxml.jackson.core</groupId>
+-            <artifactId>jackson-databind</artifactId>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>com.fasterxml.jackson.core</groupId>
+-            <artifactId>jackson-core</artifactId>
+-        </dependency>
+-
+-        <!-- 解决 Jackson Java 8 新日期 API 的序列化问题 -->
+-        <dependency>
+-            <groupId>com.fasterxml.jackson.datatype</groupId>
+-            <artifactId>jackson-datatype-jsr310</artifactId>
+-        </dependency>
+-
+-        <!-- 入参校验 -->
+-        <dependency>
+-            <groupId>jakarta.validation</groupId>
+-            <artifactId>jakarta.validation-api</artifactId>
+-        </dependency>
+-        <dependency>
+-            <groupId>org.hibernate.validator</groupId>
+-            <artifactId>hibernate-validator</artifactId>
+-        </dependency>
+-        <dependency>
+-            <groupId>org.springframework</groupId>
+-            <artifactId>spring-web</artifactId>
+-        </dependency>
+-
+-    </dependencies>
+-
+-</project>
+Index: mall-framework/mall-common/src/main/java/com/coder/common/util/JsonUtils.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/mall-framework/mall-common/src/main/java/com/coder/common/util/JsonUtils.java b/mall-framework/mall-common/src/main/java/com/coder/common/util/JsonUtils.java
+deleted file mode 100644
+--- a/mall-framework/mall-common/src/main/java/com/coder/common/util/JsonUtils.java	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
++++ /dev/null	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
+@@ -1,42 +0,0 @@
+-package com.coder.common.util;
+-
+-import com.fasterxml.jackson.databind.ObjectMapper;
+-import lombok.SneakyThrows;
+-import org.apache.commons.lang3.StringUtils;
+-
+-public class JsonUtils {
+-
+-    private static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+-
+-    /** SpringMVC 中自带一个 ObjectMapper，直接读取配置好的 ObjectMapper */
+-    public static void init(ObjectMapper objectMapper) {
+-        OBJECT_MAPPER = objectMapper;
+-    }
+-
+-    /**
+-     * 将对象转为 Json 字符串
+-     * @param obj 传入对象
+-     * @return Json 字符串
+-     */
+-    @SneakyThrows
+-    public static String toJsonString(Object obj) {
+-        return OBJECT_MAPPER.writeValueAsString(obj);
+-    }
+-
+-    /**
+-     * 将 JSON 字符串转换为对象
+-     *
+-     * @param jsonStr
+-     * @param clazz
+-     * @return
+-     * @param <T>
+-     */
+-    @SneakyThrows
+-    public static <T> T parseObject(String jsonStr, Class<T> clazz) {
+-        if (StringUtils.isBlank(jsonStr)) {
+-            return null;
+-        }
+-
+-        return OBJECT_MAPPER.readValue(jsonStr, clazz);
+-    }
+-}
+Index: mall-framework/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/mall-framework/pom.xml b/mall-framework/pom.xml
+deleted file mode 100644
+--- a/mall-framework/pom.xml	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
++++ /dev/null	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
+@@ -1,28 +0,0 @@
+-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+-    <modelVersion>4.0.0</modelVersion>
+-
+-    <!-- 指定父项目 -->
+-    <parent>
+-        <groupId>com.coder</groupId>
+-        <artifactId>mall</artifactId>
+-        <version>1.0-SNAPSHOT</version>
+-    </parent>
+-
+-    <!-- 多模块项目需要配置打包方式为 pom -->
+-    <packaging>pom</packaging>
+-
+-    <artifactId>mall-framework</artifactId>
+-    <name>${project.artifactId}</name>
+-    <description>平台基础设施层：封装一些常用功能，供各个业务线拿来即用</description>
+-
+-    <modules>
+-        <!-- 通用工具组件 -->
+-        <module>mall-common</module>
+-        <!-- 接口日志组件 -->
+-        <module>mall-spring-boot-starter-biz-operationlog</module>
+-        <!-- Jackson 组件 -->
+-        <module>mall-spring-boot-starter-jackson</module>
+-    </modules>
+-
+-</project>
+Index: mall-framework/mall-spring-boot-starter-biz-context/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/mall-framework/mall-spring-boot-starter-biz-context/pom.xml b/mall-framework/mall-spring-boot-starter-biz-context/pom.xml
+deleted file mode 100644
+--- a/mall-framework/mall-spring-boot-starter-biz-context/pom.xml	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
++++ /dev/null	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
+@@ -1,54 +0,0 @@
+-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+-    <modelVersion>4.0.0</modelVersion>
+-
+-    <!-- 指定父项目 -->
+-    <parent>
+-        <groupId>com.coder</groupId>
+-        <artifactId>mall-framework</artifactId>
+-        <version>1.0-SNAPSHOT</version>
+-    </parent>
+-
+-    <!-- 指定打包方式 -->
+-    <packaging>jar</packaging>
+-
+-    <artifactId>mall-spring-boot-starter-biz-context</artifactId>
+-    <name>${project.artifactId}</name>
+-    <description>上下文组件</description>
+-
+-    <dependencies>
+-        <dependency>
+-            <groupId>com.coder</groupId>
+-            <artifactId>mall-common</artifactId>
+-            <version>1.0-SNAPSHOT</version>
+-        </dependency>
+-
+-        <!-- Spring 核心 -->
+-        <dependency>
+-            <groupId>org.springframework.boot</groupId>
+-            <artifactId>spring-boot-starter</artifactId>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>org.springframework</groupId>
+-            <artifactId>spring-web</artifactId>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>jakarta.servlet</groupId>
+-            <artifactId>jakarta.servlet-api</artifactId>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>com.alibaba</groupId>
+-            <artifactId>transmittable-thread-local</artifactId>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>io.github.openfeign</groupId>
+-            <artifactId>feign-core</artifactId>
+-        </dependency>
+-
+-
+-    </dependencies>
+-</project>
+\ No newline at end of file
+Index: mall-framework/mall-common/src/main/java/com/coder/common/util/DateUtils.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/mall-framework/mall-common/src/main/java/com/coder/common/util/DateUtils.java b/mall-framework/mall-common/src/main/java/com/coder/common/util/DateUtils.java
+deleted file mode 100644
+--- a/mall-framework/mall-common/src/main/java/com/coder/common/util/DateUtils.java	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
++++ /dev/null	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
+@@ -1,17 +0,0 @@
+-package com.coder.common.util;
+-
+-import java.time.LocalDateTime;
+-import java.time.ZoneOffset;
+-
+-public class DateUtils {
+-
+-    /**
+-     * LocalDateTime 转时间戳
+-     *
+-     * @param localDateTime
+-     * @return
+-     */
+-    public static long localDateTime2Timestamp(LocalDateTime localDateTime) {
+-        return localDateTime.toInstant(ZoneOffset.UTC).toEpochMilli();
+-    }
+-}
+Index: mall-framework/mall-common/src/main/java/com/coder/common/util/ParamUtils.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/mall-framework/mall-common/src/main/java/com/coder/common/util/ParamUtils.java b/mall-framework/mall-common/src/main/java/com/coder/common/util/ParamUtils.java
+deleted file mode 100644
+--- a/mall-framework/mall-common/src/main/java/com/coder/common/util/ParamUtils.java	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
++++ /dev/null	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
+@@ -1,78 +0,0 @@
+-package com.coder.common.util;
+-
+-import java.util.regex.Pattern;
+-
+-/**
+- * 参数条件工具
+- */
+-public class ParamUtils {
+-
+-    private ParamUtils() {}
+-
+-    // ============================== 校验昵称 ==============================
+-    // 定义昵称长度范围
+-    private static final int NICK_NAME_MIN_LENGTH = 2;
+-    private static final int NICK_NAME_MAX_LENGTH = 24;
+-
+-    // 定义特殊字符的正则表达式
+-    private static final String NICK_NAME_REGEX = "[!@#$%^&*(),.?\":{}|<>]";
+-
+-    /**
+-     * 昵称校验
+-     *
+-     * @param nickname
+-     * @return
+-     */
+-    public static boolean checkNickname(String nickname) {
+-        // 检查长度
+-        if (nickname.length() < NICK_NAME_MIN_LENGTH || nickname.length() > NICK_NAME_MAX_LENGTH) {
+-            return false;
+-        }
+-
+-        // 检查是否含有特殊字符
+-        Pattern pattern = Pattern.compile(NICK_NAME_REGEX);
+-        return !pattern.matcher(nickname).find();
+-    }
+-
+-    // ============================== 校验小哈书号 ==============================
+-    // 定义 ID 长度范围
+-    private static final int ID_MIN_LENGTH = 6;
+-    private static final int ID_MAX_LENGTH = 15;
+-
+-    // 定义正则表达式
+-    private static final String ID_REGEX = "^[a-zA-Z0-9_]+$";
+-
+-    /**
+-     * 小哈书 ID 校验
+-     *
+-     * @param xiaohashuId
+-     * @return
+-     */
+-    public static boolean checkXiaohashuId(String xiaohashuId) {
+-        // 检查长度
+-        if (xiaohashuId.length() < ID_MIN_LENGTH || xiaohashuId.length() > ID_MAX_LENGTH) {
+-            return false;
+-        }
+-        // 检查格式
+-        Pattern pattern = Pattern.compile(ID_REGEX);
+-        return pattern.matcher(xiaohashuId).matches();
+-    }
+-
+-    /**
+-     * 字符串长度校验
+-     *
+-     * @param str
+-     * @param length
+-     * @return
+-     */
+-    public static boolean checkLength(String str, int length) {
+-        // 检查长度
+-        if (str.isEmpty() || str.length() > length) {
+-            return false;
+-        }
+-        return true;
+-    }
+-
+-}
+-
+-
+Index: mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports b/mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports
+deleted file mode 100644
+--- a/mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
++++ /dev/null	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
+@@ -1,1 +0,0 @@
+-com.coder.framework.biz.operationlog.config.ApiOperationLogAutoConfiguration
+Index: mall-framework/mall-common/README.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/mall-framework/mall-common/README.md b/mall-framework/mall-common/README.md
+deleted file mode 100644
+--- a/mall-framework/mall-common/README.md	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
++++ /dev/null	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
+@@ -1,4 +0,0 @@
+-## 本模块为基础模块，包括基本异常和Response
+-## 用法
+-### Response:
+-统一使用 `Response.success()` 方法 和 `Response.fail()` 方法来返回结果。
+\ No newline at end of file
+Index: mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/java/com/coder/framework/biz/operationlog/aspect/ApiOperationLogAspect.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/java/com/coder/framework/biz/operationlog/aspect/ApiOperationLogAspect.java b/mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/java/com/coder/framework/biz/operationlog/aspect/ApiOperationLogAspect.java
+deleted file mode 100644
+--- a/mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/java/com/coder/framework/biz/operationlog/aspect/ApiOperationLogAspect.java	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
++++ /dev/null	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
+@@ -1,84 +0,0 @@
+-package com.coder.framework.biz.operationlog.aspect;
+-
+-import com.coder.common.util.JsonUtils;
+-import lombok.extern.slf4j.Slf4j;
+-import org.aspectj.lang.ProceedingJoinPoint;
+-import org.aspectj.lang.annotation.Around;
+-import org.aspectj.lang.annotation.Aspect;
+-import org.aspectj.lang.annotation.Pointcut;
+-import org.aspectj.lang.reflect.MethodSignature;
+-
+-import java.lang.reflect.Method;
+-import java.util.Arrays;
+-import java.util.function.Function;
+-import java.util.stream.Collectors;
+-
+-@Aspect
+-@Slf4j
+-public class ApiOperationLogAspect {
+-
+-    /** 以自定义 @ApiOperationLog 注解为切点，凡是添加 @ApiOperationLog 的方法，都会执行环绕中的代码 */
+-    @Pointcut("@annotation(com.coder.framework.biz.operationlog.aspect.ApiOperationLog)")
+-    public void apiOperationLog() {}
+-
+-    @Around("apiOperationLog()")
+-    public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
+-        // 请求开始时间
+-        long startTime = System.currentTimeMillis();
+-
+-        // 获取被请求的类和方法
+-        String className = joinPoint.getTarget().getClass().getSimpleName();
+-        String methodName = joinPoint.getSignature().getName();
+-
+-        // 请求入参
+-        Object[] args = joinPoint.getArgs();
+-        // 入参转 Json 字符串
+-        String argsJsonStr = Arrays.stream(args).map(toJsonStr()).collect(Collectors.joining(", "));
+-
+-        // 功能描述信息
+-        String description = getApiOperationLogDescription(joinPoint);
+-
+-        // 打印请求相关参数
+-        log.info("====== 请求开始: [{}], 入参: {}, 请求类: {}, 请求方法: {} =================================== ",
+-                description, argsJsonStr, className, methodName);
+-
+-        // 执行切点方法
+-        Object result = joinPoint.proceed();
+-
+-        // 执行耗时
+-        long executionTime = System.currentTimeMillis() - startTime;
+-
+-        // 打印出参等相关信息
+-        log.info("====== 请求结束: [{}], 耗时: {}ms, 出参: {} =================================== ",
+-                description, executionTime, JsonUtils.toJsonString(result));
+-
+-        return result;
+-    }
+-
+-    /**
+-     * 获取注解的描述信息
+-     * @param joinPoint 切入点
+-     * @return 描述信息
+-     */
+-    private String getApiOperationLogDescription(ProceedingJoinPoint joinPoint) {
+-        // 1. 从 ProceedJoinPoint 获取 MethodSignature
+-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+-
+-        // 2. 使用 MethodSignature 获取当前被注解的 Method
+-        Method method = signature.getMethod();
+-
+-        // 3. 从 Method 中提取 LogExecution 注解
+-        ApiOperationLog apiOperationLog = method.getAnnotation(ApiOperationLog.class);
+-
+-        // 4. 从 LogExecution 注解中获取 description 属性
+-        return apiOperationLog.value();
+-    }
+-
+-    /**
+-     * 转 JSON 字符串
+-     * @return 对象转换为的 JSON 字符串
+-     */
+-    private Function<Object, String> toJsonStr() {
+-        return JsonUtils::toJsonString;
+-    }
+-}
+Index: mall-framework/mall-spring-boot-starter-biz-operationlog/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/mall-framework/mall-spring-boot-starter-biz-operationlog/pom.xml b/mall-framework/mall-spring-boot-starter-biz-operationlog/pom.xml
+deleted file mode 100644
+--- a/mall-framework/mall-spring-boot-starter-biz-operationlog/pom.xml	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
++++ /dev/null	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
+@@ -1,34 +0,0 @@
+-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+-    <modelVersion>4.0.0</modelVersion>
+-
+-    <!-- 指定父项目 -->
+-    <parent>
+-        <groupId>com.coder</groupId>
+-        <artifactId>mall-framework</artifactId>
+-        <version>1.0-SNAPSHOT</version>
+-    </parent>
+-
+-    <!-- 指定打包方式 -->
+-    <packaging>jar</packaging>
+-
+-    <artifactId>mall-spring-boot-starter-biz-operationlog</artifactId>
+-    <name>${project.artifactId}</name>
+-    <description>接口日志组件</description>
+-
+-    <dependencies>
+-        <dependency>
+-            <groupId>com.coder</groupId>
+-            <artifactId>mall-common</artifactId>
+-            <version>1.0-SNAPSHOT</version>
+-        </dependency>
+-
+-        <!-- AOP 切面 -->
+-        <dependency>
+-            <groupId>org.springframework.boot</groupId>
+-            <artifactId>spring-boot-starter-aop</artifactId>
+-        </dependency>
+-
+-    </dependencies>
+-</project>
+-
+Index: mall-framework/mall-spring-boot-starter-jackson/src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/mall-framework/mall-spring-boot-starter-jackson/src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports b/mall-framework/mall-spring-boot-starter-jackson/src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports
+deleted file mode 100644
+--- a/mall-framework/mall-spring-boot-starter-jackson/src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
++++ /dev/null	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
+@@ -1,1 +0,0 @@
+-com.coder.framework.jackson.config.JacksonAutoConfiguration
+\ No newline at end of file
+Index: mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/java/com/coder/framework/biz/operationlog/config/ApiOperationLogAutoConfiguration.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/java/com/coder/framework/biz/operationlog/config/ApiOperationLogAutoConfiguration.java b/mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/java/com/coder/framework/biz/operationlog/config/ApiOperationLogAutoConfiguration.java
+deleted file mode 100644
+--- a/mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/java/com/coder/framework/biz/operationlog/config/ApiOperationLogAutoConfiguration.java	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
++++ /dev/null	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
+@@ -1,14 +0,0 @@
+-package com.coder.framework.biz.operationlog.config;
+-
+-import com.coder.framework.biz.operationlog.aspect.ApiOperationLogAspect;
+-import org.springframework.boot.autoconfigure.AutoConfiguration;
+-import org.springframework.context.annotation.Bean;
+-
+-@AutoConfiguration
+-public class ApiOperationLogAutoConfiguration {
+-
+-    @Bean
+-    public ApiOperationLogAspect apiOperationLogAspect() {
+-        return new ApiOperationLogAspect();
+-    }
+-}
+\ No newline at end of file
+Index: mall-framework/mall-common/src/main/java/com/coder/common/response/Response.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/mall-framework/mall-common/src/main/java/com/coder/common/response/Response.java b/mall-framework/mall-common/src/main/java/com/coder/common/response/Response.java
+deleted file mode 100644
+--- a/mall-framework/mall-common/src/main/java/com/coder/common/response/Response.java	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
++++ /dev/null	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
+@@ -1,96 +0,0 @@
+-package com.coder.common.response;
+-
+-import com.coder.common.exception.BaseExceptionInterface;
+-import com.coder.common.exception.BizException;
+-import com.coder.common.util.DateUtils;
+-import lombok.Data;
+-
+-import java.io.Serializable;
+-import java.time.LocalDateTime;
+-
+-@Data
+-public class Response<T> implements Serializable {
+-
+-    // 是否成功，默认为 true
+-    private boolean success = true;
+-    // 响应消息
+-    private String message;
+-    // 异常码
+-    private String errorCode;
+-    // 响应数据
+-    private T data;
+-    // 时间戳
+-    private long timestamp;
+-
+-    // =================================== 成功响应 ===================================
+-    public static <T> Response<T> success() {
+-        Response<T> response = new Response<>();
+-        LocalDateTime now = LocalDateTime.now();
+-        long nowTime = DateUtils.localDateTime2Timestamp(now);
+-        response.setTimestamp(nowTime);
+-        return response;
+-    }
+-
+-    public static <T> Response<T> success(T data) {
+-        Response<T> response = new Response<>();
+-        LocalDateTime now = LocalDateTime.now();
+-        long nowTime = DateUtils.localDateTime2Timestamp(now);
+-        response.setTimestamp(nowTime);
+-        response.setData(data);
+-        return response;
+-    }
+-
+-    // =================================== 失败响应 ===================================
+-    public static <T> Response<T> fail() {
+-        Response<T> response = new Response<>();
+-        LocalDateTime now = LocalDateTime.now();
+-        long nowTime = DateUtils.localDateTime2Timestamp(now);
+-        response.setTimestamp(nowTime);
+-        response.setSuccess(false);
+-        return response;
+-    }
+-
+-    public static <T> Response<T> fail(String errorMessage) {
+-        Response<T> response = new Response<>();
+-        response.setSuccess(false);
+-        LocalDateTime now = LocalDateTime.now();
+-        long nowTime = DateUtils.localDateTime2Timestamp(now);
+-        response.setTimestamp(nowTime);
+-        response.setMessage(errorMessage);
+-        return response;
+-    }
+-
+-    public static <T> Response<T> fail(String errorCode, String errorMessage) {
+-        Response<T> response = new Response<>();
+-        response.setSuccess(false);
+-        LocalDateTime now = LocalDateTime.now();
+-        long nowTime = DateUtils.localDateTime2Timestamp(now);
+-        response.setTimestamp(nowTime);
+-        response.setErrorCode(errorCode);
+-        response.setMessage(errorMessage);
+-        return response;
+-    }
+-
+-    public static <T> Response<T> fail(BizException bizException) {
+-        Response<T> response = new Response<>();
+-        response.setSuccess(false);
+-        LocalDateTime now = LocalDateTime.now();
+-        long nowTime = DateUtils.localDateTime2Timestamp(now);
+-        response.setTimestamp(nowTime);
+-        response.setErrorCode(bizException.getErrorCode());
+-        response.setMessage(bizException.getErrorMessage());
+-        return response;
+-    }
+-
+-    public static <T> Response<T> fail(BaseExceptionInterface baseExceptionInterface) {
+-        Response<T> response = new Response<>();
+-        response.setSuccess(false);
+-        LocalDateTime now = LocalDateTime.now();
+-        long nowTime = DateUtils.localDateTime2Timestamp(now);
+-        response.setTimestamp(nowTime);
+-        response.setErrorCode(baseExceptionInterface.getErrorCode());
+-        response.setMessage(baseExceptionInterface.getErrorMessage());
+-        return response;
+-    }
+-
+-}
+\ No newline at end of file
+Index: mall-framework/mall-spring-boot-starter-jackson/src/main/java/com/coder/framework/jackson/config/JacksonAutoConfiguration.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/mall-framework/mall-spring-boot-starter-jackson/src/main/java/com/coder/framework/jackson/config/JacksonAutoConfiguration.java b/mall-framework/mall-spring-boot-starter-jackson/src/main/java/com/coder/framework/jackson/config/JacksonAutoConfiguration.java
+deleted file mode 100644
+--- a/mall-framework/mall-spring-boot-starter-jackson/src/main/java/com/coder/framework/jackson/config/JacksonAutoConfiguration.java	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
++++ /dev/null	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
+@@ -1,65 +0,0 @@
+-package com.coder.framework.jackson.config;
+-
+-import com.coder.common.constant.DateConstants;
+-import com.coder.common.util.JsonUtils;
+-import com.fasterxml.jackson.databind.DeserializationFeature;
+-import com.fasterxml.jackson.databind.ObjectMapper;
+-import com.fasterxml.jackson.databind.SerializationFeature;
+-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+-import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
+-import com.fasterxml.jackson.datatype.jsr310.deser.YearMonthDeserializer;
+-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+-import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
+-import com.fasterxml.jackson.datatype.jsr310.ser.YearMonthSerializer;
+-import org.springframework.boot.autoconfigure.AutoConfiguration;
+-import org.springframework.context.annotation.Bean;
+-
+-import java.time.LocalDate;
+-import java.time.LocalDateTime;
+-import java.time.LocalTime;
+-import java.time.YearMonth;
+-import java.util.TimeZone;
+-
+-@AutoConfiguration
+-public class JacksonAutoConfiguration {
+-
+-    @Bean
+-    public ObjectMapper objectMapper() {
+-        // 初始化一个 ObjectMapper 对象，用于自定义 Jackson 的行为
+-        ObjectMapper objectMapper = new ObjectMapper();
+-
+-        // 忽略未知属性
+-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+-        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+-        // 设置凡是为 null 的字段，返参中均不返回，请根据项目组约定是否开启
+-        // objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+-
+-        // 设置时区
+-        objectMapper.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+-
+-        // JavaTimeModule 用于指定序列化和反序列化规则
+-        JavaTimeModule javaTimeModule = new JavaTimeModule();
+-
+-        // 支持 LocalDateTime、LocalDate、LocalTime
+-        javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateConstants.DATE_FORMAT_Y_M_D_H_M_S));
+-        javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateConstants.DATE_FORMAT_Y_M_D_H_M_S));
+-        javaTimeModule.addSerializer(LocalDate.class, new LocalDateSerializer(DateConstants.DATE_FORMAT_Y_M_D));
+-        javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateConstants.DATE_FORMAT_Y_M_D));
+-        javaTimeModule.addSerializer(LocalTime.class, new LocalTimeSerializer(DateConstants.DATE_FORMAT_H_M_S));
+-        javaTimeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateConstants.DATE_FORMAT_H_M_S));
+-        // 支持 YearMonth
+-        javaTimeModule.addSerializer(YearMonth.class, new YearMonthSerializer(DateConstants.DATE_FORMAT_Y_M));
+-        javaTimeModule.addDeserializer(YearMonth.class, new YearMonthDeserializer(DateConstants.DATE_FORMAT_Y_M));
+-
+-        objectMapper.registerModule(javaTimeModule);
+-
+-        // 初始化 JsonUtils 中的 ObjectMapper
+-        JsonUtils.init(objectMapper);
+-
+-        return objectMapper;
+-    }
+-
+-}
+\ No newline at end of file
+Index: mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/java/com/coder/framework/biz/operationlog/aspect/ApiOperationLog.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/java/com/coder/framework/biz/operationlog/aspect/ApiOperationLog.java b/mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/java/com/coder/framework/biz/operationlog/aspect/ApiOperationLog.java
+deleted file mode 100644
+--- a/mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/java/com/coder/framework/biz/operationlog/aspect/ApiOperationLog.java	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
++++ /dev/null	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
+@@ -1,15 +0,0 @@
+-package com.coder.framework.biz.operationlog.aspect;
+-
+-import java.lang.annotation.*;
+-
+-@Retention(RetentionPolicy.RUNTIME)
+-@Target(ElementType.METHOD)
+-@Documented
+-public @interface ApiOperationLog {
+-
+-    /**
+-     * API 功能描述
+-     * @return API 功能描述
+-     */
+-    String value() default "";
+-}
+\ No newline at end of file
+Index: mall-framework/mall-spring-boot-starter-biz-context/src/main/java/TODO.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/mall-framework/mall-spring-boot-starter-biz-context/src/main/java/TODO.java b/mall-framework/mall-spring-boot-starter-biz-context/src/main/java/TODO.java
+deleted file mode 100644
+--- a/mall-framework/mall-spring-boot-starter-biz-context/src/main/java/TODO.java	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
++++ /dev/null	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
+@@ -1,3 +0,0 @@
+-public class TODO {
+-    // TODO 啥也没干呢
+-}
+Index: mall-framework/mall-spring-boot-starter-jackson/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/mall-framework/mall-spring-boot-starter-jackson/pom.xml b/mall-framework/mall-spring-boot-starter-jackson/pom.xml
+deleted file mode 100644
+--- a/mall-framework/mall-spring-boot-starter-jackson/pom.xml	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
++++ /dev/null	(revision c15f4b54ec08fe3f755270aa45940784c40dab3e)
+@@ -1,31 +0,0 @@
+-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+-    <modelVersion>4.0.0</modelVersion>
+-
+-    <!-- 指定父项目 -->
+-    <parent>
+-        <groupId>com.coder</groupId>
+-        <artifactId>mall-framework</artifactId>
+-        <version>1.0-SNAPSHOT</version>
+-    </parent>
+-
+-    <!-- 指定打包方式 -->
+-    <packaging>jar</packaging>
+-
+-    <artifactId>mall-spring-boot-starter-jackson</artifactId>
+-    <name>${project.artifactId}</name>
+-    <description>自定义 Jackson 配置: 支持 Java 8 新的日期 API，如 LocalDateTime、LocalDate 等等</description>
+-
+-    <dependencies>
+-        <dependency>
+-            <groupId>com.coder</groupId>
+-            <artifactId>mall-common</artifactId>
+-            <version>1.0-SNAPSHOT</version>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>org.springframework.boot</groupId>
+-            <artifactId>spring-boot-autoconfigure</artifactId>
+-        </dependency>
+-    </dependencies>
+-</project>

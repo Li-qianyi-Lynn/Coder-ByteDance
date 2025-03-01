@@ -1,0 +1,4579 @@
+Index: mall/mall-user/src/main/java/com/coder/mall/user/enums/UserType.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/enums/UserType.java b/mall/mall-user/src/main/java/com/coder/mall/user/enums/UserType.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/enums/UserType.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,30 +0,0 @@
+-package com.coder.mall.user.enums;
+-
+-import com.baomidou.mybatisplus.annotation.EnumValue;
+-import com.fasterxml.jackson.annotation.JsonValue;
+-
+-public enum UserType implements BaseEnum {
+-
+-    BUYER(1, "买家"),
+-    SELLER(2, "卖家");
+-
+-    @EnumValue
+-    @JsonValue
+-    private Integer code;
+-    private String name;
+-
+-    UserType(Integer code, String name) {
+-        this.code = code;
+-        this.name = name;
+-    }
+-
+-    @Override
+-    public Integer getCode() {
+-        return this.code;
+-    }
+-
+-    @Override
+-    public String getName() {
+-        return this.name;
+-    }
+-}
+Index: mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/response/Response.java
+===================================================================
+diff --git a/mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/response/Response.java b/mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/response/Response.java
+deleted file mode 100644
+--- a/mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/response/Response.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,96 +0,0 @@
+-package com.coder.framework.common.response;
+-
+-import com.coder.framework.common.exception.BaseExceptionInterface;
+-import com.coder.framework.common.exception.BizException;
+-import com.coder.framework.common.util.DateUtils;
+-import lombok.Data;
+-
+-import java.io.Serializable;
+-import java.time.LocalDateTime;
+-
+-@Data
+-public class Response<T> implements Serializable {
+-
+-    // 是否成功，默认为 true
+-    private boolean success = true;
+-    // 响应消息
+-    private String message;
+-    // 异常码
+-    private String errorCode;
+-    // 响应数据
+-    private T data;
+-    // 时间戳
+-    private long timestamp;
+-
+-    // =================================== 成功响应 ===================================
+-    public static <T> Response<T> success() {
+-        Response<T> response = new Response<>();
+-        LocalDateTime now = LocalDateTime.now();
+-        long nowTime = DateUtils.localDateTime2Timestamp(now);
+-        response.setTimestamp(nowTime);
+-        return response;
+-    }
+-
+-    public static <T> Response<T> success(T data) {
+-        Response<T> response = new Response<>();
+-        LocalDateTime now = LocalDateTime.now();
+-        long nowTime = DateUtils.localDateTime2Timestamp(now);
+-        response.setTimestamp(nowTime);
+-        response.setData(data);
+-        return response;
+-    }
+-
+-    // =================================== 失败响应 ===================================
+-    public static <T> Response<T> fail() {
+-        Response<T> response = new Response<>();
+-        LocalDateTime now = LocalDateTime.now();
+-        long nowTime = DateUtils.localDateTime2Timestamp(now);
+-        response.setTimestamp(nowTime);
+-        response.setSuccess(false);
+-        return response;
+-    }
+-
+-    public static <T> Response<T> fail(String errorMessage) {
+-        Response<T> response = new Response<>();
+-        response.setSuccess(false);
+-        LocalDateTime now = LocalDateTime.now();
+-        long nowTime = DateUtils.localDateTime2Timestamp(now);
+-        response.setTimestamp(nowTime);
+-        response.setMessage(errorMessage);
+-        return response;
+-    }
+-
+-    public static <T> Response<T> fail(String errorCode, String errorMessage) {
+-        Response<T> response = new Response<>();
+-        response.setSuccess(false);
+-        LocalDateTime now = LocalDateTime.now();
+-        long nowTime = DateUtils.localDateTime2Timestamp(now);
+-        response.setTimestamp(nowTime);
+-        response.setErrorCode(errorCode);
+-        response.setMessage(errorMessage);
+-        return response;
+-    }
+-
+-    public static <T> Response<T> fail(BizException bizException) {
+-        Response<T> response = new Response<>();
+-        response.setSuccess(false);
+-        LocalDateTime now = LocalDateTime.now();
+-        long nowTime = DateUtils.localDateTime2Timestamp(now);
+-        response.setTimestamp(nowTime);
+-        response.setErrorCode(bizException.getErrorCode());
+-        response.setMessage(bizException.getErrorMessage());
+-        return response;
+-    }
+-
+-    public static <T> Response<T> fail(BaseExceptionInterface baseExceptionInterface) {
+-        Response<T> response = new Response<>();
+-        response.setSuccess(false);
+-        LocalDateTime now = LocalDateTime.now();
+-        long nowTime = DateUtils.localDateTime2Timestamp(now);
+-        response.setTimestamp(nowTime);
+-        response.setErrorCode(baseExceptionInterface.getErrorCode());
+-        response.setMessage(baseExceptionInterface.getErrorMessage());
+-        return response;
+-    }
+-
+-}
+\ No newline at end of file
+Index: mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/util/ParamUtils.java
+===================================================================
+diff --git a/mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/util/ParamUtils.java b/mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/util/ParamUtils.java
+deleted file mode 100644
+--- a/mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/util/ParamUtils.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,78 +0,0 @@
+-package com.coder.framework.common.util;
+-
+-import java.util.regex.Pattern;
+-
+-/**
+- * 参数条件工具
+- */
+-public class ParamUtils {
+-
+-    private ParamUtils() {}
+-
+-    // ============================== 校验昵称 ==============================
+-    // 定义昵称长度范围
+-    private static final int NICK_NAME_MIN_LENGTH = 2;
+-    private static final int NICK_NAME_MAX_LENGTH = 24;
+-
+-    // 定义特殊字符的正则表达式
+-    private static final String NICK_NAME_REGEX = "[!@#$%^&*(),.?\":{}|<>]";
+-
+-    /**
+-     * 昵称校验
+-     *
+-     * @param nickname
+-     * @return
+-     */
+-    public static boolean checkNickname(String nickname) {
+-        // 检查长度
+-        if (nickname.length() < NICK_NAME_MIN_LENGTH || nickname.length() > NICK_NAME_MAX_LENGTH) {
+-            return false;
+-        }
+-
+-        // 检查是否含有特殊字符
+-        Pattern pattern = Pattern.compile(NICK_NAME_REGEX);
+-        return !pattern.matcher(nickname).find();
+-    }
+-
+-    // ============================== 校验小哈书号 ==============================
+-    // 定义 ID 长度范围
+-    private static final int ID_MIN_LENGTH = 6;
+-    private static final int ID_MAX_LENGTH = 15;
+-
+-    // 定义正则表达式
+-    private static final String ID_REGEX = "^[a-zA-Z0-9_]+$";
+-
+-    /**
+-     * 小哈书 ID 校验
+-     *
+-     * @param xiaohashuId
+-     * @return
+-     */
+-    public static boolean checkXiaohashuId(String xiaohashuId) {
+-        // 检查长度
+-        if (xiaohashuId.length() < ID_MIN_LENGTH || xiaohashuId.length() > ID_MAX_LENGTH) {
+-            return false;
+-        }
+-        // 检查格式
+-        Pattern pattern = Pattern.compile(ID_REGEX);
+-        return pattern.matcher(xiaohashuId).matches();
+-    }
+-
+-    /**
+-     * 字符串长度校验
+-     *
+-     * @param str
+-     * @param length
+-     * @return
+-     */
+-    public static boolean checkLength(String str, int length) {
+-        // 检查长度
+-        if (str.isEmpty() || str.length() > length) {
+-            return false;
+-        }
+-        return true;
+-    }
+-
+-}
+-
+-
+Index: mall/mall-user/src/main/java/com/coder/mall/user/model/vo/RegisterVo.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/model/vo/RegisterVo.java b/mall/mall-user/src/main/java/com/coder/mall/user/model/vo/RegisterVo.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/model/vo/RegisterVo.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,21 +0,0 @@
+-package com.coder.mall.user.model.vo;
+-
+-import com.coder.mall.user.enums.UserType;
+-import io.swagger.v3.oas.annotations.media.Schema;
+-import lombok.Data;
+-
+-@Data
+-@Schema(description = "用户注册参数")
+-public class RegisterVo {
+-    @Schema(description = "手机号")
+-    private String mobile;
+-
+-    @Schema(description = "用户类型")
+-    private UserType userType;
+-
+-    @Schema(description = "密码")
+-    private String password;
+-
+-    @Schema(description = "短信验证码")
+-    private String code;
+-}
+Index: mall/mall-framework/mall-spring-boot-starter-biz-context/src/main/java/com/coder/framework/biz/context/interceptor/FeignRequestInterceptor.java
+===================================================================
+diff --git a/mall/mall-framework/mall-spring-boot-starter-biz-context/src/main/java/com/coder/framework/biz/context/interceptor/FeignRequestInterceptor.java b/mall/mall-framework/mall-spring-boot-starter-biz-context/src/main/java/com/coder/framework/biz/context/interceptor/FeignRequestInterceptor.java
+deleted file mode 100644
+--- a/mall/mall-framework/mall-spring-boot-starter-biz-context/src/main/java/com/coder/framework/biz/context/interceptor/FeignRequestInterceptor.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,28 +0,0 @@
+-package com.coder.framework.biz.context.interceptor;
+-
+-import com.coder.framework.biz.context.holder.LoginUserContextHolder;
+-import com.coder.framework.common.constant.GlobalConstants;
+-import feign.RequestInterceptor;
+-import feign.RequestTemplate;
+-import lombok.extern.slf4j.Slf4j;
+-
+-import java.util.Objects;
+-
+-/**
+- * Feign 请求拦截器
+- */
+-@Slf4j
+-public class FeignRequestInterceptor implements RequestInterceptor {
+-
+-    @Override
+-    public void apply(RequestTemplate requestTemplate) {
+-        // 获取当前上下文中的用户 ID
+-        Long userId = LoginUserContextHolder.getUserId();
+-
+-        // 若不为空，加到请求头中
+-        if (Objects.nonNull(userId)) {
+-            requestTemplate.header(GlobalConstants.USER_ID, String.valueOf(userId));
+-            log.info("########## feign 请求设置请求头 userId: {}", userId);
+-        }
+-    }
+-}
+Index: mall/mall-user/src/test/java/com/coder/mall/user/TestCRUD.java
+===================================================================
+diff --git a/mall/mall-user/src/test/java/com/coder/mall/user/TestCRUD.java b/mall/mall-user/src/test/java/com/coder/mall/user/TestCRUD.java
+deleted file mode 100644
+--- a/mall/mall-user/src/test/java/com/coder/mall/user/TestCRUD.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,18 +0,0 @@
+-package com.coder.mall.user;
+-
+-import com.coder.mall.user.service.UsersService;
+-import org.junit.jupiter.api.Test;
+-import org.springframework.beans.factory.annotation.Autowired;
+-import org.springframework.boot.test.context.SpringBootTest;
+-
+-@SpringBootTest
+-public class TestCRUD {
+-
+-    @Autowired
+-    private UsersService usersService;
+-
+-    @Test
+-    public void test() {
+-        System.out.println("users: " + usersService.list());
+-    }
+-}
+Index: mall/mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/java/com/coder/framework/biz/operationlog/aspect/ApiOperationLog.java
+===================================================================
+diff --git a/mall/mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/java/com/coder/framework/biz/operationlog/aspect/ApiOperationLog.java b/mall/mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/java/com/coder/framework/biz/operationlog/aspect/ApiOperationLog.java
+deleted file mode 100644
+--- a/mall/mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/java/com/coder/framework/biz/operationlog/aspect/ApiOperationLog.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,15 +0,0 @@
+-package com.coder.framework.biz.operationlog.aspect;
+-
+-import java.lang.annotation.*;
+-
+-@Retention(RetentionPolicy.RUNTIME)
+-@Target(ElementType.METHOD)
+-@Documented
+-public @interface ApiOperationLog {
+-
+-    /**
+-     * API 功能描述
+-     * @return API 功能描述
+-     */
+-    String value() default "";
+-}
+\ No newline at end of file
+Index: mall/mall-user/src/main/java/com/coder/mall/user/exception/UserExceptionHandler.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/exception/UserExceptionHandler.java b/mall/mall-user/src/main/java/com/coder/mall/user/exception/UserExceptionHandler.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/exception/UserExceptionHandler.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,22 +0,0 @@
+-package com.coder.mall.user.exception;
+-
+-import com.coder.common.response.Response;
+-import org.springframework.web.bind.annotation.ExceptionHandler;
+-import org.springframework.web.bind.annotation.RestControllerAdvice;
+-
+-@RestControllerAdvice
+-public class UserExceptionHandler {
+-    @ExceptionHandler
+-    public Response handle(Exception e) {
+-        e.printStackTrace();
+-        return Response.fail();
+-    }
+-
+-    @ExceptionHandler(UserException.class)
+-    public Response handle(UserException e) {
+-        String message = e.getMessage();
+-        Integer code = e.getCode();
+-        e.printStackTrace();
+-        return Response.fail(String.valueOf(code), message);
+-    }
+-}
+Index: mall/mall-checkout/src/main/java/com/coder/mall/checkout/App.java
+===================================================================
+diff --git a/mall/mall-checkout/src/main/java/com/coder/mall/checkout/App.java b/mall/mall-checkout/src/main/java/com/coder/mall/checkout/App.java
+deleted file mode 100644
+--- a/mall/mall-checkout/src/main/java/com/coder/mall/checkout/App.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,13 +0,0 @@
+-package com.coder.mall.checkout;
+-
+-/**
+- * Hello world!
+- *
+- */
+-public class App 
+-{
+-    public static void main( String[] args )
+-    {
+-        System.out.println( "Hello World!" );
+-    }
+-}
+Index: mall/mall-user/src/main/java/com/coder/mall/user/custom/sms/SmsProperties.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/custom/sms/SmsProperties.java b/mall/mall-user/src/main/java/com/coder/mall/user/custom/sms/SmsProperties.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/custom/sms/SmsProperties.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,12 +0,0 @@
+-package com.coder.mall.user.custom.sms;
+-
+-import lombok.Data;
+-import org.springframework.boot.context.properties.ConfigurationProperties;
+-
+-@Data
+-@ConfigurationProperties(prefix = "aliyun.sms")
+-public class SmsProperties {
+-    private String accessKeyId;
+-    private String accessKeySecret;
+-    private String endpoint;
+-}
+Index: mall/mall-test/src/main/java/com/coder/mall/test/App.java
+===================================================================
+diff --git a/mall/mall-test/src/main/java/com/coder/mall/test/App.java b/mall/mall-test/src/main/java/com/coder/mall/test/App.java
+deleted file mode 100644
+--- a/mall/mall-test/src/main/java/com/coder/mall/test/App.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,15 +0,0 @@
+-package com.coder.mall.test;
+-
+-import org.springframework.boot.SpringApplication;
+-import org.springframework.boot.autoconfigure.SpringBootApplication;
+-
+-/**
+- * Hello world!
+- *
+- */
+-@SpringBootApplication
+-public class App {
+-    public static void main( String[] args ) {
+-        SpringApplication.run(App.class, args);
+-    }
+-}
+Index: mall/.idea/misc.xml
+===================================================================
+diff --git a/mall/.idea/misc.xml b/mall/.idea/misc.xml
+deleted file mode 100644
+--- a/mall/.idea/misc.xml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,13 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="ExternalStorageConfigurationManager" enabled="true" />
+-  <component name="MavenProjectsManager">
+-    <option name="originalFiles">
+-      <list>
+-        <option value="$PROJECT_DIR$/pom.xml" />
+-        <option value="$PROJECT_DIR$/mall-framework/mall-spring-boot-starter-biz-context/pom.xml" />
+-      </list>
+-    </option>
+-  </component>
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="17" project-jdk-type="JavaSDK" />
+-</project>
+\ No newline at end of file
+Index: mall/mall-user/src/main/java/com/coder/mall/user/custom/constant/RedisConstant.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/custom/constant/RedisConstant.java b/mall/mall-user/src/main/java/com/coder/mall/user/custom/constant/RedisConstant.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/custom/constant/RedisConstant.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,7 +0,0 @@
+-package com.coder.mall.user.custom.constant;
+-
+-public class RedisConstant {
+-    public static final String PREFIX = "Coder:";
+-    public static final Integer CODE_RESEND_TIME_SEC = 60;
+-    public static final Integer CODE_TTL_SEC = 60 * 10;
+-}
+Index: mall/mall-test/src/test/java/com/coder/mall/test/AppTest.java
+===================================================================
+diff --git a/mall/mall-test/src/test/java/com/coder/mall/test/AppTest.java b/mall/mall-test/src/test/java/com/coder/mall/test/AppTest.java
+deleted file mode 100644
+--- a/mall/mall-test/src/test/java/com/coder/mall/test/AppTest.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,38 +0,0 @@
+-package com.coder.mall.test;
+-
+-import junit.framework.Test;
+-import junit.framework.TestCase;
+-import junit.framework.TestSuite;
+-
+-/**
+- * Unit test for simple App.
+- */
+-public class AppTest 
+-    extends TestCase
+-{
+-    /**
+-     * Create the test case
+-     *
+-     * @param testName name of the test case
+-     */
+-    public AppTest( String testName )
+-    {
+-        super( testName );
+-    }
+-
+-    /**
+-     * @return the suite of tests being tested
+-     */
+-    public static Test suite()
+-    {
+-        return new TestSuite( AppTest.class );
+-    }
+-
+-    /**
+-     * Rigourous Test :-)
+-     */
+-    public void testApp()
+-    {
+-        assertTrue( true );
+-    }
+-}
+Index: mall/mall-test/src/main/java/com/coder/mall/test/controller/TestController.java
+===================================================================
+diff --git a/mall/mall-test/src/main/java/com/coder/mall/test/controller/TestController.java b/mall/mall-test/src/main/java/com/coder/mall/test/controller/TestController.java
+deleted file mode 100644
+--- a/mall/mall-test/src/main/java/com/coder/mall/test/controller/TestController.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,28 +0,0 @@
+-package com.coder.mall.test.controller;
+-
+-import com.coder.framework.common.response.Response;
+-import com.coder.framework.common.util.JsonUtils;
+-import com.coder.framework.biz.operationlog.aspect.ApiOperationLog;
+-import jakarta.annotation.Resource;
+-import org.springframework.data.redis.core.RedisTemplate;
+-import org.springframework.web.bind.annotation.PostMapping;
+-import org.springframework.web.bind.annotation.RestController;
+-
+-import java.time.LocalDateTime;
+-
+-@RestController
+-public class TestController {
+-
+-    @Resource
+-    private RedisTemplate redisTemplate;
+-
+-    @ApiOperationLog("测试接口")
+-    @PostMapping("/test")
+-    public Response<?> test() {
+-        LocalDateTime now = LocalDateTime.now();
+-        String jsonString = JsonUtils.toJsonString(now);
+-        redisTemplate.opsForValue().set("now", jsonString);
+-
+-        return Response.success(now);
+-    }
+-}
+Index: mall/mall-cart/pom.xml
+===================================================================
+diff --git a/mall/mall-cart/pom.xml b/mall/mall-cart/pom.xml
+deleted file mode 100644
+--- a/mall/mall-cart/pom.xml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,29 +0,0 @@
+-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+-    <modelVersion>4.0.0</modelVersion>
+-    <parent>
+-        <groupId>com.coder</groupId>
+-        <artifactId>mall</artifactId>
+-        <version>1.0-SNAPSHOT</version>
+-    </parent>
+-
+-    <groupId>com.coder.mall.cart</groupId>
+-    <artifactId>mall-cart</artifactId>
+-    <packaging>jar</packaging>
+-
+-    <name>mall-cart</name>
+-    <url>http://maven.apache.org</url>
+-
+-    <properties>
+-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+-    </properties>
+-
+-    <dependencies>
+-        <dependency>
+-            <groupId>junit</groupId>
+-            <artifactId>junit</artifactId>
+-            <version>3.8.1</version>
+-            <scope>test</scope>
+-        </dependency>
+-    </dependencies>
+-</project>
+Index: mall/mall-test/src/main/resources/config/application.yaml
+===================================================================
+diff --git a/mall/mall-test/src/main/resources/config/application.yaml b/mall/mall-test/src/main/resources/config/application.yaml
+deleted file mode 100644
+--- a/mall/mall-test/src/main/resources/config/application.yaml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,15 +0,0 @@
+-spring:
+-  data:
+-    redis:
+-      database: 0 # Redis 数据库索引（默认为 0）
+-      host: 114.55.129.110 # Redis 服务器地址
+-      port: 6379 # Redis 服务器连接端口
+-      password: 132133 # Redis 服务器连接密码（默认为空）
+-      timeout: 5s # 读超时时间
+-      connect-timeout: 5s # 链接超时时间
+-      lettuce:
+-        pool:
+-          max-active: 200 # 连接池最大连接数
+-          max-wait: -1ms # 连接池最大阻塞等待时间（使用负值表示没有限制）
+-          min-idle: 0 # 连接池中的 最小空闲连接
+-          max-idle: 10 # 连接池中的最大空闲连接
+\ No newline at end of file
+Index: mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/util/DateUtils.java
+===================================================================
+diff --git a/mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/util/DateUtils.java b/mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/util/DateUtils.java
+deleted file mode 100644
+--- a/mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/util/DateUtils.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,17 +0,0 @@
+-package com.coder.framework.common.util;
+-
+-import java.time.LocalDateTime;
+-import java.time.ZoneOffset;
+-
+-public class DateUtils {
+-
+-    /**
+-     * LocalDateTime 转时间戳
+-     *
+-     * @param localDateTime
+-     * @return
+-     */
+-    public static long localDateTime2Timestamp(LocalDateTime localDateTime) {
+-        return localDateTime.toInstant(ZoneOffset.UTC).toEpochMilli();
+-    }
+-}
+Index: mall/mall-user/src/main/java/com/coder/mall/user/utils/JwtUtil.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/utils/JwtUtil.java b/mall/mall-user/src/main/java/com/coder/mall/user/utils/JwtUtil.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/utils/JwtUtil.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,47 +0,0 @@
+-package com.coder.mall.user.utils;
+-
+-import com.coder.mall.user.enums.ResultCode;
+-import com.coder.mall.user.exception.UserException;
+-import io.jsonwebtoken.*;
+-import io.jsonwebtoken.security.Keys;
+-
+-import javax.crypto.SecretKey;
+-import java.util.Date;
+-
+-public class JwtUtil {
+-
+-    private static SecretKey secretKey = Keys.hmacShaKeyFor("Coder-Coder-Coder-Coder-Coder-Coder".getBytes());//jwtUtils自带了Keys方法用来创建签名秘钥
+-
+-    //创建token
+-    public static String createToken(Long userId, String mobile) {
+-        return Jwts.builder()//Jwts是为了创建待签名的jwt(构造器模式），并且jwt的header字段不需要管
+-                .setSubject("LOGIN_USER")//官方定义的字段：主体
+-                .setExpiration(new Date(System.currentTimeMillis() + 3600000 * 24 * 365L))//官方定义的字段：过期时间（这里设置的是过期的时间点，不是过期的时间长度）
+-                .claim("id", userId)//自定义字段：用户id
+-                .claim("mobile", mobile)//自定义字段：密码
+-                .signWith(secretKey, SignatureAlgorithm.HS256)//官方定义的字段：签名
+-                .compact();//把上面的字段整合起来，变成jwt
+-    }
+-
+-    //解析token
+-    public static Claims parseToken(String token) {
+-        if (token == null) {
+-            throw new UserException(ResultCode.ACCOUNT_NOT_LOGIN_ERROR);
+-        }
+-        try {
+-            JwtParser jwtParser = Jwts.parserBuilder().setSigningKey(secretKey).build();
+-            Jws<Claims> claimsJws = jwtParser.parseClaimsJws(token);//解析token的payload字段
+-            return claimsJws.getBody();
+-        } catch (ExpiredJwtException e) {//token过期
+-            throw new UserException(ResultCode.TOKEN_EXPIRED);
+-        } catch (JwtException e) {//token非法
+-            throw new UserException(ResultCode.TOKEN_INVALID);
+-        }
+-    }
+-
+-    public static void main(String[] args) {
+-        System.out.println(createToken(1L, "15288845875"));
+-    }
+-
+-
+-}
+Index: mall/mall-user/src/main/resources/application.yaml
+===================================================================
+diff --git a/mall/mall-user/src/main/resources/application.yaml b/mall/mall-user/src/main/resources/application.yaml
+deleted file mode 100644
+--- a/mall/mall-user/src/main/resources/application.yaml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,38 +0,0 @@
+-server:
+-  port: 8888
+-
+-#设置数据源
+-spring:
+-  datasource:
+-    type: com.alibaba.druid.pool.DruidDataSource
+-    url: jdbc:mysql://114.55.129.110:3306/mall?useUnicode=true&characterEncoding=utf8&useSSL=false
+-    username: root
+-    password: 132133
+-    driver-class-name: com.mysql.cj.jdbc.Driver
+-  #设置时区
+-  jackson:
+-    time-zone: GMT+8
+-  #设置缓存数据
+-  data:
+-    redis:
+-      host: 114.55.129.110
+-      port: 6379
+-      password: 132133
+-      database: 0
+-
+-mybatis-plus:
+-  configuration:
+-    map-underscore-to-camel-case: true
+-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+-    auto-mapping-behavior: full
+-  type-aliases-package: com.coder.mall.user.domain.domain
+-
+-springdoc:
+-  default-flat-param-object: true
+-
+-#配置阿里云的短信服务
+-aliyun:
+-  sms:
+-    access-key-id: LTAI5tPu4kBppVuEJhabJhmb
+-    access-key-secret: 5kHMRKSakMM803YEww9wgCXxi9IZze
+-    endpoint: dysmsapi.aliyuncs.com
+\ No newline at end of file
+Index: mall/mall-cart/src/test/java/com/coder/mall/cart/AppTest.java
+===================================================================
+diff --git a/mall/mall-cart/src/test/java/com/coder/mall/cart/AppTest.java b/mall/mall-cart/src/test/java/com/coder/mall/cart/AppTest.java
+deleted file mode 100644
+--- a/mall/mall-cart/src/test/java/com/coder/mall/cart/AppTest.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,38 +0,0 @@
+-package com.coder.mall.cart;
+-
+-import junit.framework.Test;
+-import junit.framework.TestCase;
+-import junit.framework.TestSuite;
+-
+-/**
+- * Unit test for simple App.
+- */
+-public class AppTest 
+-    extends TestCase
+-{
+-    /**
+-     * Create the test case
+-     *
+-     * @param testName name of the test case
+-     */
+-    public AppTest( String testName )
+-    {
+-        super( testName );
+-    }
+-
+-    /**
+-     * @return the suite of tests being tested
+-     */
+-    public static Test suite()
+-    {
+-        return new TestSuite( AppTest.class );
+-    }
+-
+-    /**
+-     * Rigourous Test :-)
+-     */
+-    public void testApp()
+-    {
+-        assertTrue( true );
+-    }
+-}
+Index: mall/.idea/vcs.xml
+===================================================================
+diff --git a/mall/.idea/vcs.xml b/mall/.idea/vcs.xml
+deleted file mode 100644
+--- a/mall/.idea/vcs.xml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,6 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="VcsDirectoryMappings">
+-    <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
+-  </component>
+-</project>
+\ No newline at end of file
+Index: mall/mall-user/src/main/java/com/coder/mall/user/custom/config/WebMvcConfiguration.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/custom/config/WebMvcConfiguration.java b/mall/mall-user/src/main/java/com/coder/mall/user/custom/config/WebMvcConfiguration.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/custom/config/WebMvcConfiguration.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,29 +0,0 @@
+-package com.coder.mall.user.custom.config;
+-
+-import com.coder.mall.user.custom.converter.StringToBaseEnumConverterFactory;
+-import org.springframework.beans.factory.annotation.Autowired;
+-import org.springframework.context.annotation.Configuration;
+-import org.springframework.format.FormatterRegistry;
+-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+-
+-@Configuration
+-public class WebMvcConfiguration implements WebMvcConfigurer {
+-
+-    @Autowired
+-    private StringToBaseEnumConverterFactory stringToBaseEnumConverterFactory;//注入的是前端字符串转java枚举类的转换器工厂
+-//    @Autowired
+-//    private AuthenticationInterceptor authenticationInterceptor;//注入的是自定义的认证拦截器
+-
+-    @Override
+-    public void addFormatters(FormatterRegistry registry) {
+-        registry.addConverterFactory(this.stringToBaseEnumConverterFactory);
+-    }
+-
+-    //注册拦截器
+-//    @Override
+-//    public void addInterceptors(InterceptorRegistry registry) {
+-//        registry.addInterceptor(this.authenticationInterceptor).addPathPatterns("/admin/**").excludePathPatterns("/admin/login/**");
+-//    }
+-
+-}
+Index: mall/mall-framework/mall-spring-boot-starter-biz-context/src/main/java/com/coder/framework/biz/context/filter/HeaderUserId2ContextFilter.java
+===================================================================
+diff --git a/mall/mall-framework/mall-spring-boot-starter-biz-context/src/main/java/com/coder/framework/biz/context/filter/HeaderUserId2ContextFilter.java b/mall/mall-framework/mall-spring-boot-starter-biz-context/src/main/java/com/coder/framework/biz/context/filter/HeaderUserId2ContextFilter.java
+deleted file mode 100644
+--- a/mall/mall-framework/mall-spring-boot-starter-biz-context/src/main/java/com/coder/framework/biz/context/filter/HeaderUserId2ContextFilter.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,45 +0,0 @@
+-package com.coder.framework.biz.context.filter;
+-
+-import com.coder.framework.biz.context.holder.LoginUserContextHolder;
+-import com.coder.framework.common.constant.GlobalConstants;
+-import jakarta.servlet.FilterChain;
+-import jakarta.servlet.ServletException;
+-import jakarta.servlet.http.HttpServletRequest;
+-import jakarta.servlet.http.HttpServletResponse;
+-import lombok.extern.slf4j.Slf4j;
+-import org.apache.commons.lang3.StringUtils;
+-import org.springframework.stereotype.Component;
+-import org.springframework.web.filter.OncePerRequestFilter;
+-
+-import java.io.IOException;
+-
+-@Component
+-@Slf4j
+-public class HeaderUserId2ContextFilter extends OncePerRequestFilter {
+-
+-    @Override
+-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+-        // 从请求头中获取用户 ID
+-        String userId = request.getHeader(GlobalConstants.USER_ID);
+-
+-        log.info("## HeaderUserId2ContextFilter, 用户 ID: {}", userId);
+-
+-        // 判断请求头中是否存在用户 ID
+-        if (StringUtils.isBlank(userId)) {
+-            // 为空直接放行
+-            chain.doFilter(request, response);
+-            return;
+-        }
+-        // 存在 userId，设置到 LocalThread 中
+-        log.info("===== 设置 userId 到 ThreadLocal 中， 用户 ID: {}", userId);
+-        LoginUserContextHolder.setUserId(userId);
+-
+-        try {
+-            chain.doFilter(request, response);
+-        } finally {
+-            // 一定要删除 ThreadLocal ，防止内存泄露
+-            LoginUserContextHolder.remove();
+-            log.info("===== 删除 ThreadLocal， userId: {}", userId);
+-        }
+-    }
+-}
+Index: mall/mall-auth/pom.xml
+===================================================================
+diff --git a/mall/mall-auth/pom.xml b/mall/mall-auth/pom.xml
+deleted file mode 100644
+--- a/mall/mall-auth/pom.xml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,29 +0,0 @@
+-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+-    <modelVersion>4.0.0</modelVersion>
+-    <parent>
+-        <groupId>com.coder</groupId>
+-        <artifactId>mall</artifactId>
+-        <version>1.0-SNAPSHOT</version>
+-    </parent>
+-
+-    <groupId>com.coder.mall.auth</groupId>
+-    <artifactId>mall-auth</artifactId>
+-    <packaging>jar</packaging>
+-
+-    <name>mall-auth</name>
+-    <url>http://maven.apache.org</url>
+-
+-    <properties>
+-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+-    </properties>
+-
+-    <dependencies>
+-        <dependency>
+-            <groupId>junit</groupId>
+-            <artifactId>junit</artifactId>
+-            <version>3.8.1</version>
+-            <scope>test</scope>
+-        </dependency>
+-    </dependencies>
+-</project>
+Index: mall/mall-user/src/main/java/com/coder/mall/user/utils/MD5Util.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/utils/MD5Util.java b/mall/mall-user/src/main/java/com/coder/mall/user/utils/MD5Util.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/utils/MD5Util.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,31 +0,0 @@
+-package com.coder.mall.user.utils;
+-
+-import org.springframework.stereotype.Component;
+-
+-import java.security.MessageDigest;
+-import java.security.NoSuchAlgorithmException;
+-
+-@Component
+-public final class MD5Util {
+-    public static String encrypt(String strSrc) {
+-        try {
+-            char hexChars[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+-            byte[] bytes = strSrc.getBytes();
+-            MessageDigest md = MessageDigest.getInstance("MD5");
+-            md.update(bytes);
+-            bytes = md.digest();
+-            int j = bytes.length;
+-            char[] chars = new char[j * 2];
+-            int k = 0;
+-            for (int i = 0; i < bytes.length; i++) {
+-                byte b = bytes[i];
+-                chars[k++] = hexChars[b >>> 4 & 0xf];
+-                chars[k++] = hexChars[b & 0xf];
+-            }
+-            return new String(chars);
+-        } catch (NoSuchAlgorithmException e) {
+-            e.printStackTrace();
+-            throw new RuntimeException("MD5加密出错！！+" + e);
+-        }
+-    }
+-}
+\ No newline at end of file
+Index: mall/mall-user/pom.xml
+===================================================================
+diff --git a/mall/mall-user/pom.xml b/mall/mall-user/pom.xml
+deleted file mode 100644
+--- a/mall/mall-user/pom.xml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,131 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-
+-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+-    <modelVersion>4.0.0</modelVersion>
+-    <parent>
+-        <groupId>com.coder</groupId>
+-        <artifactId>mall</artifactId>
+-        <version>1.0-SNAPSHOT</version>
+-    </parent>
+-    <groupId>com.coder.mall.user</groupId>
+-    <artifactId>mall-user</artifactId>
+-    <packaging>war</packaging>
+-    <name>mall-user</name>
+-    <url>http://maven.apache.org</url>
+-    <properties>
+-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+-    </properties>
+-    <dependencies>
+-        <dependency>
+-            <groupId>com.coder</groupId>
+-            <artifactId>mall-common</artifactId>
+-            <version>1.0-SNAPSHOT</version>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>org.springframework.boot</groupId>
+-            <artifactId>spring-boot-starter</artifactId>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>org.springframework.boot</groupId>
+-            <artifactId>spring-boot-starter-test</artifactId>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>org.springframework.boot</groupId>
+-            <artifactId>spring-boot-starter-web</artifactId>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>org.projectlombok</groupId>
+-            <artifactId>lombok</artifactId>
+-        </dependency>
+-
+-        <!-- MybatisPlus -->
+-        <dependency>
+-            <groupId>com.baomidou</groupId>
+-            <artifactId>mybatis-plus-boot-starter</artifactId>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>mysql</groupId>
+-            <artifactId>mysql-connector-java</artifactId>
+-        </dependency>
+-
+-        <!-- 阿里云短信发送 -->
+-        <dependency>
+-            <groupId>com.aliyun</groupId>
+-            <artifactId>dysmsapi20170525</artifactId>
+-        </dependency>
+-        <!--        Redis依赖-->
+-        <dependency>
+-            <groupId>org.springframework.boot</groupId>
+-            <artifactId>spring-boot-starter-data-redis</artifactId>
+-        </dependency>
+-
+-        <!-- 阿里 TransmittableThreadLocal，解决使用线程池或异步执行框架时，InheritableThreadLocal 不能传递父子线程上下文的问题 -->
+-        <dependency>
+-            <groupId>com.alibaba</groupId>
+-            <artifactId>transmittable-thread-local</artifactId>
+-        </dependency>
+-        <!--knife4j文档-->
+-        <!--官方文档：https://doc.xiaominfo.com/docs/quick-start -->
+-        <dependency>
+-            <groupId>com.github.xiaoymin</groupId>
+-            <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>junit</groupId>
+-            <artifactId>junit</artifactId>
+-            <version>3.8.1</version>
+-            <scope>test</scope>
+-        </dependency>
+-
+-        <!-- druid启动器的依赖  -->
+-        <dependency>
+-            <groupId>com.alibaba</groupId>
+-            <artifactId>druid-spring-boot-3-starter</artifactId>
+-        </dependency>
+-
+-        <!-- 数据库相关配置启动器 -->
+-        <dependency>
+-            <groupId>org.springframework.boot</groupId>
+-            <artifactId>spring-boot-starter-jdbc</artifactId>
+-        </dependency>
+-
+-        <!--JWT登录认证相关-->
+-        <dependency>
+-            <groupId>io.jsonwebtoken</groupId>
+-            <artifactId>jjwt-api</artifactId>
+-            <version>0.11.2</version>
+-        </dependency>
+-        <dependency>
+-            <groupId>io.jsonwebtoken</groupId>
+-            <artifactId>jjwt-impl</artifactId>
+-            <version>0.11.2</version>
+-            <scope>runtime</scope>
+-        </dependency>
+-        <dependency>
+-            <groupId>io.jsonwebtoken</groupId>
+-            <artifactId>jjwt-jackson</artifactId>
+-            <version>0.11.2</version>
+-            <scope>runtime</scope>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>com.coder</groupId>
+-            <artifactId>mall-gateway</artifactId>
+-            <version>1.0-SNAPSHOT</version>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>com.coder</groupId>
+-            <artifactId>mall-spring-boot-starter-biz-context</artifactId>
+-            <version>1.0-SNAPSHOT</version>
+-        </dependency>
+-
+-    </dependencies>
+-</project>
+Index: mall/mall-gateway/src/main/java/com/coder/mall/gateway/exception/GlobalExceptionHandler.java
+===================================================================
+diff --git a/mall/mall-gateway/src/main/java/com/coder/mall/gateway/exception/GlobalExceptionHandler.java b/mall/mall-gateway/src/main/java/com/coder/mall/gateway/exception/GlobalExceptionHandler.java
+deleted file mode 100644
+--- a/mall/mall-gateway/src/main/java/com/coder/mall/gateway/exception/GlobalExceptionHandler.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,64 +0,0 @@
+-package com.coder.mall.gateway.exception;
+-
+-import cn.dev33.satoken.exception.NotLoginException;
+-import cn.dev33.satoken.exception.NotPermissionException;
+-import com.coder.framework.common.response.Response;
+-import com.coder.mall.gateway.enums.ResponseCodeEnum;
+-import com.fasterxml.jackson.databind.ObjectMapper;
+-import jakarta.annotation.Resource;
+-import lombok.extern.slf4j.Slf4j;
+-import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
+-import org.springframework.core.io.buffer.DataBufferFactory;
+-import org.springframework.http.HttpStatus;
+-import org.springframework.http.MediaType;
+-import org.springframework.http.server.reactive.ServerHttpResponse;
+-import org.springframework.stereotype.Component;
+-import org.springframework.web.server.ServerWebExchange;
+-import reactor.core.publisher.Mono;
+-
+-@Component
+-@Slf4j
+-public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
+-
+-    @Resource
+-    private ObjectMapper objectMapper;
+-
+-    @Override
+-    public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {
+-        // 获取响应对象
+-        ServerHttpResponse response = exchange.getResponse();
+-
+-        log.error("==> 全局异常捕获: ", ex);
+-
+-        // 响参
+-        Response<?> result;
+-        // 根据捕获的异常类型，设置不同的响应状态码和响应消息
+-        if (ex instanceof NotLoginException) { // 未登录异常
+-            // 设置 401 状态码
+-            response.setStatusCode(HttpStatus.UNAUTHORIZED);
+-            // 构建响应结果
+-            result = Response.fail(ResponseCodeEnum.UNAUTHORIZED.getErrorCode(), ex.getMessage());
+-        } else if (ex instanceof NotPermissionException) { // 无权限异常
+-            // 权限认证失败时，设置 401 状态码
+-            response.setStatusCode(HttpStatus.UNAUTHORIZED);
+-            // 构建响应结果
+-            result = Response.fail(ResponseCodeEnum.UNAUTHORIZED.getErrorCode(), ResponseCodeEnum.UNAUTHORIZED.getErrorMessage());
+-        } else { // 其他异常，则统一提示 “系统繁忙” 错误
+-            result = Response.fail(ResponseCodeEnum.SYSTEM_ERROR);
+-        }
+-
+-        // 设置响应头的内容类型为 application/json;charset=UTF-8，表示响应体为 JSON 格式
+-        response.getHeaders().setContentType(MediaType.APPLICATION_JSON_UTF8);
+-        // 设置 body 响应体
+-        return response.writeWith(Mono.fromSupplier(() -> { // 使用 Mono.fromSupplier 创建响应体
+-            DataBufferFactory bufferFactory = response.bufferFactory();
+-            try {
+-                // 使用 ObjectMapper 将 result 对象转换为 JSON 字节数组
+-                return bufferFactory.wrap(objectMapper.writeValueAsBytes(result));
+-            } catch (Exception e) {
+-                // 如果转换过程中出现异常，则返回空字节数组
+-                return bufferFactory.wrap(new byte[0]);
+-            }
+-        }));
+-    }
+-}
+Index: mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/exception/BizException.java
+===================================================================
+diff --git a/mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/exception/BizException.java b/mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/exception/BizException.java
+deleted file mode 100644
+--- a/mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/exception/BizException.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,18 +0,0 @@
+-package com.coder.framework.common.exception;
+-
+-import lombok.Getter;
+-import lombok.Setter;
+-
+-@Getter
+-@Setter
+-public class BizException extends RuntimeException {
+-    // 异常码
+-    private String errorCode;
+-    // 错误信息
+-    private String errorMessage;
+-
+-    public BizException(BaseExceptionInterface baseExceptionInterface) {
+-        this.errorCode = baseExceptionInterface.getErrorCode();
+-        this.errorMessage = baseExceptionInterface.getErrorMessage();
+-    }
+-}
+Index: mall/mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/java/com/coder/framework/biz/operationlog/aspect/ApiOperationLogAspect.java
+===================================================================
+diff --git a/mall/mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/java/com/coder/framework/biz/operationlog/aspect/ApiOperationLogAspect.java b/mall/mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/java/com/coder/framework/biz/operationlog/aspect/ApiOperationLogAspect.java
+deleted file mode 100644
+--- a/mall/mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/java/com/coder/framework/biz/operationlog/aspect/ApiOperationLogAspect.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,84 +0,0 @@
+-package com.coder.framework.biz.operationlog.aspect;
+-
+-import com.coder.framework.common.util.JsonUtils;
+-import lombok.extern.slf4j.Slf4j;
+-import org.aspectj.lang.ProceedingJoinPoint;
+-import org.aspectj.lang.annotation.Around;
+-import org.aspectj.lang.annotation.Aspect;
+-import org.aspectj.lang.annotation.Pointcut;
+-import org.aspectj.lang.reflect.MethodSignature;
+-
+-import java.lang.reflect.Method;
+-import java.util.Arrays;
+-import java.util.function.Function;
+-import java.util.stream.Collectors;
+-
+-@Aspect
+-@Slf4j
+-public class ApiOperationLogAspect {
+-
+-    /** 以自定义 @ApiOperationLog 注解为切点，凡是添加 @ApiOperationLog 的方法，都会执行环绕中的代码 */
+-    @Pointcut("@annotation(com.coder.framework.biz.operationlog.aspect.ApiOperationLog)")
+-    public void apiOperationLog() {}
+-
+-    @Around("apiOperationLog()")
+-    public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
+-        // 请求开始时间
+-        long startTime = System.currentTimeMillis();
+-
+-        // 获取被请求的类和方法
+-        String className = joinPoint.getTarget().getClass().getSimpleName();
+-        String methodName = joinPoint.getSignature().getName();
+-
+-        // 请求入参
+-        Object[] args = joinPoint.getArgs();
+-        // 入参转 Json 字符串
+-        String argsJsonStr = Arrays.stream(args).map(toJsonStr()).collect(Collectors.joining(", "));
+-
+-        // 功能描述信息
+-        String description = getApiOperationLogDescription(joinPoint);
+-
+-        // 打印请求相关参数
+-        log.info("====== 请求开始: [{}], 入参: {}, 请求类: {}, 请求方法: {} =================================== ",
+-                description, argsJsonStr, className, methodName);
+-
+-        // 执行切点方法
+-        Object result = joinPoint.proceed();
+-
+-        // 执行耗时
+-        long executionTime = System.currentTimeMillis() - startTime;
+-
+-        // 打印出参等相关信息
+-        log.info("====== 请求结束: [{}], 耗时: {}ms, 出参: {} =================================== ",
+-                description, executionTime, JsonUtils.toJsonString(result));
+-
+-        return result;
+-    }
+-
+-    /**
+-     * 获取注解的描述信息
+-     * @param joinPoint 切入点
+-     * @return 描述信息
+-     */
+-    private String getApiOperationLogDescription(ProceedingJoinPoint joinPoint) {
+-        // 1. 从 ProceedJoinPoint 获取 MethodSignature
+-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+-
+-        // 2. 使用 MethodSignature 获取当前被注解的 Method
+-        Method method = signature.getMethod();
+-
+-        // 3. 从 Method 中提取 LogExecution 注解
+-        ApiOperationLog apiOperationLog = method.getAnnotation(ApiOperationLog.class);
+-
+-        // 4. 从 LogExecution 注解中获取 description 属性
+-        return apiOperationLog.value();
+-    }
+-
+-    /**
+-     * 转 JSON 字符串
+-     * @return 对象转换为的 JSON 字符串
+-     */
+-    private Function<Object, String> toJsonStr() {
+-        return JsonUtils::toJsonString;
+-    }
+-}
+Index: mall/.idea/compiler.xml
+===================================================================
+diff --git a/mall/.idea/compiler.xml b/mall/.idea/compiler.xml
+deleted file mode 100644
+--- a/mall/.idea/compiler.xml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,43 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="CompilerConfiguration">
+-    <annotationProcessing>
+-      <profile default="true" name="Default" enabled="true" />
+-      <profile name="Maven default annotation processors profile" enabled="true">
+-        <sourceOutputDir name="target/generated-sources/annotations" />
+-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+-        <outputRelativeToContentRoot value="true" />
+-        <module name="mall-spring-boot-starter-biz-context" />
+-        <module name="mall-spring-boot-starter-biz-operationlog" />
+-        <module name="mall-auth" />
+-        <module name="mall-checkout" />
+-        <module name="mall-common" />
+-        <module name="mall-cart" />
+-        <module name="mall-user" />
+-        <module name="mall-oss" />
+-        <module name="mall-test" />
+-        <module name="mall-order" />
+-        <module name="mall-spring-boot-starter-jackson" />
+-        <module name="mall-product" />
+-        <module name="mall-gateway" />
+-      </profile>
+-    </annotationProcessing>
+-  </component>
+-  <component name="JavacSettings">
+-    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+-      <module name="mall-auth" options="-parameters" />
+-      <module name="mall-cart" options="-parameters" />
+-      <module name="mall-checkout" options="-parameters" />
+-      <module name="mall-common" options="-parameters" />
+-      <module name="mall-gateway" options="-parameters" />
+-      <module name="mall-order" options="-parameters" />
+-      <module name="mall-oss" options="-parameters" />
+-      <module name="mall-product" options="-parameters" />
+-      <module name="mall-spring-boot-starter-biz-context" options="-parameters" />
+-      <module name="mall-spring-boot-starter-biz-operationlog" options="-parameters" />
+-      <module name="mall-spring-boot-starter-jackson" options="-parameters" />
+-      <module name="mall-test" options="-parameters" />
+-      <module name="mall-user" options="-parameters" />
+-    </option>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: mall/mall-framework/mall-spring-boot-starter-biz-operationlog/pom.xml
+===================================================================
+diff --git a/mall/mall-framework/mall-spring-boot-starter-biz-operationlog/pom.xml b/mall/mall-framework/mall-spring-boot-starter-biz-operationlog/pom.xml
+deleted file mode 100644
+--- a/mall/mall-framework/mall-spring-boot-starter-biz-operationlog/pom.xml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,34 +0,0 @@
+-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+-    <modelVersion>4.0.0</modelVersion>
+-
+-    <!-- 指定父项目 -->
+-    <parent>
+-        <groupId>com.coder</groupId>
+-        <artifactId>mall-framework</artifactId>
+-        <version>1.0-SNAPSHOT</version>
+-    </parent>
+-
+-    <!-- 指定打包方式 -->
+-    <packaging>jar</packaging>
+-
+-    <artifactId>mall-spring-boot-starter-biz-operationlog</artifactId>
+-    <name>${project.artifactId}</name>
+-    <description>接口日志组件</description>
+-
+-    <dependencies>
+-        <dependency>
+-            <groupId>com.coder</groupId>
+-            <artifactId>mall-common</artifactId>
+-            <version>1.0-SNAPSHOT</version>
+-        </dependency>
+-
+-        <!-- AOP 切面 -->
+-        <dependency>
+-            <groupId>org.springframework.boot</groupId>
+-            <artifactId>spring-boot-starter-aop</artifactId>
+-        </dependency>
+-
+-    </dependencies>
+-</project>
+-
+Index: mall/mall-oss/src/test/java/com/coder/mall/oss/AppTest.java
+===================================================================
+diff --git a/mall/mall-oss/src/test/java/com/coder/mall/oss/AppTest.java b/mall/mall-oss/src/test/java/com/coder/mall/oss/AppTest.java
+deleted file mode 100644
+--- a/mall/mall-oss/src/test/java/com/coder/mall/oss/AppTest.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,38 +0,0 @@
+-package com.coder.mall.oss;
+-
+-import junit.framework.Test;
+-import junit.framework.TestCase;
+-import junit.framework.TestSuite;
+-
+-/**
+- * Unit test for simple App.
+- */
+-public class AppTest 
+-    extends TestCase
+-{
+-    /**
+-     * Create the test case
+-     *
+-     * @param testName name of the test case
+-     */
+-    public AppTest( String testName )
+-    {
+-        super( testName );
+-    }
+-
+-    /**
+-     * @return the suite of tests being tested
+-     */
+-    public static Test suite()
+-    {
+-        return new TestSuite( AppTest.class );
+-    }
+-
+-    /**
+-     * Rigourous Test :-)
+-     */
+-    public void testApp()
+-    {
+-        assertTrue( true );
+-    }
+-}
+Index: mall/mall-test/target/classes/config/application.yaml
+===================================================================
+diff --git a/mall/mall-test/target/classes/config/application.yaml b/mall/mall-test/target/classes/config/application.yaml
+deleted file mode 100644
+--- a/mall/mall-test/target/classes/config/application.yaml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,15 +0,0 @@
+-spring:
+-  data:
+-    redis:
+-      database: 0 # Redis 数据库索引（默认为 0）
+-      host: 114.55.129.110 # Redis 服务器地址
+-      port: 6379 # Redis 服务器连接端口
+-      password: 132133 # Redis 服务器连接密码（默认为空）
+-      timeout: 5s # 读超时时间
+-      connect-timeout: 5s # 链接超时时间
+-      lettuce:
+-        pool:
+-          max-active: 200 # 连接池最大连接数
+-          max-wait: -1ms # 连接池最大阻塞等待时间（使用负值表示没有限制）
+-          min-idle: 0 # 连接池中的 最小空闲连接
+-          max-idle: 10 # 连接池中的最大空闲连接
+\ No newline at end of file
+Index: mall/.idea/inspectionProfiles/Project_Default.xml
+===================================================================
+diff --git a/mall/.idea/inspectionProfiles/Project_Default.xml b/mall/.idea/inspectionProfiles/Project_Default.xml
+deleted file mode 100644
+--- a/mall/.idea/inspectionProfiles/Project_Default.xml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,50 +0,0 @@
+-<component name="InspectionProjectProfileManager">
+-  <profile version="1.0">
+-    <option name="myName" value="Project Default" />
+-    <inspection_tool class="PyBroadExceptionInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+-    <inspection_tool class="PyGlobalUndefinedInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+-    <inspection_tool class="PyMethodMayBeStaticInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+-    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+-      <option name="ignoredPackages">
+-        <value>
+-          <list size="11">
+-            <item index="0" class="java.lang.String" itemvalue="pydot" />
+-            <item index="1" class="java.lang.String" itemvalue="networkx" />
+-            <item index="2" class="java.lang.String" itemvalue="angr" />
+-            <item index="3" class="java.lang.String" itemvalue="Js2Py" />
+-            <item index="4" class="java.lang.String" itemvalue="python_magic" />
+-            <item index="5" class="java.lang.String" itemvalue="PyYAML" />
+-            <item index="6" class="java.lang.String" itemvalue="capstone" />
+-            <item index="7" class="java.lang.String" itemvalue="numpy" />
+-            <item index="8" class="java.lang.String" itemvalue="requests" />
+-            <item index="9" class="java.lang.String" itemvalue="pyparsing" />
+-            <item index="10" class="java.lang.String" itemvalue="coloredlogs" />
+-          </list>
+-        </value>
+-      </option>
+-    </inspection_tool>
+-    <inspection_tool class="PyPep8Inspection" enabled="false" level="INFORMATION" enabled_by_default="false" editorAttributes="INFORMATION_ATTRIBUTES" />
+-    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+-      <option name="ignoredErrors">
+-        <list>
+-          <option value="N813" />
+-          <option value="N806" />
+-          <option value="N802" />
+-          <option value="N801" />
+-        </list>
+-      </option>
+-    </inspection_tool>
+-    <inspection_tool class="PyRedundantParenthesesInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+-    <inspection_tool class="PySetFunctionToLiteralInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+-    <inspection_tool class="PyShadowingBuiltinsInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+-    <inspection_tool class="PyShadowingNamesInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+-    <inspection_tool class="PyUnboundLocalVariableInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+-    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="false" level="WARNING" enabled_by_default="false">
+-      <option name="ignoredIdentifiers">
+-        <list>
+-          <option value="thirteenPython_objectPlus.Student.*" />
+-        </list>
+-      </option>
+-    </inspection_tool>
+-  </profile>
+-</component>
+\ No newline at end of file
+Index: mall/.idea/encodings.xml
+===================================================================
+diff --git a/mall/.idea/encodings.xml b/mall/.idea/encodings.xml
+deleted file mode 100644
+--- a/mall/.idea/encodings.xml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,22 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="Encoding">
+-    <file url="file://$PROJECT_DIR$/mall-auth/src/main/java" charset="UTF-8" />
+-    <file url="file://$PROJECT_DIR$/mall-cart/src/main/java" charset="UTF-8" />
+-    <file url="file://$PROJECT_DIR$/mall-checkout/src/main/java" charset="UTF-8" />
+-    <file url="file://$PROJECT_DIR$/mall-framework/mall-common/src/main/java" charset="UTF-8" />
+-    <file url="file://$PROJECT_DIR$/mall-framework/mall-spring-boot-starter-biz-context/src/main/java" charset="UTF-8" />
+-    <file url="file://$PROJECT_DIR$/mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/java" charset="UTF-8" />
+-    <file url="file://$PROJECT_DIR$/mall-framework/mall-spring-boot-starter-jackson/src/main/java" charset="UTF-8" />
+-    <file url="file://$PROJECT_DIR$/mall-framework/src/main/java" charset="UTF-8" />
+-    <file url="file://$PROJECT_DIR$/mall-framework/src/main/resources" charset="UTF-8" />
+-    <file url="file://$PROJECT_DIR$/mall-gateway/src/main/java" charset="UTF-8" />
+-    <file url="file://$PROJECT_DIR$/mall-order/src/main/java" charset="UTF-8" />
+-    <file url="file://$PROJECT_DIR$/mall-oss/src/main/java" charset="UTF-8" />
+-    <file url="file://$PROJECT_DIR$/mall-product/src/main/java" charset="UTF-8" />
+-    <file url="file://$PROJECT_DIR$/mall-test/src/main/java" charset="UTF-8" />
+-    <file url="file://$PROJECT_DIR$/mall-user/src/main/java" charset="UTF-8" />
+-    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+-    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+-  </component>
+-</project>
+\ No newline at end of file
+Index: mall/mall-user/src/main/java/com/coder/mall/user/model/vo/LoginVo.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/model/vo/LoginVo.java b/mall/mall-user/src/main/java/com/coder/mall/user/model/vo/LoginVo.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/model/vo/LoginVo.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,13 +0,0 @@
+-package com.coder.mall.user.model.vo;
+-
+-import io.swagger.v3.oas.annotations.media.Schema;
+-import lombok.Data;
+-
+-@Data
+-@Schema(description = "用户登录参数")
+-public class LoginVo {
+-    @Schema(description = "手机号")
+-    private String mobile;
+-    @Schema(description = "短信验证码")
+-    private String code;
+-}
+Index: mall/mall-user/target/classes/application.yaml
+===================================================================
+diff --git a/mall/mall-user/target/classes/application.yaml b/mall/mall-user/target/classes/application.yaml
+deleted file mode 100644
+--- a/mall/mall-user/target/classes/application.yaml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,38 +0,0 @@
+-server:
+-  port: 8888
+-
+-#设置数据源
+-spring:
+-  datasource:
+-    type: com.alibaba.druid.pool.DruidDataSource
+-    url: jdbc:mysql://114.55.129.110:3306/mall?useUnicode=true&characterEncoding=utf8&useSSL=false
+-    username: root
+-    password: 132133
+-    driver-class-name: com.mysql.cj.jdbc.Driver
+-  #设置时区
+-  jackson:
+-    time-zone: GMT+8
+-  #设置缓存数据
+-  data:
+-    redis:
+-      host: 114.55.129.110
+-      port: 6379
+-      password: 132133
+-      database: 0
+-
+-mybatis-plus:
+-  configuration:
+-    map-underscore-to-camel-case: true
+-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+-    auto-mapping-behavior: full
+-  type-aliases-package: com.coder.mall.user.domain.domain
+-
+-springdoc:
+-  default-flat-param-object: true
+-
+-#配置阿里云的短信服务
+-aliyun:
+-  sms:
+-    access-key-id: LTAI5tPu4kBppVuEJhabJhmb
+-    access-key-secret: 5kHMRKSakMM803YEww9wgCXxi9IZze
+-    endpoint: dysmsapi.aliyuncs.com
+\ No newline at end of file
+Index: mall/mall-test/src/main/java/com/coder/mall/test/User.java
+===================================================================
+diff --git a/mall/mall-test/src/main/java/com/coder/mall/test/User.java b/mall/mall-test/src/main/java/com/coder/mall/test/User.java
+deleted file mode 100644
+--- a/mall/mall-test/src/main/java/com/coder/mall/test/User.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,5 +0,0 @@
+-package com.coder.mall.test;
+-
+-public class User {
+-
+-}
+Index: mall/mall-gateway/src/main/resources/config/bootstrap.yaml
+===================================================================
+diff --git a/mall/mall-gateway/src/main/resources/config/bootstrap.yaml b/mall/mall-gateway/src/main/resources/config/bootstrap.yaml
+deleted file mode 100644
+--- a/mall/mall-gateway/src/main/resources/config/bootstrap.yaml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,12 +0,0 @@
+-spring:
+-  application:
+-    name: mall-gateway # 应用名称
+-  profiles:
+-    active: dev
+-  cloud:
+-    nacos:
+-      discovery:
+-        enabled: true # 启用服务发现
+-        group: DEFAULT_GROUP # 所属组
+-        namespace: mall # 命名空间
+-        server-addr: 127.0.0.1:8848 # Nacos 服务器地址
+Index: mall/mall-order/pom.xml
+===================================================================
+diff --git a/mall/mall-order/pom.xml b/mall/mall-order/pom.xml
+deleted file mode 100644
+--- a/mall/mall-order/pom.xml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,29 +0,0 @@
+-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+-    <modelVersion>4.0.0</modelVersion>
+-    <parent>
+-        <groupId>com.coder</groupId>
+-        <artifactId>mall</artifactId>
+-        <version>1.0-SNAPSHOT</version>
+-    </parent>
+-
+-    <groupId>com.coder.mall.order</groupId>
+-    <artifactId>mall-order</artifactId>
+-    <packaging>jar</packaging>
+-
+-    <name>mall-order</name>
+-    <url>http://maven.apache.org</url>
+-
+-    <properties>
+-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+-    </properties>
+-
+-    <dependencies>
+-        <dependency>
+-            <groupId>junit</groupId>
+-            <artifactId>junit</artifactId>
+-            <version>3.8.1</version>
+-            <scope>test</scope>
+-        </dependency>
+-    </dependencies>
+-</project>
+Index: mall/mall-user/src/main/java/com/coder/mall/user/custom/config/SmsClientConfiguration.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/custom/config/SmsClientConfiguration.java b/mall/mall-user/src/main/java/com/coder/mall/user/custom/config/SmsClientConfiguration.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/custom/config/SmsClientConfiguration.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,34 +0,0 @@
+-package com.coder.mall.user.custom.config;
+-
+-import com.aliyun.dysmsapi20170525.Client;
+-import com.aliyun.teaopenapi.models.Config;
+-import com.coder.mall.user.custom.sms.SmsProperties;
+-import org.springframework.beans.factory.annotation.Autowired;
+-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+-import org.springframework.context.annotation.Bean;
+-import org.springframework.context.annotation.Configuration;
+-
+-@Configuration
+-@EnableConfigurationProperties(SmsProperties.class)
+-@ConditionalOnProperty(name = "aliyun.sms.endpoint")
+-public class SmsClientConfiguration {
+-
+-    @Autowired
+-    private SmsProperties properties;
+-
+-    @Bean
+-    public Client createClient() {//1.使用短信服务，需要先创建一个Client对象
+-        //创建Client对象需要config
+-        Config config = new Config();
+-        config.setAccessKeyId(properties.getAccessKeyId());
+-        config.setAccessKeySecret(properties.getAccessKeySecret());
+-        config.setEndpoint(properties.getEndpoint());//在set这个属性时，因为提到了endpoint，所以该配置类生效
+-        try {
+-            return new Client(config);
+-        } catch (Exception e) {
+-            e.printStackTrace();
+-            throw new RuntimeException(e);
+-        }
+-    }
+-}
+Index: mall/mall-product/src/main/java/com/coder/mall/product/App.java
+===================================================================
+diff --git a/mall/mall-product/src/main/java/com/coder/mall/product/App.java b/mall/mall-product/src/main/java/com/coder/mall/product/App.java
+deleted file mode 100644
+--- a/mall/mall-product/src/main/java/com/coder/mall/product/App.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,13 +0,0 @@
+-package com.coder.mall.product;
+-
+-/**
+- * Hello world!
+- *
+- */
+-public class App 
+-{
+-    public static void main( String[] args )
+-    {
+-        System.out.println( "Hello World!" );
+-    }
+-}
+Index: mall/mall-auth/src/test/java/com/coder/mall/auth/AppTest.java
+===================================================================
+diff --git a/mall/mall-auth/src/test/java/com/coder/mall/auth/AppTest.java b/mall/mall-auth/src/test/java/com/coder/mall/auth/AppTest.java
+deleted file mode 100644
+--- a/mall/mall-auth/src/test/java/com/coder/mall/auth/AppTest.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,38 +0,0 @@
+-package com.coder.mall.auth;
+-
+-import junit.framework.Test;
+-import junit.framework.TestCase;
+-import junit.framework.TestSuite;
+-
+-/**
+- * Unit test for simple App.
+- */
+-public class AppTest 
+-    extends TestCase
+-{
+-    /**
+-     * Create the test case
+-     *
+-     * @param testName name of the test case
+-     */
+-    public AppTest( String testName )
+-    {
+-        super( testName );
+-    }
+-
+-    /**
+-     * @return the suite of tests being tested
+-     */
+-    public static Test suite()
+-    {
+-        return new TestSuite( AppTest.class );
+-    }
+-
+-    /**
+-     * Rigourous Test :-)
+-     */
+-    public void testApp()
+-    {
+-        assertTrue( true );
+-    }
+-}
+Index: mall/mall-framework/mall-common/pom.xml
+===================================================================
+diff --git a/mall/mall-framework/mall-common/pom.xml b/mall/mall-framework/mall-common/pom.xml
+deleted file mode 100644
+--- a/mall/mall-framework/mall-common/pom.xml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,83 +0,0 @@
+-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+-    <modelVersion>4.0.0</modelVersion>
+-
+-    <!-- 指定父项目 -->
+-    <parent>
+-        <groupId>com.coder</groupId>
+-        <artifactId>mall-framework</artifactId>
+-        <version>1.0-SNAPSHOT</version>
+-    </parent>
+-
+-    <!-- 指定打包方式 -->
+-    <packaging>jar</packaging>
+-
+-    <artifactId>mall-common</artifactId>
+-    <name>${project.artifactId}</name>
+-    <description>平台通用模块，如一些通用枚举、工具类等等</description>
+-
+-    <dependencies>
+-        <!-- 避免编写那些冗余的 Java 样板式代码，如 get、set 方法等 -->
+-        <dependency>
+-            <groupId>org.projectlombok</groupId>
+-            <artifactId>lombok</artifactId>
+-        </dependency>
+-
+-        <!-- 相关工具类 -->
+-        <dependency>
+-            <groupId>com.google.guava</groupId>
+-            <artifactId>guava</artifactId>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>cn.hutool</groupId>
+-            <artifactId>hutool-all</artifactId>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>org.apache.commons</groupId>
+-            <artifactId>commons-lang3</artifactId>
+-        </dependency>
+-
+-        <!-- Jackson -->
+-        <dependency>
+-            <groupId>com.fasterxml.jackson.core</groupId>
+-            <artifactId>jackson-databind</artifactId>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>com.fasterxml.jackson.core</groupId>
+-            <artifactId>jackson-core</artifactId>
+-        </dependency>
+-
+-        <!-- 解决 Jackson Java 8 新日期 API 的序列化问题 -->
+-        <dependency>
+-            <groupId>com.fasterxml.jackson.datatype</groupId>
+-            <artifactId>jackson-datatype-jsr310</artifactId>
+-        </dependency>
+-
+-        <!-- 入参校验 -->
+-        <dependency>
+-            <groupId>jakarta.validation</groupId>
+-            <artifactId>jakarta.validation-api</artifactId>
+-        </dependency>
+-        <dependency>
+-            <groupId>org.hibernate.validator</groupId>
+-            <artifactId>hibernate-validator</artifactId>
+-        </dependency>
+-
+-        <!--        Redis依赖-->
+-        <dependency>
+-            <groupId>org.springframework.boot</groupId>
+-            <artifactId>spring-boot-starter-data-redis</artifactId>
+-        </dependency>
+-
+-        <!--阿里云短信客户端，用于发送短信验证码-->
+-        <dependency>
+-            <groupId>com.aliyun</groupId>
+-            <artifactId>dysmsapi20170525</artifactId>
+-        </dependency>
+-
+-    </dependencies>
+-
+-</project>
+Index: mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/constant/DateConstants.java
+===================================================================
+diff --git a/mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/constant/DateConstants.java b/mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/constant/DateConstants.java
+deleted file mode 100644
+--- a/mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/constant/DateConstants.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,26 +0,0 @@
+-package com.coder.framework.common.constant;
+-
+-import java.time.format.DateTimeFormatter;
+-
+-public interface DateConstants {
+-
+-    /**
+-     * DateTimeFormatter：年-月-日 时：分：秒
+-     */
+-    DateTimeFormatter DATE_FORMAT_Y_M_D_H_M_S = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+-
+-    /**
+-     * DateTimeFormatter：年-月-日
+-     */
+-    DateTimeFormatter DATE_FORMAT_Y_M_D = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+-
+-    /**
+-     * DateTimeFormatter：时：分：秒
+-     */
+-    DateTimeFormatter DATE_FORMAT_H_M_S = DateTimeFormatter.ofPattern("HH:mm:ss");
+-
+-    /**
+-     * DateTimeFormatter：年-月
+-     */
+-    DateTimeFormatter DATE_FORMAT_Y_M =  DateTimeFormatter.ofPattern("yyyy-MM");
+-}
+Index: mall/mall-oss/pom.xml
+===================================================================
+diff --git a/mall/mall-oss/pom.xml b/mall/mall-oss/pom.xml
+deleted file mode 100644
+--- a/mall/mall-oss/pom.xml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,29 +0,0 @@
+-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+-    <modelVersion>4.0.0</modelVersion>
+-    <parent>
+-        <groupId>com.coder</groupId>
+-        <artifactId>mall</artifactId>
+-        <version>1.0-SNAPSHOT</version>
+-    </parent>
+-
+-    <groupId>com.coder.mall.oss</groupId>
+-    <artifactId>mall-oss</artifactId>
+-    <packaging>jar</packaging>
+-
+-    <name>mall-oss</name>
+-    <url>http://maven.apache.org</url>
+-
+-    <properties>
+-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+-    </properties>
+-
+-    <dependencies>
+-        <dependency>
+-            <groupId>junit</groupId>
+-            <artifactId>junit</artifactId>
+-            <version>3.8.1</version>
+-            <scope>test</scope>
+-        </dependency>
+-    </dependencies>
+-</project>
+Index: mall/.idea/jarRepositories.xml
+===================================================================
+diff --git a/mall/.idea/jarRepositories.xml b/mall/.idea/jarRepositories.xml
+deleted file mode 100644
+--- a/mall/.idea/jarRepositories.xml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,20 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="RemoteRepositoriesConfiguration">
+-    <remote-repository>
+-      <option name="id" value="central" />
+-      <option name="name" value="Central Repository" />
+-      <option name="url" value="https://repo.maven.apache.org/maven2" />
+-    </remote-repository>
+-    <remote-repository>
+-      <option name="id" value="central" />
+-      <option name="name" value="Maven Central repository" />
+-      <option name="url" value="https://repo1.maven.org/maven2" />
+-    </remote-repository>
+-    <remote-repository>
+-      <option name="id" value="jboss.community" />
+-      <option name="name" value="JBoss Community repository" />
+-      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+-    </remote-repository>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: mall/mall-product/pom.xml
+===================================================================
+diff --git a/mall/mall-product/pom.xml b/mall/mall-product/pom.xml
+deleted file mode 100644
+--- a/mall/mall-product/pom.xml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,29 +0,0 @@
+-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+-    <modelVersion>4.0.0</modelVersion>
+-    <parent>
+-        <groupId>com.coder</groupId>
+-        <artifactId>mall</artifactId>
+-        <version>1.0-SNAPSHOT</version>
+-    </parent>
+-
+-    <groupId>com.coder.mall.product</groupId>
+-    <artifactId>mall-product</artifactId>
+-    <packaging>jar</packaging>
+-
+-    <name>mall-product</name>
+-    <url>http://maven.apache.org</url>
+-
+-    <properties>
+-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+-    </properties>
+-
+-    <dependencies>
+-        <dependency>
+-            <groupId>junit</groupId>
+-            <artifactId>junit</artifactId>
+-            <version>3.8.1</version>
+-            <scope>test</scope>
+-        </dependency>
+-    </dependencies>
+-</project>
+Index: mall/mall-gateway/src/main/java/com/coder/mall/gateway/auth/StpInterfaceImpl.java
+===================================================================
+diff --git a/mall/mall-gateway/src/main/java/com/coder/mall/gateway/auth/StpInterfaceImpl.java b/mall/mall-gateway/src/main/java/com/coder/mall/gateway/auth/StpInterfaceImpl.java
+deleted file mode 100644
+--- a/mall/mall-gateway/src/main/java/com/coder/mall/gateway/auth/StpInterfaceImpl.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,114 +0,0 @@
+-package com.coder.mall.gateway.auth;
+-
+-import cn.dev33.satoken.stp.StpInterface;
+-import cn.hutool.core.collection.CollUtil;
+-import com.coder.mall.gateway.constant.RedisKeyConstants;
+-import com.fasterxml.jackson.core.JsonProcessingException;
+-import com.fasterxml.jackson.core.type.TypeReference;
+-import com.fasterxml.jackson.databind.ObjectMapper;
+-import com.google.common.collect.Lists;
+-import jakarta.annotation.Resource;
+-import lombok.SneakyThrows;
+-import lombok.extern.slf4j.Slf4j;
+-import org.apache.commons.lang3.StringUtils;
+-import org.springframework.data.redis.core.RedisTemplate;
+-import org.springframework.stereotype.Component;
+-
+-import java.util.Collections;
+-import java.util.List;
+-
+-/**
+- * 自定义权限验证接口扩展
+- */
+-@Component
+-@Slf4j
+-public class StpInterfaceImpl implements StpInterface {
+-
+-    @Resource
+-    private RedisTemplate<String, String> redisTemplate;
+-    @Resource
+-    private ObjectMapper objectMapper;
+-
+-    /**
+-     * 获取用户权限
+-     *
+-     * @param loginId
+-     * @param loginType
+-     * @return
+-     */
+-    @SneakyThrows
+-    @Override
+-    public List<String> getPermissionList(Object loginId, String loginType) {
+-        log.info("## 获取用户权限列表, loginId: {}", loginId);
+-
+-        // 构建 用户-角色 Redis Key
+-        String userRolesKey = RedisKeyConstants.buildUserRoleKey(Long.valueOf(loginId.toString()));
+-
+-        // 根据用户 ID ，从 Redis 中获取该用户的角色集合
+-        String useRolesValue = redisTemplate.opsForValue().get(userRolesKey);
+-
+-        if (StringUtils.isBlank(useRolesValue)) {
+-            return null;
+-        }
+-
+-        // 将 JSON 字符串转换为 List<String> 角色集合
+-        List<String> userRoleKeys = objectMapper.readValue(useRolesValue, new TypeReference<>() {});
+-
+-        if (CollUtil.isNotEmpty(userRoleKeys)) {
+-            // 查询这些角色对应的权限
+-            // 构建 角色-权限 Redis Key 集合
+-            List<String> rolePermissionsKeys = userRoleKeys.stream()
+-                    .map(RedisKeyConstants::buildRolePermissionsKey)
+-                    .toList();
+-
+-            // 通过 key 集合批量查询权限，提升查询性能。
+-            List<String> rolePermissionsValues = redisTemplate.opsForValue().multiGet(rolePermissionsKeys);
+-
+-            if (CollUtil.isNotEmpty(rolePermissionsValues)) {
+-                List<String> permissions = Lists.newArrayList();
+-
+-                // 遍历所有角色的权限集合，统一添加到 permissions 集合中
+-                rolePermissionsValues.forEach(jsonValue -> {
+-                    try {
+-                        // 将 JSON 字符串转换为 List<String> 权限集合
+-                        List<String> rolePermissions = objectMapper.readValue(jsonValue, new TypeReference<>() {});
+-                        permissions.addAll(rolePermissions);
+-                    } catch (JsonProcessingException e) {
+-                        log.error("==> JSON 解析错误: ", e);
+-                    }
+-                });
+-
+-                // 返回此用户所拥有的权限
+-                return permissions;
+-            }
+-        }
+-        return null;
+-    }
+-
+-    /**
+-     * 获取用户角色
+-     *
+-     * @param loginId
+-     * @param loginType
+-     * @return
+-     */
+-    @SneakyThrows
+-    @Override
+-    public List<String> getRoleList(Object loginId, String loginType) {
+-        log.info("## 获取用户角色列表, loginId: {}", loginId);
+-
+-        // 构建 用户-角色 Redis Key
+-        String userRolesKey = RedisKeyConstants.buildUserRoleKey(Long.valueOf(loginId.toString()));
+-
+-        // 根据用户 ID ，从 Redis 中获取该用户的角色集合
+-        String useRolesValue = redisTemplate.opsForValue().get(userRolesKey);
+-
+-        if (StringUtils.isBlank(useRolesValue)) {
+-            return null;
+-        }
+-
+-        // 将 JSON 字符串转换为 List<String> 集合
+-        return objectMapper.readValue(useRolesValue, new TypeReference<>() {});
+-    }
+-
+-}
+\ No newline at end of file
+Index: mall/mall-user/src/main/java/com/coder/mall/user/domain/domain/Users.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/domain/domain/Users.java b/mall/mall-user/src/main/java/com/coder/mall/user/domain/domain/Users.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/domain/domain/Users.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,83 +0,0 @@
+-package com.coder.mall.user.domain.domain;
+-
+-import com.baomidou.mybatisplus.annotation.*;
+-
+-import java.io.Serializable;
+-import java.util.Date;
+-
+-import com.coder.mall.user.enums.Gender;
+-import com.coder.mall.user.enums.UserStatus;
+-import com.coder.mall.user.enums.UserType;
+-import com.coder.mall.user.enums.Verified;
+-import com.fasterxml.jackson.annotation.JsonIgnore;
+-import io.swagger.v3.oas.annotations.media.Schema;
+-import jakarta.validation.constraints.Email;
+-import lombok.Data;
+-
+-/**
+- * @TableName users
+- */
+-@TableName(value = "users")
+-@Schema(name = "用户信息表")
+-@Data
+-public class Users implements Serializable {
+-
+-    private static final long serialVersionUID = 1L;
+-
+-    @Schema(name = "用户ID")
+-    @TableId(type = IdType.AUTO)
+-    private Long id;
+-
+-    @Schema(description = "手机号码")
+-    private String mobile;
+-
+-    @Schema(description = "密码")
+-    @TableField(value = "password", select = false)
+-    private String password;
+-
+-    @Schema(description = "昵称")
+-    private String nickname;
+-
+-    @Schema(description = "头像url")
+-    private String profileUrl;
+-
+-    @Schema(description = "用户类型")
+-    @TableField(value = "type")
+-    private UserType userType;
+-
+-    @Schema(name = "邮箱")
+-    @Email
+-    private String email;
+-
+-    @Schema(description = "性别")
+-    private Gender gender;
+-
+-    @Schema(description = "生日")
+-    private Date birthdate;
+-
+-    @Schema(description = "创建时间")
+-    @TableField(value = "create_time", fill = FieldFill.INSERT)
+-    @JsonIgnore
+-    private Date createTime;
+-
+-    @Schema(description = "更新时间")
+-    @TableField(value = "update_time", fill = FieldFill.UPDATE)
+-    @JsonIgnore
+-    private Date updateTime;
+-
+-    @Schema(description = "用户状态")
+-    @TableField(value = "is_active")
+-    private UserStatus userStatus;
+-
+-    @Schema(description = "是否验证")
+-    @TableField(value = "is_verified")
+-    private Verified isVerified;
+-
+-    @TableField("is_deleted")
+-    @Schema(name = "逻辑删除")
+-    @JsonIgnore
+-    @TableLogic
+-    private Integer isDeleted;
+-
+-
+-}
+\ No newline at end of file
+Index: mall/REDME.md
+===================================================================
+diff --git a/mall/REDME.md b/mall/REDME.md
+deleted file mode 100644
+--- a/mall/REDME.md	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,39 +0,0 @@
+-内容后面慢慢加
+-
+-## 各个 Config
+-> 这一部分声明一下各种配置的统一写法
+-### RedisTemplateConfig
+-```java
+-package com.coder.mall.test.config;
+-
+-import org.springframework.context.annotation.Bean;
+-import org.springframework.context.annotation.Configuration;
+-import org.springframework.data.redis.connection.RedisConnectionFactory;
+-import org.springframework.data.redis.core.RedisTemplate;
+-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+-import org.springframework.data.redis.serializer.StringRedisSerializer;
+-
+-@Configuration
+-public class RedisTemplateConfig {
+-
+-    @Bean
+-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
+-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+-        // 设置 RedisTemplate 的连接工厂
+-        redisTemplate.setConnectionFactory(connectionFactory);
+-
+-        // 使用 StringRedisSerializer 来序列化和反序列化 redis 的 key 值，确保 key 是可读的字符串
+-        redisTemplate.setKeySerializer(new StringRedisSerializer());
+-        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+-
+-        // 使用 Jackson2JsonRedisSerializer 来序列化和反序列化 redis 的 value 值, 确保存储的是 JSON 格式
+-        Jackson2JsonRedisSerializer<Object> serializer = new Jackson2JsonRedisSerializer<>(Object.class);
+-        redisTemplate.setValueSerializer(serializer);
+-        redisTemplate.setHashValueSerializer(serializer);
+-
+-        redisTemplate.afterPropertiesSet();
+-        return redisTemplate;
+-    }
+-}
+-```
+-
+Index: mall/mall-gateway/src/main/java/com/coder/mall/gateway/config/RedisTemplateConfig.java
+===================================================================
+diff --git a/mall/mall-gateway/src/main/java/com/coder/mall/gateway/config/RedisTemplateConfig.java b/mall/mall-gateway/src/main/java/com/coder/mall/gateway/config/RedisTemplateConfig.java
+deleted file mode 100644
+--- a/mall/mall-gateway/src/main/java/com/coder/mall/gateway/config/RedisTemplateConfig.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,31 +0,0 @@
+-package com.coder.mall.gateway.config;
+-
+-import org.springframework.context.annotation.Bean;
+-import org.springframework.context.annotation.Configuration;
+-import org.springframework.data.redis.connection.RedisConnectionFactory;
+-import org.springframework.data.redis.core.RedisTemplate;
+-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+-import org.springframework.data.redis.serializer.StringRedisSerializer;
+-
+-@Configuration
+-public class RedisTemplateConfig {
+-
+-    @Bean
+-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
+-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+-        // 设置 RedisTemplate 的连接工厂
+-        redisTemplate.setConnectionFactory(connectionFactory);
+-
+-        // 使用 StringRedisSerializer 来序列化和反序列化 redis 的 key 值，确保 key 是可读的字符串
+-        redisTemplate.setKeySerializer(new StringRedisSerializer());
+-        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+-
+-        // 使用 Jackson2JsonRedisSerializer 来序列化和反序列化 redis 的 value 值, 确保存储的是 JSON 格式
+-        Jackson2JsonRedisSerializer<Object> serializer = new Jackson2JsonRedisSerializer<>(Object.class);
+-        redisTemplate.setValueSerializer(serializer);
+-        redisTemplate.setHashValueSerializer(serializer);
+-
+-        redisTemplate.afterPropertiesSet();
+-        return redisTemplate;
+-    }
+-}
+\ No newline at end of file
+Index: mall/mall-cart/src/main/java/com/coder/mall/cart/App.java
+===================================================================
+diff --git a/mall/mall-cart/src/main/java/com/coder/mall/cart/App.java b/mall/mall-cart/src/main/java/com/coder/mall/cart/App.java
+deleted file mode 100644
+--- a/mall/mall-cart/src/main/java/com/coder/mall/cart/App.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,13 +0,0 @@
+-package com.coder.mall.cart;
+-
+-/**
+- * Hello world!
+- *
+- */
+-public class App 
+-{
+-    public static void main( String[] args )
+-    {
+-        System.out.println( "Hello World!" );
+-    }
+-}
+Index: mall/mall-user/src/main/java/com/coder/mall/user/enums/UserStatus.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/enums/UserStatus.java b/mall/mall-user/src/main/java/com/coder/mall/user/enums/UserStatus.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/enums/UserStatus.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,30 +0,0 @@
+-package com.coder.mall.user.enums;
+-
+-import com.baomidou.mybatisplus.annotation.EnumValue;
+-import com.fasterxml.jackson.annotation.JsonValue;
+-
+-public enum UserStatus implements BaseEnum {
+-
+-    ENABLE(1, "正常"),
+-    DISABLE(0, "禁用");
+-
+-    @EnumValue
+-    @JsonValue
+-    private Integer code;
+-    private String name;
+-
+-    UserStatus(Integer code, String name) {
+-        this.code = code;
+-        this.name = name;
+-    }
+-
+-    @Override
+-    public Integer getCode() {
+-        return this.code;
+-    }
+-
+-    @Override
+-    public String getName() {
+-        return this.name;
+-    }
+-}
+Index: mall/mall-user/src/test/java/com/coder/mall/user/AppTest.java
+===================================================================
+diff --git a/mall/mall-user/src/test/java/com/coder/mall/user/AppTest.java b/mall/mall-user/src/test/java/com/coder/mall/user/AppTest.java
+deleted file mode 100644
+--- a/mall/mall-user/src/test/java/com/coder/mall/user/AppTest.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,38 +0,0 @@
+-package com.coder.mall.user;
+-
+-import junit.framework.Test;
+-import junit.framework.TestCase;
+-import junit.framework.TestSuite;
+-
+-/**
+- * Unit test for simple App.
+- */
+-public class AppTest 
+-    extends TestCase
+-{
+-    /**
+-     * Create the test case
+-     *
+-     * @param testName name of the test case
+-     */
+-    public AppTest( String testName )
+-    {
+-        super( testName );
+-    }
+-
+-    /**
+-     * @return the suite of tests being tested
+-     */
+-    public static Test suite()
+-    {
+-        return new TestSuite( AppTest.class );
+-    }
+-
+-    /**
+-     * Rigourous Test :-)
+-     */
+-    public void testApp()
+-    {
+-        assertTrue( true );
+-    }
+-}
+Index: mall/mall-order/src/main/java/com/coder/mall/order/App.java
+===================================================================
+diff --git a/mall/mall-order/src/main/java/com/coder/mall/order/App.java b/mall/mall-order/src/main/java/com/coder/mall/order/App.java
+deleted file mode 100644
+--- a/mall/mall-order/src/main/java/com/coder/mall/order/App.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,13 +0,0 @@
+-package com.coder.mall.order;
+-
+-/**
+- * Hello world!
+- *
+- */
+-public class App 
+-{
+-    public static void main( String[] args )
+-    {
+-        System.out.println( "Hello World!" );
+-    }
+-}
+Index: mall/mall-user/src/main/java/com/coder/mall/user/custom/config/Knife4jConfiguration.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/custom/config/Knife4jConfiguration.java b/mall/mall-user/src/main/java/com/coder/mall/user/custom/config/Knife4jConfiguration.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/custom/config/Knife4jConfiguration.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,22 +0,0 @@
+-package com.coder.mall.user.custom.config;
+-
+-import io.swagger.v3.oas.models.OpenAPI;
+-import io.swagger.v3.oas.models.info.Info;
+-import io.swagger.v3.oas.models.info.License;
+-import org.springdoc.core.models.GroupedOpenApi;
+-import org.springframework.context.annotation.Bean;
+-import org.springframework.context.annotation.Configuration;
+-
+-@Configuration
+-public class Knife4jConfiguration {
+-
+-    @Bean
+-    public OpenAPI customOpenAPI() {
+-        return new OpenAPI().info(new Info().title("User服务接口").version("1.0").description("User服务接口").termsOfService("http://doc.xiaominfo.com").license(new License().name("Apache 2.0").url("http://doc.xiaominfo.com")));
+-    }
+-
+-    @Bean
+-    public GroupedOpenApi userAPI() {
+-        return GroupedOpenApi.builder().group("用户模块").pathsToMatch("/user/**").build();
+-    }
+-}
+\ No newline at end of file
+Index: mall/mall-user/src/main/java/com/coder/mall/user/service/SmsService.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/service/SmsService.java b/mall/mall-user/src/main/java/com/coder/mall/user/service/SmsService.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/service/SmsService.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,5 +0,0 @@
+-package com.coder.mall.user.service;
+-
+-public interface SmsService {
+-    void sendSms(String mobile, String content);
+-}
+Index: mall/mall-user/src/main/java/com/coder/mall/user/enums/Gender.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/enums/Gender.java b/mall/mall-user/src/main/java/com/coder/mall/user/enums/Gender.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/enums/Gender.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,30 +0,0 @@
+-package com.coder.mall.user.enums;
+-
+-import com.baomidou.mybatisplus.annotation.EnumValue;
+-import com.fasterxml.jackson.annotation.JsonValue;
+-
+-public enum Gender implements BaseEnum {
+-
+-    MALE(1, "男"),
+-    FEMALE(0, "女");
+-
+-    @EnumValue
+-    @JsonValue
+-    private Integer code;
+-    private String name;
+-
+-    Gender(Integer code, String name) {
+-        this.code = code;
+-        this.name = name;
+-    }
+-
+-    @Override
+-    public Integer getCode() {
+-        return this.code;
+-    }
+-
+-    @Override
+-    public String getName() {
+-        return this.name;
+-    }
+-}
+Index: mall/mall-user/src/main/java/com/coder/mall/user/exception/UserException.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/exception/UserException.java b/mall/mall-user/src/main/java/com/coder/mall/user/exception/UserException.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/exception/UserException.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,16 +0,0 @@
+-package com.coder.mall.user.exception;
+-
+-import com.coder.mall.user.enums.ResultCode;
+-import io.swagger.v3.oas.models.security.SecurityScheme;
+-import lombok.Data;
+-
+-@Data
+-public class UserException extends RuntimeException {
+-
+-    private Integer code;
+-
+-    public UserException(ResultCode resultCode) {
+-        super(resultCode.getMessage());
+-        this.code = resultCode.getCode();
+-    }
+-}
+Index: mall/mall-framework/mall-spring-boot-starter-biz-context/src/main/java/com/coder/framework/biz/context/config/FeignContextAutoConfiguration.java
+===================================================================
+diff --git a/mall/mall-framework/mall-spring-boot-starter-biz-context/src/main/java/com/coder/framework/biz/context/config/FeignContextAutoConfiguration.java b/mall/mall-framework/mall-spring-boot-starter-biz-context/src/main/java/com/coder/framework/biz/context/config/FeignContextAutoConfiguration.java
+deleted file mode 100644
+--- a/mall/mall-framework/mall-spring-boot-starter-biz-context/src/main/java/com/coder/framework/biz/context/config/FeignContextAutoConfiguration.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,14 +0,0 @@
+-package com.coder.framework.biz.context.config;
+-
+-import com.coder.framework.biz.context.interceptor.FeignRequestInterceptor;
+-import org.springframework.boot.autoconfigure.AutoConfiguration;
+-import org.springframework.context.annotation.Bean;
+-
+-@AutoConfiguration
+-public class FeignContextAutoConfiguration {
+-
+-    @Bean
+-    public FeignRequestInterceptor feignRequestInterceptor() {
+-        return new FeignRequestInterceptor();
+-    }
+-}
+Index: mall/mall-gateway/pom.xml
+===================================================================
+diff --git a/mall/mall-gateway/pom.xml b/mall/mall-gateway/pom.xml
+deleted file mode 100644
+--- a/mall/mall-gateway/pom.xml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,92 +0,0 @@
+-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+-    <modelVersion>4.0.0</modelVersion>
+-    <!-- 指定父项目 -->
+-    <parent>
+-        <groupId>com.coder</groupId>
+-        <artifactId>mall</artifactId>
+-        <version>1.0-SNAPSHOT</version>
+-    </parent>
+-
+-    <artifactId>mall-gateway</artifactId>
+-    <name>${project.artifactId}</name>
+-    <description>网关服务（负责路由转发、接口鉴权等功能）</description>
+-
+-    <dependencies>
+-
+-        <dependency>
+-            <groupId>com.coder</groupId>
+-            <artifactId>mall-common</artifactId>
+-            <version>1.0-SNAPSHOT</version>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>org.springframework.cloud</groupId>
+-            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+-        </dependency>
+-
+-        <!-- 服务发现 -->
+-        <dependency>
+-            <groupId>com.alibaba.cloud</groupId>
+-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+-        </dependency>
+-
+-        <!-- 网关 -->
+-        <dependency>
+-            <groupId>org.springframework.cloud</groupId>
+-            <artifactId>spring-cloud-starter-gateway</artifactId>
+-        </dependency>
+-
+-        <!-- 负载均衡 -->
+-        <dependency>
+-            <groupId>org.springframework.cloud</groupId>
+-            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+-        </dependency>
+-
+-
+-        <!-- Sa-Token 权限认证，在线文档：https://sa-token.cc -->
+-        <dependency>
+-            <groupId>cn.dev33</groupId>
+-            <artifactId>sa-token-reactor-spring-boot3-starter</artifactId>
+-        </dependency>
+-
+-        <!-- Sa-Token 整合 Redis （使用 jackson 序列化方式） -->
+-        <dependency>
+-            <groupId>cn.dev33</groupId>
+-            <artifactId>sa-token-redis-jackson</artifactId>
+-        </dependency>
+-
+-        <!-- 提供Redis连接池 -->
+-        <dependency>
+-            <groupId>org.apache.commons</groupId>
+-            <artifactId>commons-pool2</artifactId>
+-        </dependency>
+-
+-        <!-- Redis -->
+-        <dependency>
+-            <groupId>org.springframework.boot</groupId>
+-            <artifactId>spring-boot-starter-data-redis</artifactId>
+-        </dependency>
+-
+-        <!-- Jackson 组件 -->
+-        <dependency>
+-            <groupId>com.coder</groupId>
+-            <artifactId>mall-spring-boot-starter-jackson</artifactId>
+-            <version>1.0-SNAPSHOT</version>
+-        </dependency>
+-
+-
+-
+-
+-    </dependencies>
+-
+-    <build>
+-        <plugins>
+-            <plugin>
+-                <groupId>org.springframework.boot</groupId>
+-                <artifactId>spring-boot-maven-plugin</artifactId>
+-            </plugin>
+-        </plugins>
+-    </build>
+-</project>
+-
+Index: mall/mall-user/src/main/java/com/coder/mall/user/enums/Verified.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/enums/Verified.java b/mall/mall-user/src/main/java/com/coder/mall/user/enums/Verified.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/enums/Verified.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,29 +0,0 @@
+-package com.coder.mall.user.enums;
+-
+-import com.baomidou.mybatisplus.annotation.EnumValue;
+-import com.fasterxml.jackson.annotation.JsonValue;
+-
+-public enum Verified implements BaseEnum {
+-    VERIFIED(1, "已验证"),
+-    UNVERIFIED(0, "未验证");
+-
+-    @EnumValue
+-    @JsonValue
+-    private Integer code;
+-    private String name;
+-
+-    Verified(Integer code, String name) {
+-        this.code = code;
+-        this.name = name;
+-    }
+-
+-    @Override
+-    public Integer getCode() {
+-        return this.code;
+-    }
+-
+-    @Override
+-    public String getName() {
+-        return this.name;
+-    }
+-}
+Index: mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/util/JsonUtils.java
+===================================================================
+diff --git a/mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/util/JsonUtils.java b/mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/util/JsonUtils.java
+deleted file mode 100644
+--- a/mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/util/JsonUtils.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,42 +0,0 @@
+-package com.coder.framework.common.util;
+-
+-import com.fasterxml.jackson.databind.ObjectMapper;
+-import lombok.SneakyThrows;
+-import org.apache.commons.lang3.StringUtils;
+-
+-public class JsonUtils {
+-
+-    private static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+-
+-    /** SpringMVC 中自带一个 ObjectMapper，直接读取配置好的 ObjectMapper */
+-    public static void init(ObjectMapper objectMapper) {
+-        OBJECT_MAPPER = objectMapper;
+-    }
+-
+-    /**
+-     * 将对象转为 Json 字符串
+-     * @param obj 传入对象
+-     * @return Json 字符串
+-     */
+-    @SneakyThrows
+-    public static String toJsonString(Object obj) {
+-        return OBJECT_MAPPER.writeValueAsString(obj);
+-    }
+-
+-    /**
+-     * 将 JSON 字符串转换为对象
+-     *
+-     * @param jsonStr
+-     * @param clazz
+-     * @return
+-     * @param <T>
+-     */
+-    @SneakyThrows
+-    public static <T> T parseObject(String jsonStr, Class<T> clazz) {
+-        if (StringUtils.isBlank(jsonStr)) {
+-            return null;
+-        }
+-
+-        return OBJECT_MAPPER.readValue(jsonStr, clazz);
+-    }
+-}
+Index: mall/mall-checkout/pom.xml
+===================================================================
+diff --git a/mall/mall-checkout/pom.xml b/mall/mall-checkout/pom.xml
+deleted file mode 100644
+--- a/mall/mall-checkout/pom.xml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,29 +0,0 @@
+-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+-    <modelVersion>4.0.0</modelVersion>
+-    <parent>
+-        <groupId>com.coder</groupId>
+-        <artifactId>mall</artifactId>
+-        <version>1.0-SNAPSHOT</version>
+-    </parent>
+-
+-    <groupId>com.coder.mall.checkout</groupId>
+-    <artifactId>mall-checkout</artifactId>
+-    <packaging>jar</packaging>
+-
+-    <name>mall-checkout</name>
+-    <url>http://maven.apache.org</url>
+-
+-    <properties>
+-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+-    </properties>
+-
+-    <dependencies>
+-        <dependency>
+-            <groupId>junit</groupId>
+-            <artifactId>junit</artifactId>
+-            <version>3.8.1</version>
+-            <scope>test</scope>
+-        </dependency>
+-    </dependencies>
+-</project>
+Index: mall/mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/java/com/coder/framework/biz/operationlog/config/ApiOperationLogAutoConfiguration.java
+===================================================================
+diff --git a/mall/mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/java/com/coder/framework/biz/operationlog/config/ApiOperationLogAutoConfiguration.java b/mall/mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/java/com/coder/framework/biz/operationlog/config/ApiOperationLogAutoConfiguration.java
+deleted file mode 100644
+--- a/mall/mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/java/com/coder/framework/biz/operationlog/config/ApiOperationLogAutoConfiguration.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,14 +0,0 @@
+-package com.coder.framework.biz.operationlog.config;
+-
+-import com.coder.framework.biz.operationlog.aspect.ApiOperationLogAspect;
+-import org.springframework.boot.autoconfigure.AutoConfiguration;
+-import org.springframework.context.annotation.Bean;
+-
+-@AutoConfiguration
+-public class ApiOperationLogAutoConfiguration {
+-
+-    @Bean
+-    public ApiOperationLogAspect apiOperationLogAspect() {
+-        return new ApiOperationLogAspect();
+-    }
+-}
+\ No newline at end of file
+Index: mall/mall-order/src/test/java/com/coder/mall/order/AppTest.java
+===================================================================
+diff --git a/mall/mall-order/src/test/java/com/coder/mall/order/AppTest.java b/mall/mall-order/src/test/java/com/coder/mall/order/AppTest.java
+deleted file mode 100644
+--- a/mall/mall-order/src/test/java/com/coder/mall/order/AppTest.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,38 +0,0 @@
+-package com.coder.mall.order;
+-
+-import junit.framework.Test;
+-import junit.framework.TestCase;
+-import junit.framework.TestSuite;
+-
+-/**
+- * Unit test for simple App.
+- */
+-public class AppTest 
+-    extends TestCase
+-{
+-    /**
+-     * Create the test case
+-     *
+-     * @param testName name of the test case
+-     */
+-    public AppTest( String testName )
+-    {
+-        super( testName );
+-    }
+-
+-    /**
+-     * @return the suite of tests being tested
+-     */
+-    public static Test suite()
+-    {
+-        return new TestSuite( AppTest.class );
+-    }
+-
+-    /**
+-     * Rigourous Test :-)
+-     */
+-    public void testApp()
+-    {
+-        assertTrue( true );
+-    }
+-}
+Index: mall/mall-gateway/src/main/resources/config/application.yaml
+===================================================================
+diff --git a/mall/mall-gateway/src/main/resources/config/application.yaml b/mall/mall-gateway/src/main/resources/config/application.yaml
+deleted file mode 100644
+--- a/mall/mall-gateway/src/main/resources/config/application.yaml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,53 +0,0 @@
+-server:
+-  port: 8000 # 指定启动端口
+-spring:
+-  cloud:
+-    gateway:
+-      routes: # 网关的路由规则
+-        - id: auth # 唯一标识这个路由
+-          uri: lb://mall-auth # 定义了请求将被路由到的目标服务地址，lb 表示负载均衡，nacos 来解析具体服务实例
+-          predicates: # 定义匹配规则，决定哪些请求会被路由到这个目标服务
+-            - Path=/auth/**
+-          filters:
+-            - StripPrefix=1 # 路由过滤器，去掉第一段前缀，例如，当请求路径为 /auth/verification/code/send 时，去掉第一个前缀部分后，实际传递给 mall-auth 服务的路径将变成 /verification/code/send
+-
+-        - id: test
+-          uri: lb://mall-test
+-          predicates:
+-            - Path=/test/**
+-          filters:
+-            - StripPrefix=1
+-
+-  data:
+-    redis:
+-      database: 0 # Redis 数据库索引（默认为 0）
+-      host: 114.55.129.110 # Redis 服务器地址
+-      port: 6379 # Redis 服务器连接端口
+-      password: 132133 # Redis 服务器连接密码（默认为空）
+-      timeout: 5s # 读超时时间
+-      connect-timeout: 5s # 链接超时时间
+-      lettuce:
+-        pool:
+-          max-active: 200 # 连接池最大连接数
+-          max-wait: -1ms # 连接池最大阻塞等待时间（使用负值表示没有限制）
+-          min-idle: 0 # 连接池中的最小空闲连接
+-          max-idle: 10 # 连接池中的最大空闲连接
+-
+-############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
+-sa-token:
+-  # token 名称（同时也是 cookie 名称）
+-  token-name: Authorization
+-  # token 前缀
+-  token-prefix: Bearer
+-  # token 有效期（单位：秒） 默认30天，-1 代表永久有效
+-  timeout: 2592000
+-  # token 最低活跃频率（单位：秒），如果 token 超过此时间没有访问系统就会被冻结，默认-1 代表不限制，永不冻结
+-  active-timeout: -1
+-  # 是否允许同一账号多地同时登录 （为 true 时允许一起登录, 为 false 时新登录挤掉旧登录）
+-  is-concurrent: true
+-  # 在多人登录同一账号时，是否共用一个 token （为 true 时所有登录共用一个 token, 为 false 时每次登录新建一个 token）
+-  is-share: true
+-  # token 风格（默认可取值：uuid、simple-uuid、random-32、random-64、random-128、tik）
+-  token-style: random-128
+-  # 是否输出操作日志
+-  is-log: true
+Index: mall/mall-user/src/main/java/com/coder/mall/user/domain/mapper/UsersMapper.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/domain/mapper/UsersMapper.java b/mall/mall-user/src/main/java/com/coder/mall/user/domain/mapper/UsersMapper.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/domain/mapper/UsersMapper.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,18 +0,0 @@
+-package com.coder.mall.user.domain.mapper;
+-
+-import com.coder.mall.user.domain.domain.Users;
+-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+-
+-/**
+-* @author Kevin
+-* @description 针对表【users(用户表)】的数据库操作Mapper
+-* @createDate 2025-02-02 21:11:25
+-* @Entity com.coder.mall.user.domain.domain.Users
+-*/
+-public interface UsersMapper extends BaseMapper<Users> {
+-
+-}
+-
+-
+-
+-
+Index: mall/.idea/MarsCodeWorkspaceAppSettings.xml
+===================================================================
+diff --git a/mall/.idea/MarsCodeWorkspaceAppSettings.xml b/mall/.idea/MarsCodeWorkspaceAppSettings.xml
+deleted file mode 100644
+--- a/mall/.idea/MarsCodeWorkspaceAppSettings.xml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,7 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="com.codeverse.userSettings.MarscodeWorkspaceAppSettingsState">
+-    <option name="ckgOperationStatus" value="SUCCESS" />
+-    <option name="progress" value="0.98630136" />
+-  </component>
+-</project>
+\ No newline at end of file
+Index: mall/pom.xml
+===================================================================
+diff --git a/mall/pom.xml b/mall/pom.xml
+deleted file mode 100644
+--- a/mall/pom.xml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,250 +0,0 @@
+-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+-    <modelVersion>4.0.0</modelVersion>
+-
+-    <!-- 继承父项目 -->
+-    <parent>
+-        <groupId>org.springframework.boot</groupId>
+-        <artifactId>spring-boot-starter-parent</artifactId>
+-        <version>3.0.2</version>
+-    </parent>
+-
+-    <groupId>com.coder</groupId>
+-    <artifactId>mall</artifactId>
+-    <version>1.0-SNAPSHOT</version>
+-
+-    <!-- 项目名称 -->
+-    <name>${project.artifactId}</name>
+-    <!-- 项目描述 -->
+-    <description>小哈书（仿小红书），基于 Spring Cloud Alibaba 微服务架构</description>
+-
+-    <!-- 多模块项目需要配置打包方式为 pom -->
+-    <packaging>pom</packaging>
+-
+-    <!-- 子模块管理 -->
+-    <modules>
+-        <!-- 平台基础设施层：封装一些常用功能，供各个业务线拿来即用 -->
+-        <module>mall-framework</module>
+-        <!-- 没用，瞎写的 -->
+-        <module>mall-test</module>
+-        <!-- 认证模块，包括验证码发送与登录认证，调用 user 模块来创建用户 -->
+-        <module>mall-auth</module>
+-        <!-- 用户模块 -->
+-        <module>mall-user</module>
+-        <!-- 网关 -->
+-        <module>mall-gateway</module>
+-        <!-- 对象存储 -->
+-        <module>mall-oss</module>
+-        <!-- 商品模块 -->
+-        <module>mall-product</module>
+-        <!-- 购物车模块 -->
+-        <module>mall-cart</module>
+-        <!-- 订单模块 -->
+-        <module>mall-order</module>
+-        <!-- 结算模块 -->
+-        <module>mall-checkout</module>
+-    </modules>
+-
+-    <properties>
+-        <!-- 项目版本号 -->
+-        <revision>0.0.1-SNAPSHOT</revision>
+-        <!-- JDK 版本 -->
+-        <java.version>17</java.version>
+-        <maven.compiler.source>${java.version}</maven.compiler.source>
+-        <maven.compiler.target>${java.version}</maven.compiler.target>
+-        <!-- 项目编码 -->
+-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+-        <!-- Maven 相关版本号 -->
+-        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+-        <!-- 依赖包版本 -->
+-        <lombok.version>1.18.30</lombok.version>
+-        <spring-boot.version>3.0.2</spring-boot.version>
+-        <spring-cloud-alibaba.version>2022.0.0.0</spring-cloud-alibaba.version>
+-        <spring-cloud.version>2022.0.0</spring-cloud.version>
+-        <jackson.version>2.16.1</jackson.version>
+-        <mysql-connector-java.version>8.0.29</mysql-connector-java.version>
+-        <druid.version>1.2.23</druid.version>
+-        <mybatis-generator-maven-plugin.version>1.3.5</mybatis-generator-maven-plugin.version>
+-        <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
+-        <sa-token.version>1.38.0</sa-token.version>
+-        <guava.version>33.0.0-jre</guava.version>
+-        <hutool.version>5.8.26</hutool.version>
+-        <commons-lang3.version>3.12.0</commons-lang3.version>
+-        <dysmsapi.version>2.0.23</dysmsapi.version>
+-        <nacos-config.version>0.3.0-RC</nacos-config.version>
+-        <transmittable-thread-local.version>2.14.2</transmittable-thread-local.version>
+-        <minio.version>8.2.1</minio.version>
+-        <aliyun-sdk-oss.version>3.17.4</aliyun-sdk-oss.version>
+-        <jaxb-api.version>2.3.1</jaxb-api.version>
+-        <activation.version>1.1.1</activation.version>
+-        <jaxb-runtime.version>2.3.3</jaxb-runtime.version>
+-        <feign-form.version>3.8.0</feign-form.version>
+-        <caffeine.version>3.1.8</caffeine.version>
+-        <rocketmq.version>2.2.3</rocketmq.version>
+-        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
+-        <knife4j.version>4.1.0</knife4j.version>
+-    </properties>
+-
+-    <!-- 统一依赖管理 -->
+-    <dependencyManagement>
+-        <dependencies>
+-            <!-- 避免编写那些冗余的 Java 样板式代码，如 get、set 等 -->
+-            <dependency>
+-                <groupId>org.projectlombok</groupId>
+-                <artifactId>lombok</artifactId>
+-                <version>${lombok.version}</version>
+-            </dependency>
+-
+-            <!-- 相关工具类 -->
+-            <dependency>
+-                <groupId>com.google.guava</groupId>
+-                <artifactId>guava</artifactId>
+-                <version>${guava.version}</version>
+-            </dependency>
+-
+-            <dependency>
+-                <groupId>cn.hutool</groupId>
+-                <artifactId>hutool-all</artifactId>
+-                <version>${hutool.version}</version>
+-            </dependency>
+-
+-            <dependency>
+-                <groupId>org.apache.commons</groupId>
+-                <artifactId>commons-lang3</artifactId>
+-                <version>${commons-lang3.version}</version>
+-            </dependency>
+-
+-            <!-- Jackson -->
+-            <dependency>
+-                <groupId>com.fasterxml.jackson.core</groupId>
+-                <artifactId>jackson-databind</artifactId>
+-                <version>${jackson.version}</version>
+-            </dependency>
+-
+-            <dependency>
+-                <groupId>com.fasterxml.jackson.core</groupId>
+-                <artifactId>jackson-core</artifactId>
+-                <version>${jackson.version}</version>
+-            </dependency>
+-
+-            <!-- Spring Boot 官方依赖管理 -->
+-            <dependency>
+-                <groupId>org.springframework.boot</groupId>
+-                <artifactId>spring-boot-dependencies</artifactId>
+-                <version>${spring-boot.version}</version>
+-<!--                <type>pom</type>-->
+-<!--                <scope>import</scope>-->
+-            </dependency>
+-
+-            <!-- Spring Cloud Alibaba 官方依赖管理 -->
+-            <dependency>
+-                <groupId>com.alibaba.cloud</groupId>
+-                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+-                <version>${spring-cloud-alibaba.version}</version>
+-                <type>pom</type>
+-                <scope>import</scope>
+-            </dependency>
+-
+-            <!-- Spring Cloud 官方依赖管理 -->
+-            <dependency>
+-                <groupId>org.springframework.cloud</groupId>
+-                <artifactId>spring-cloud-dependencies</artifactId>
+-                <version>${spring-cloud.version}</version>
+-                <type>pom</type>
+-                <scope>import</scope>
+-            </dependency>
+-
+-            <!-- Mybatis -->
+-            <dependency>
+-                <groupId>org.mybatis.spring.boot</groupId>
+-                <artifactId>mybatis-spring-boot-starter</artifactId>
+-                <version>${spring-boot.version}</version>
+-            </dependency>
+-
+-            <!-- MybatisPlus -->
+-            <dependency>
+-                <groupId>com.baomidou</groupId>
+-                <artifactId>mybatis-plus-boot-starter</artifactId>
+-                <version>${mybatis-plus.version}</version>
+-            </dependency>
+-
+-            <!-- MySQL 驱动 -->
+-            <dependency>
+-                <groupId>mysql</groupId>
+-                <artifactId>mysql-connector-java</artifactId>
+-                <version>${mysql-connector-java.version}</version>
+-            </dependency>
+-
+-            <!-- Druid 数据库连接池 -->
+-            <dependency>
+-                <groupId>com.alibaba</groupId>
+-                <artifactId>druid-spring-boot-3-starter</artifactId>
+-                <version>${druid.version}</version>
+-            </dependency>
+-
+-            <!-- Sa-Token 权限认证 -->
+-            <dependency>
+-                <groupId>cn.dev33</groupId>
+-                <artifactId>sa-token-spring-boot3-starter</artifactId>
+-                <version>${sa-token.version}</version>
+-            </dependency>
+-
+-            <!-- Sa-Token 整合 Redis （使用 jackson 序列化方式） -->
+-            <dependency>
+-                <groupId>cn.dev33</groupId>
+-                <artifactId>sa-token-redis-jackson</artifactId>
+-                <version>${sa-token.version}</version>
+-            </dependency>
+-
+-            <!-- Sa-Token 权限认证，在线文档：https://sa-token.cc -->
+-            <dependency>
+-                <groupId>cn.dev33</groupId>
+-                <artifactId>sa-token-reactor-spring-boot3-starter</artifactId>
+-                <version>${sa-token.version}</version>
+-            </dependency>
+-
+-            <!-- 阿里云短信发送 -->
+-            <dependency>
+-                <groupId>com.aliyun</groupId>
+-                <artifactId>dysmsapi20170525</artifactId>
+-                <version>${dysmsapi.version}</version>
+-            </dependency>
+-
+-            <!-- Nacos 配置中心 -->
+-            <dependency>
+-                <groupId>com.alibaba.boot</groupId>
+-                <artifactId>nacos-config-spring-boot-starter</artifactId>
+-                <version>${nacos-config.version}</version>
+-            </dependency>
+-
+-            <!-- 阿里 TransmittableThreadLocal，解决使用线程池或异步执行框架时，InheritableThreadLocal 不能传递父子线程上下文的问题 -->
+-            <dependency>
+-                <groupId>com.alibaba</groupId>
+-                <artifactId>transmittable-thread-local</artifactId>
+-                <version>${transmittable-thread-local.version}</version>
+-            </dependency>
+-
+-            <!-- 对象存储 Minio -->
+-            <dependency>
+-                <groupId>io.minio</groupId>
+-                <artifactId>minio</artifactId>
+-                <version>${minio.version}</version>
+-            </dependency>
+-
+-            <!-- Feign 表单提交 -->
+-            <dependency>
+-                <groupId>io.github.openfeign.form</groupId>
+-                <artifactId>feign-form</artifactId>
+-                <version>${feign-form.version}</version>
+-            </dependency>
+-
+-            <!--knife4j文档-->
+-            <!--官方文档：https://doc.xiaominfo.com/docs/quick-start -->
+-            <dependency>
+-                <groupId>com.github.xiaoymin</groupId>
+-                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+-                <version>${knife4j.version}</version>
+-            </dependency>
+-        </dependencies>
+-    </dependencyManagement>
+-</project>
+Index: mall/mall-gateway/src/main/java/com/coder/mall/gateway/MallGatewayApplication.java
+===================================================================
+diff --git a/mall/mall-gateway/src/main/java/com/coder/mall/gateway/MallGatewayApplication.java b/mall/mall-gateway/src/main/java/com/coder/mall/gateway/MallGatewayApplication.java
+deleted file mode 100644
+--- a/mall/mall-gateway/src/main/java/com/coder/mall/gateway/MallGatewayApplication.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,11 +0,0 @@
+-package com.coder.mall.gateway;
+-
+-import org.springframework.boot.SpringApplication;
+-import org.springframework.boot.autoconfigure.SpringBootApplication;
+-
+-@SpringBootApplication
+-public class MallGatewayApplication {
+-    public static void main(String[] args) {
+-        SpringApplication.run(MallGatewayApplication.class, args);
+-    }
+-}
+Index: mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/exception/BaseExceptionInterface.java
+===================================================================
+diff --git a/mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/exception/BaseExceptionInterface.java b/mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/exception/BaseExceptionInterface.java
+deleted file mode 100644
+--- a/mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/exception/BaseExceptionInterface.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,12 +0,0 @@
+-package com.coder.framework.common.exception;
+-
+-import lombok.Getter;
+-
+-public interface BaseExceptionInterface {
+-
+-    // 获取异常码
+-    String getErrorCode();
+-
+-    // 获取异常信息
+-    String getErrorMessage();
+-}
+\ No newline at end of file
+Index: mall/mall-user/src/main/java/com/coder/mall/user/enums/ResultCode.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/enums/ResultCode.java b/mall/mall-user/src/main/java/com/coder/mall/user/enums/ResultCode.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/enums/ResultCode.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,28 +0,0 @@
+-package com.coder.mall.user.enums;
+-
+-import lombok.Getter;
+-
+-@Getter
+-public enum ResultCode {
+-
+-    PHONE_EMPTY(502, "手机号码为空"),
+-    CODE_EMPTY(503, "验证码为空"),
+-    SEND_SMS_TOO_OFTEN(504, "验证法发送过于频繁"),
+-    CODE_EXPIRED(505, "验证码已过期"),
+-    CODE_ERROR(506, "验证码错误"),
+-    ACCOUNT_DISABLED_ERROR(507, "该用户已被禁用"),
+-    ACCOUNT_NOT_EXIST_ERROR(508, "该用户不存在"),
+-    ACCOUNT_NOT_LOGIN_ERROR(509, "用户未登录"),
+-    ACCOUNT_EXIST_ERROR(510, "该用户已存在"),
+-
+-    TOKEN_EXPIRED(610, "token已过期"),
+-    TOKEN_INVALID(602, "token非法");
+-
+-    private final Integer code;
+-    private final String message;
+-
+-    ResultCode(Integer code, String message) {
+-        this.code = code;
+-        this.message = message;
+-    }
+-}
+Index: mall/mall-framework/mall-spring-boot-starter-jackson/pom.xml
+===================================================================
+diff --git a/mall/mall-framework/mall-spring-boot-starter-jackson/pom.xml b/mall/mall-framework/mall-spring-boot-starter-jackson/pom.xml
+deleted file mode 100644
+--- a/mall/mall-framework/mall-spring-boot-starter-jackson/pom.xml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,31 +0,0 @@
+-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+-    <modelVersion>4.0.0</modelVersion>
+-
+-    <!-- 指定父项目 -->
+-    <parent>
+-        <groupId>com.coder</groupId>
+-        <artifactId>mall-framework</artifactId>
+-        <version>1.0-SNAPSHOT</version>
+-    </parent>
+-
+-    <!-- 指定打包方式 -->
+-    <packaging>jar</packaging>
+-
+-    <artifactId>mall-spring-boot-starter-jackson</artifactId>
+-    <name>${project.artifactId}</name>
+-    <description>自定义 Jackson 配置: 支持 Java 8 新的日期 API，如 LocalDateTime、LocalDate 等等</description>
+-
+-    <dependencies>
+-        <dependency>
+-            <groupId>com.coder</groupId>
+-            <artifactId>mall-common</artifactId>
+-            <version>1.0-SNAPSHOT</version>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>org.springframework.boot</groupId>
+-            <artifactId>spring-boot-autoconfigure</artifactId>
+-        </dependency>
+-    </dependencies>
+-</project>
+Index: mall/mall-framework/mall-spring-boot-starter-jackson/src/main/java/com/coder/framework/jackson/config/JacksonAutoConfiguration.java
+===================================================================
+diff --git a/mall/mall-framework/mall-spring-boot-starter-jackson/src/main/java/com/coder/framework/jackson/config/JacksonAutoConfiguration.java b/mall/mall-framework/mall-spring-boot-starter-jackson/src/main/java/com/coder/framework/jackson/config/JacksonAutoConfiguration.java
+deleted file mode 100644
+--- a/mall/mall-framework/mall-spring-boot-starter-jackson/src/main/java/com/coder/framework/jackson/config/JacksonAutoConfiguration.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,65 +0,0 @@
+-package com.coder.framework.jackson.config;
+-
+-import com.coder.framework.common.constant.DateConstants;
+-import com.coder.framework.common.util.JsonUtils;
+-import com.fasterxml.jackson.databind.DeserializationFeature;
+-import com.fasterxml.jackson.databind.ObjectMapper;
+-import com.fasterxml.jackson.databind.SerializationFeature;
+-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+-import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
+-import com.fasterxml.jackson.datatype.jsr310.deser.YearMonthDeserializer;
+-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+-import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
+-import com.fasterxml.jackson.datatype.jsr310.ser.YearMonthSerializer;
+-import org.springframework.boot.autoconfigure.AutoConfiguration;
+-import org.springframework.context.annotation.Bean;
+-
+-import java.time.LocalDate;
+-import java.time.LocalDateTime;
+-import java.time.LocalTime;
+-import java.time.YearMonth;
+-import java.util.TimeZone;
+-
+-@AutoConfiguration
+-public class JacksonAutoConfiguration {
+-
+-    @Bean
+-    public ObjectMapper objectMapper() {
+-        // 初始化一个 ObjectMapper 对象，用于自定义 Jackson 的行为
+-        ObjectMapper objectMapper = new ObjectMapper();
+-
+-        // 忽略未知属性
+-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+-        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+-        // 设置凡是为 null 的字段，返参中均不返回，请根据项目组约定是否开启
+-        // objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+-
+-        // 设置时区
+-        objectMapper.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+-
+-        // JavaTimeModule 用于指定序列化和反序列化规则
+-        JavaTimeModule javaTimeModule = new JavaTimeModule();
+-
+-        // 支持 LocalDateTime、LocalDate、LocalTime
+-        javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateConstants.DATE_FORMAT_Y_M_D_H_M_S));
+-        javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateConstants.DATE_FORMAT_Y_M_D_H_M_S));
+-        javaTimeModule.addSerializer(LocalDate.class, new LocalDateSerializer(DateConstants.DATE_FORMAT_Y_M_D));
+-        javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateConstants.DATE_FORMAT_Y_M_D));
+-        javaTimeModule.addSerializer(LocalTime.class, new LocalTimeSerializer(DateConstants.DATE_FORMAT_H_M_S));
+-        javaTimeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateConstants.DATE_FORMAT_H_M_S));
+-        // 支持 YearMonth
+-        javaTimeModule.addSerializer(YearMonth.class, new YearMonthSerializer(DateConstants.DATE_FORMAT_Y_M));
+-        javaTimeModule.addDeserializer(YearMonth.class, new YearMonthDeserializer(DateConstants.DATE_FORMAT_Y_M));
+-
+-        objectMapper.registerModule(javaTimeModule);
+-
+-        // 初始化 JsonUtils 中的 ObjectMapper
+-        JsonUtils.init(objectMapper);
+-
+-        return objectMapper;
+-    }
+-
+-}
+\ No newline at end of file
+Index: mall/mall-framework/mall-spring-boot-starter-biz-context/src/main/java/com/coder/framework/biz/context/config/ContextAutoConfiguration.java
+===================================================================
+diff --git a/mall/mall-framework/mall-spring-boot-starter-biz-context/src/main/java/com/coder/framework/biz/context/config/ContextAutoConfiguration.java b/mall/mall-framework/mall-spring-boot-starter-biz-context/src/main/java/com/coder/framework/biz/context/config/ContextAutoConfiguration.java
+deleted file mode 100644
+--- a/mall/mall-framework/mall-spring-boot-starter-biz-context/src/main/java/com/coder/framework/biz/context/config/ContextAutoConfiguration.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,17 +0,0 @@
+-package com.coder.framework.biz.context.config;
+-
+-import com.coder.framework.biz.context.filter.HeaderUserId2ContextFilter;
+-import org.springframework.boot.autoconfigure.AutoConfiguration;
+-import org.springframework.boot.web.servlet.FilterRegistrationBean;
+-import org.springframework.context.annotation.Bean;
+-
+-@AutoConfiguration
+-public class ContextAutoConfiguration {
+-
+-    @Bean
+-    public FilterRegistrationBean<HeaderUserId2ContextFilter> filterFilterRegistrationBean() {
+-        HeaderUserId2ContextFilter filter = new HeaderUserId2ContextFilter();
+-        FilterRegistrationBean<HeaderUserId2ContextFilter> bean = new FilterRegistrationBean<>(filter);
+-        return bean;
+-    }
+-}
+\ No newline at end of file
+Index: mall/mall-checkout/src/test/java/com/coder/mall/checkout/AppTest.java
+===================================================================
+diff --git a/mall/mall-checkout/src/test/java/com/coder/mall/checkout/AppTest.java b/mall/mall-checkout/src/test/java/com/coder/mall/checkout/AppTest.java
+deleted file mode 100644
+--- a/mall/mall-checkout/src/test/java/com/coder/mall/checkout/AppTest.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,38 +0,0 @@
+-package com.coder.mall.checkout;
+-
+-import junit.framework.Test;
+-import junit.framework.TestCase;
+-import junit.framework.TestSuite;
+-
+-/**
+- * Unit test for simple App.
+- */
+-public class AppTest 
+-    extends TestCase
+-{
+-    /**
+-     * Create the test case
+-     *
+-     * @param testName name of the test case
+-     */
+-    public AppTest( String testName )
+-    {
+-        super( testName );
+-    }
+-
+-    /**
+-     * @return the suite of tests being tested
+-     */
+-    public static Test suite()
+-    {
+-        return new TestSuite( AppTest.class );
+-    }
+-
+-    /**
+-     * Rigourous Test :-)
+-     */
+-    public void testApp()
+-    {
+-        assertTrue( true );
+-    }
+-}
+Index: mall/mall-user/src/test/java/com/coder/mall/user/testRedis.java
+===================================================================
+diff --git a/mall/mall-user/src/test/java/com/coder/mall/user/testRedis.java b/mall/mall-user/src/test/java/com/coder/mall/user/testRedis.java
+deleted file mode 100644
+--- a/mall/mall-user/src/test/java/com/coder/mall/user/testRedis.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,18 +0,0 @@
+-package com.coder.mall.user;
+-
+-import org.junit.jupiter.api.Test;
+-import org.springframework.beans.factory.annotation.Autowired;
+-import org.springframework.boot.test.context.SpringBootTest;
+-import org.springframework.data.redis.core.StringRedisTemplate;
+-
+-@SpringBootTest
+-public class testRedis {
+-
+-    @Autowired
+-    private StringRedisTemplate stringRedisTemplate;
+-
+-    @Test
+-    public void testString() {
+-        stringRedisTemplate.delete("l1");
+-    }
+-}
+Index: mall/mall-product/src/test/java/com/coder/mall/product/AppTest.java
+===================================================================
+diff --git a/mall/mall-product/src/test/java/com/coder/mall/product/AppTest.java b/mall/mall-product/src/test/java/com/coder/mall/product/AppTest.java
+deleted file mode 100644
+--- a/mall/mall-product/src/test/java/com/coder/mall/product/AppTest.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,38 +0,0 @@
+-package com.coder.mall.product;
+-
+-import junit.framework.Test;
+-import junit.framework.TestCase;
+-import junit.framework.TestSuite;
+-
+-/**
+- * Unit test for simple App.
+- */
+-public class AppTest 
+-    extends TestCase
+-{
+-    /**
+-     * Create the test case
+-     *
+-     * @param testName name of the test case
+-     */
+-    public AppTest( String testName )
+-    {
+-        super( testName );
+-    }
+-
+-    /**
+-     * @return the suite of tests being tested
+-     */
+-    public static Test suite()
+-    {
+-        return new TestSuite( AppTest.class );
+-    }
+-
+-    /**
+-     * Rigourous Test :-)
+-     */
+-    public void testApp()
+-    {
+-        assertTrue( true );
+-    }
+-}
+Index: mall/mall-user/src/main/java/com/coder/mall/user/custom/converter/StringToBaseEnumConverterFactory.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/custom/converter/StringToBaseEnumConverterFactory.java b/mall/mall-user/src/main/java/com/coder/mall/user/custom/converter/StringToBaseEnumConverterFactory.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/custom/converter/StringToBaseEnumConverterFactory.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,25 +0,0 @@
+-package com.coder.mall.user.custom.converter;
+-
+-import com.coder.mall.user.enums.BaseEnum;
+-import org.springframework.core.convert.converter.Converter;
+-import org.springframework.core.convert.converter.ConverterFactory;
+-import org.springframework.stereotype.Component;
+-
+-@Component
+-public class StringToBaseEnumConverterFactory implements ConverterFactory<String, BaseEnum> {
+-    @Override
+-    public <T extends BaseEnum> Converter<String, T> getConverter(Class<T> targetType) {
+-        return new Converter<String, T>() {
+-            @Override
+-            public T convert(String code) {
+-                T[] enumConstants = targetType.getEnumConstants();
+-                for (T eumConstant : enumConstants) {
+-                    if (eumConstant.getCode().toString().equals(code)) {
+-                        return eumConstant;
+-                    }
+-                }
+-                throw new IllegalArgumentException();
+-            }
+-        };
+-    }
+-}
+Index: mall/.idea/dataSources.xml
+===================================================================
+diff --git a/mall/.idea/dataSources.xml b/mall/.idea/dataSources.xml
+deleted file mode 100644
+--- a/mall/.idea/dataSources.xml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,17 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+-    <data-source source="LOCAL" name="coder" uuid="fb483dd5-3aba-4df3-9300-5abdb940bae3">
+-      <driver-ref>mysql.8</driver-ref>
+-      <synchronize>true</synchronize>
+-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+-      <jdbc-url>jdbc:mysql://114.55.129.110:3306</jdbc-url>
+-      <jdbc-additional-properties>
+-        <property name="com.intellij.clouds.kubernetes.db.host.port" />
+-        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
+-        <property name="com.intellij.clouds.kubernetes.db.container.port" />
+-      </jdbc-additional-properties>
+-      <working-dir>$ProjectFileDir$</working-dir>
+-    </data-source>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: mall/mall-user/src/main/java/com/coder/mall/user/App.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/App.java b/mall/mall-user/src/main/java/com/coder/mall/user/App.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/App.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,13 +0,0 @@
+-package com.coder.mall.user;
+-
+-import org.mybatis.spring.annotation.MapperScan;
+-import org.springframework.boot.SpringApplication;
+-import org.springframework.boot.autoconfigure.SpringBootApplication;
+-
+-@SpringBootApplication
+-@MapperScan("com.coder.mall.user.domain.mapper")
+-public class App {
+-    public static void main(String[] args) {
+-        SpringApplication.run(App.class, args);
+-    }
+-}
+Index: mall/mall-user/src/main/java/com/coder/mall/user/enums/BaseEnum.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/enums/BaseEnum.java b/mall/mall-user/src/main/java/com/coder/mall/user/enums/BaseEnum.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/enums/BaseEnum.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,8 +0,0 @@
+-package com.coder.mall.user.enums;
+-
+-public interface BaseEnum {
+-
+-    Integer getCode();
+-
+-    String getName();
+-}
+Index: mall/mall-auth/src/main/java/com/coder/mall/auth/App.java
+===================================================================
+diff --git a/mall/mall-auth/src/main/java/com/coder/mall/auth/App.java b/mall/mall-auth/src/main/java/com/coder/mall/auth/App.java
+deleted file mode 100644
+--- a/mall/mall-auth/src/main/java/com/coder/mall/auth/App.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,13 +0,0 @@
+-package com.coder.mall.auth;
+-
+-/**
+- * Hello world!
+- *
+- */
+-public class App 
+-{
+-    public static void main( String[] args )
+-    {
+-        System.out.println( "Hello World!" );
+-    }
+-}
+Index: mall/mall-user/src/main/java/com/coder/mall/user/service/impl/SmsServiceImpl.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/service/impl/SmsServiceImpl.java b/mall/mall-user/src/main/java/com/coder/mall/user/service/impl/SmsServiceImpl.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/service/impl/SmsServiceImpl.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,30 +0,0 @@
+-package com.coder.mall.user.service.impl;
+-
+-
+-import com.aliyun.dysmsapi20170525.Client;
+-import com.aliyun.dysmsapi20170525.models.SendSmsRequest;
+-import com.coder.mall.user.service.SmsService;
+-import org.springframework.beans.factory.annotation.Autowired;
+-import org.springframework.stereotype.Service;
+-
+-@Service
+-public class SmsServiceImpl implements SmsService {
+-
+-    @Autowired
+-    private Client client;
+-
+-    @Override
+-    public void sendSms(String mobile, String code) {
+-        SendSmsRequest smsRequest = new SendSmsRequest();
+-        smsRequest.setPhoneNumbers(mobile);//发送验证码的手机号
+-        smsRequest.setSignName("阿里云短信测试");//发送验证码的签名（即短信开头的内容）
+-        //设置短信内容模版
+-        smsRequest.setTemplateCode("SMS_154950909");
+-        smsRequest.setTemplateParam("{\"code\":\"" + code + "\"}");
+-        try {
+-            client.sendSms(smsRequest);
+-        } catch (Exception e) {
+-            throw new RuntimeException(e);
+-        }
+-    }
+-}
+Index: mall/mall-gateway/src/main/java/com/coder/mall/gateway/filter/AddUserId2HeaderFilter.java
+===================================================================
+diff --git a/mall/mall-gateway/src/main/java/com/coder/mall/gateway/filter/AddUserId2HeaderFilter.java b/mall/mall-gateway/src/main/java/com/coder/mall/gateway/filter/AddUserId2HeaderFilter.java
+deleted file mode 100644
+--- a/mall/mall-gateway/src/main/java/com/coder/mall/gateway/filter/AddUserId2HeaderFilter.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,70 +0,0 @@
+-package com.coder.mall.gateway.filter;
+-
+-import cn.dev33.satoken.stp.StpUtil;
+-import cn.hutool.core.collection.CollUtil;
+-import com.coder.framework.common.constant.GlobalConstants;
+-import com.coder.mall.gateway.constant.RedisKeyConstants;
+-import jakarta.annotation.Resource;
+-import lombok.extern.slf4j.Slf4j;
+-import org.springframework.cloud.gateway.filter.GatewayFilterChain;
+-import org.springframework.cloud.gateway.filter.GlobalFilter;
+-import org.springframework.data.redis.core.RedisTemplate;
+-import org.springframework.stereotype.Component;
+-import org.springframework.web.server.ServerWebExchange;
+-import reactor.core.publisher.Mono;
+-
+-import java.util.List;
+-import java.util.Objects;
+-
+-@Component
+-@Slf4j
+-public class AddUserId2HeaderFilter implements GlobalFilter {
+-
+-    @Resource
+-    private RedisTemplate<String, Object> redisTemplate;
+-
+-    /**
+-     * Header 头中 Token 的 Key
+-     */
+-    private static final String TOKEN_HEADER_KEY = "Authorization";
+-
+-    /**
+-     * Token 前缀
+-     */
+-    private static final String TOKEN_HEADER_VALUE_PREFIX = "Bearer ";
+-
+-    @Override
+-    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+-        log.info("==================> TokenConvertFilter");
+-
+-        // 从请求头中获取 Token 数据
+-        List<String> tokenList = exchange.getRequest().getHeaders().get(TOKEN_HEADER_KEY);
+-
+-        if (CollUtil.isEmpty(tokenList)) {
+-            // 若请求头中未携带 Token，则直接放行
+-            return chain.filter(exchange);
+-        }
+-
+-        // 获取 Token 值
+-        String tokenValue = tokenList.get(0);
+-        // 将 Token 前缀去除
+-        String token = tokenValue.replace(TOKEN_HEADER_VALUE_PREFIX, "");
+-
+-        // 构建 Redis Key
+-        String tokenRedisKey = RedisKeyConstants.SA_TOKEN_TOKEN_KEY_PREFIX + token;
+-        // 查询 Redis, 获取用户 ID
+-        Integer userId = (Integer) redisTemplate.opsForValue().get(tokenRedisKey);
+-
+-        if (Objects.isNull(userId)) {
+-            // 若没有登录，则直接放行
+-            return chain.filter(exchange);
+-        }
+-
+-        log.info("## 当前登录的用户 ID: {}", userId);
+-
+-        ServerWebExchange newExchange = exchange.mutate()
+-                .request(builder -> builder.header(GlobalConstants.USER_ID, String.valueOf(userId))) // 将用户 ID 设置到请求头中
+-                .build();
+-        return chain.filter(newExchange);
+-    }
+-}
+\ No newline at end of file
+Index: mall/mall-test/src/main/java/com/coder/mall/test/config/RedisTemplateConfig.java
+===================================================================
+diff --git a/mall/mall-test/src/main/java/com/coder/mall/test/config/RedisTemplateConfig.java b/mall/mall-test/src/main/java/com/coder/mall/test/config/RedisTemplateConfig.java
+deleted file mode 100644
+--- a/mall/mall-test/src/main/java/com/coder/mall/test/config/RedisTemplateConfig.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,31 +0,0 @@
+-package com.coder.mall.test.config;
+-
+-import org.springframework.context.annotation.Bean;
+-import org.springframework.context.annotation.Configuration;
+-import org.springframework.data.redis.connection.RedisConnectionFactory;
+-import org.springframework.data.redis.core.RedisTemplate;
+-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+-import org.springframework.data.redis.serializer.StringRedisSerializer;
+-
+-@Configuration
+-public class RedisTemplateConfig {
+-
+-    @Bean
+-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
+-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+-        // 设置 RedisTemplate 的连接工厂
+-        redisTemplate.setConnectionFactory(connectionFactory);
+-
+-        // 使用 StringRedisSerializer 来序列化和反序列化 redis 的 key 值，确保 key 是可读的字符串
+-        redisTemplate.setKeySerializer(new StringRedisSerializer());
+-        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+-
+-        // 使用 Jackson2JsonRedisSerializer 来序列化和反序列化 redis 的 value 值, 确保存储的是 JSON 格式
+-        Jackson2JsonRedisSerializer<Object> serializer = new Jackson2JsonRedisSerializer<>(Object.class);
+-        redisTemplate.setValueSerializer(serializer);
+-        redisTemplate.setHashValueSerializer(serializer);
+-
+-        redisTemplate.afterPropertiesSet();
+-        return redisTemplate;
+-    }
+-}
+Index: mall/mall-gateway/src/main/java/com/coder/mall/gateway/auth/SaTokenConfigure.java
+===================================================================
+diff --git a/mall/mall-gateway/src/main/java/com/coder/mall/gateway/auth/SaTokenConfigure.java b/mall/mall-gateway/src/main/java/com/coder/mall/gateway/auth/SaTokenConfigure.java
+deleted file mode 100644
+--- a/mall/mall-gateway/src/main/java/com/coder/mall/gateway/auth/SaTokenConfigure.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,61 +0,0 @@
+-package com.coder.mall.gateway.auth;
+-
+-import cn.dev33.satoken.exception.NotLoginException;
+-import cn.dev33.satoken.exception.NotPermissionException;
+-import cn.dev33.satoken.exception.NotRoleException;
+-import cn.dev33.satoken.reactor.filter.SaReactorFilter;
+-import cn.dev33.satoken.router.SaRouter;
+-import cn.dev33.satoken.stp.StpUtil;
+-import cn.dev33.satoken.util.SaResult;
+-import org.springframework.context.annotation.Bean;
+-import org.springframework.context.annotation.Configuration;
+-
+-/**
+- * [Sa-Token 权限认证] 配置类
+- * @author click33
+- */
+-@Configuration
+-public class SaTokenConfigure {
+-    // 注册 Sa-Token全局过滤器
+-    @Bean
+-    public SaReactorFilter getSaReactorFilter() {
+-        return new SaReactorFilter()
+-                // 拦截地址
+-                .addInclude("/**")    /* 拦截全部path */
+-                // 鉴权方法：每次访问进入
+-                .setAuth(obj -> {
+-                    // 登录校验
+-                    SaRouter.notMatch("/**") // 拦截所有路由
+-                            .notMatch("/auth/user/login") // 排除登录接口
+-                            .notMatch("/auth/verification/code/send") // 排除验证码发送接口
+-                            .check(r -> StpUtil.checkLogin()) // 校验是否登录
+-                            // TODO 排除掉登录所需的接口
+-                    ;
+-
+-                    // 权限认证 -- 不同模块, 校验不同权限
+-                    // TODO 调用这里的 url 时，首先会执行 StpInterfaceImpl 中的获取权限列表，检验此用户有无权限
+-//                     SaRouter.match("/haha/**", r -> StpUtil.checkPermission("test"));
+-                    // TODO 同理，这个会执行获取 Role 列表，看用户有无担任角色
+-//                     SaRouter.match("/admin/**", r -> StpUtil.checkRole("admin"));
+-                    // SaRouter.match("/goods/**", r -> StpUtil.checkPermission("goods"));
+-                    // SaRouter.match("/orders/**", r -> StpUtil.checkPermission("orders"));
+-
+-                    // 更多匹配 ...  */
+-                })
+-                // 异常处理方法：每次setAuth函数出现异常时进入
+-                .setError(e -> {
+-                    // return SaResult.error(e.getMessage());
+-                    // 手动抛出异常，抛给全局异常处理器
+-                    if (e instanceof NotLoginException) { // 未登录异常
+-                        throw new NotLoginException(e.getMessage(), null, null);
+-                    } else if (e instanceof NotPermissionException || e instanceof NotRoleException) { // 权限不足，或不具备角色，统一抛出权限不足异常
+-                        throw new NotPermissionException(e.getMessage());
+-                    } else { // 其他异常，则抛出一个运行时异常
+-                        throw new RuntimeException(e.getMessage());
+-                    }
+-                })
+-                ;
+-    }
+-}
+-
+-
+Index: mall/mall-test/pom.xml
+===================================================================
+diff --git a/mall/mall-test/pom.xml b/mall/mall-test/pom.xml
+deleted file mode 100644
+--- a/mall/mall-test/pom.xml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,65 +0,0 @@
+-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+-    <modelVersion>4.0.0</modelVersion>
+-    <parent>
+-        <groupId>com.coder</groupId>
+-        <artifactId>mall</artifactId>
+-        <version>1.0-SNAPSHOT</version>
+-    </parent>
+-
+-    <groupId>com.coder.mall.test</groupId>
+-    <artifactId>mall-test</artifactId>
+-    <packaging>jar</packaging>
+-
+-    <name>mall-test</name>
+-    <url>http://maven.apache.org</url>
+-
+-    <properties>
+-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+-    </properties>
+-
+-    <dependencies>
+-
+-        <!-- Spring Boot Starter for Redis -->
+-        <dependency>
+-            <groupId>org.springframework.boot</groupId>
+-            <artifactId>spring-boot-starter-data-redis</artifactId>
+-        </dependency>
+-
+-        <!-- Spring Boot Autoconfigure for the Starter -->
+-        <dependency>
+-            <groupId>org.springframework.boot</groupId>
+-            <artifactId>spring-boot-autoconfigure</artifactId>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>org.springframework.boot</groupId>
+-            <artifactId>spring-boot-starter-web</artifactId>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>com.coder</groupId>
+-            <artifactId>mall-spring-boot-starter-biz-operationlog</artifactId>
+-            <version>1.0-SNAPSHOT</version>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>com.coder</groupId>
+-            <artifactId>mall-spring-boot-starter-jackson</artifactId>
+-            <version>1.0-SNAPSHOT</version>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>com.coder</groupId>
+-            <artifactId>mall-common</artifactId>
+-            <version>1.0-SNAPSHOT</version>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>junit</groupId>
+-            <artifactId>junit</artifactId>
+-            <version>3.8.1</version>
+-            <scope>test</scope>
+-        </dependency>
+-    </dependencies>
+-</project>
+Index: mall/.idea/.gitignore
+===================================================================
+diff --git a/mall/.idea/.gitignore b/mall/.idea/.gitignore
+deleted file mode 100644
+--- a/mall/.idea/.gitignore	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,8 +0,0 @@
+-# 默认忽略的文件
+-/shelf/
+-/workspace.xml
+-# 基于编辑器的 HTTP 客户端请求
+-/httpRequests/
+-# Datasource local storage ignored files
+-/dataSources/
+-/dataSources.local.xml
+Index: mall/mall-framework/mall-common/README.md
+===================================================================
+diff --git a/mall/mall-framework/mall-common/README.md b/mall/mall-framework/mall-common/README.md
+deleted file mode 100644
+--- a/mall/mall-framework/mall-common/README.md	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,4 +0,0 @@
+-## 本模块为基础模块，包括基本异常和Response
+-## 用法
+-### Response:
+-统一使用 `Response.success()` 方法 和 `Response.fail()` 方法来返回结果。
+\ No newline at end of file
+Index: mall/mall-user/src/main/java/com/coder/mall/user/controller/UserController.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/controller/UserController.java b/mall/mall-user/src/main/java/com/coder/mall/user/controller/UserController.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/controller/UserController.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,77 +0,0 @@
+-package com.coder.mall.user.controller;
+-
+-import com.coder.framework.biz.context.holder.LoginUserContextHolder;
+-import com.coder.framework.common.response.Response;
+-import com.coder.mall.user.domain.domain.Users;
+-import com.coder.mall.user.model.vo.LoginVo;
+-import com.coder.mall.user.model.vo.RegisterVo;
+-import com.coder.mall.user.service.UsersService;
+-import com.coder.mall.user.utils.JwtUtil;
+-import io.jsonwebtoken.Claims;
+-import io.swagger.v3.oas.annotations.Operation;
+-import io.swagger.v3.oas.annotations.tags.Tag;
+-import org.springframework.beans.factory.annotation.Autowired;
+-import org.springframework.web.bind.annotation.*;
+-
+-import java.util.List;
+-
+-@Tag(name = "用户管理")
+-@RestController
+-@RequestMapping("/user")
+-public class UserController {
+-
+-    @Autowired
+-    private UsersService usersService;
+-
+-    @GetMapping("getCode")
+-    @Operation(summary = "获取短信验证码")
+-    public Response getCode(@RequestParam String mobile) {
+-        usersService.sendCode(mobile);
+-        return Response.success();
+-    }
+-
+-    @PostMapping("login")
+-    @Operation(summary = "登录")
+-    public Response<String> login(LoginVo loginVo) {
+-        String res = usersService.login(loginVo);
+-        return Response.success(res);
+-    }
+-
+-    @PostMapping("register")
+-    @Operation(summary = "注册")
+-    public Response<String> register(RegisterVo registerVo) {
+-        String result = usersService.register(registerVo);
+-        return Response.success(result);
+-    }
+-
+-//    @GetMapping("userInfo")
+-//    @Operation(summary = "获取登录用户用户信息")
+-//    public Response userInfo(@RequestHeader("token") String token) {
+-//        Claims claims = JwtUtil.parseToken(token);
+-//        Long userId = Long.parseLong(claims.getId());
+-//        Users user = usersService.getById(userId);
+-//        return Response.success(user);
+-//    }
+-
+-    @GetMapping("userInfo")
+-    @Operation(summary = "获取登录用户用户信息")
+-    public Response userInfo() {
+-        Long userId = LoginUserContextHolder.getUserId();
+-        Users user = usersService.getById(userId);
+-        return Response.success(user);
+-    }
+-
+-    @GetMapping("getBatchUsers")
+-    @Operation(summary = "获取用户列表")
+-    public Response getBatchUsers(List<Long> userIds) {
+-        List<Users> users = usersService.getBatchUsers(userIds);
+-        return Response.success(users);
+-    }
+-
+-    @GetMapping("logout")
+-    @Operation(summary = "退出登录")
+-    public Response logout() {
+-        String res= usersService.logout();
+-        return Response.success(res);
+-    }
+-}
+Index: mall/mall-gateway/src/main/java/com/coder/mall/gateway/constant/RedisKeyConstants.java
+===================================================================
+diff --git a/mall/mall-gateway/src/main/java/com/coder/mall/gateway/constant/RedisKeyConstants.java b/mall/mall-gateway/src/main/java/com/coder/mall/gateway/constant/RedisKeyConstants.java
+deleted file mode 100644
+--- a/mall/mall-gateway/src/main/java/com/coder/mall/gateway/constant/RedisKeyConstants.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,37 +0,0 @@
+-package com.coder.mall.gateway.constant;
+-
+-public class RedisKeyConstants {
+-
+-    /**
+-     * 用户对应角色集合 KEY 前缀
+-     */
+-    private static final String USER_ROLES_KEY_PREFIX = "user:roles:";
+-
+-    /**
+-     * 角色对应的权限集合 KEY 前缀
+-     */
+-    private static final String ROLE_PERMISSIONS_KEY_PREFIX = "role:permissions:";
+-
+-    /**
+-     * 构建角色对应的权限集合 KEY
+-     * @param roleKey
+-     * @return
+-     */
+-    public static String buildRolePermissionsKey(String roleKey) {
+-        return ROLE_PERMISSIONS_KEY_PREFIX + roleKey;
+-    }
+-
+-    /**
+-     * 构建用户-角色 KEY
+-     * @param userId
+-     * @return
+-     */
+-    public static String buildUserRoleKey(Long userId) {
+-        return USER_ROLES_KEY_PREFIX + userId;
+-    }
+-
+-    /**
+-     * Sa-Token 登录的 Token KEY 前缀
+-     */
+-    public static final String SA_TOKEN_TOKEN_KEY_PREFIX = "Authorization:login:token:";
+-}
+Index: mall/mall-oss/src/main/java/com/coder/mall/oss/App.java
+===================================================================
+diff --git a/mall/mall-oss/src/main/java/com/coder/mall/oss/App.java b/mall/mall-oss/src/main/java/com/coder/mall/oss/App.java
+deleted file mode 100644
+--- a/mall/mall-oss/src/main/java/com/coder/mall/oss/App.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,13 +0,0 @@
+-package com.coder.mall.oss;
+-
+-/**
+- * Hello world!
+- *
+- */
+-public class App 
+-{
+-    public static void main( String[] args )
+-    {
+-        System.out.println( "Hello World!" );
+-    }
+-}
+Index: mall/mall-framework/mall-spring-boot-starter-biz-context/src/main/java/com/coder/framework/biz/context/holder/LoginUserContextHolder.java
+===================================================================
+diff --git a/mall/mall-framework/mall-spring-boot-starter-biz-context/src/main/java/com/coder/framework/biz/context/holder/LoginUserContextHolder.java b/mall/mall-framework/mall-spring-boot-starter-biz-context/src/main/java/com/coder/framework/biz/context/holder/LoginUserContextHolder.java
+deleted file mode 100644
+--- a/mall/mall-framework/mall-spring-boot-starter-biz-context/src/main/java/com/coder/framework/biz/context/holder/LoginUserContextHolder.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,48 +0,0 @@
+-package com.coder.framework.biz.context.holder;
+-
+-import com.alibaba.ttl.TransmittableThreadLocal;
+-import com.coder.framework.common.constant.GlobalConstants;
+-
+-import java.util.HashMap;
+-import java.util.Map;
+-import java.util.Objects;
+-
+-/**
+- * 提取请求头中的用户 ID 保存到上下文中，以方便后续使用
+- */
+-public class LoginUserContextHolder {
+-
+-    // 初始化一个 ThreadLocal 变量
+-    private static final ThreadLocal<Map<String, Object>> LOGIN_USER_CONTEXT_THREAD_LOCAL
+-            = TransmittableThreadLocal.withInitial(HashMap::new);
+-
+-    /**
+-     * 设置用户 ID
+-     *
+-     * @param value
+-     */
+-    public static void setUserId(Object value) {
+-        LOGIN_USER_CONTEXT_THREAD_LOCAL.get().put(GlobalConstants.USER_ID, value);
+-    }
+-
+-    /**
+-     * 获取用户 ID
+-     *
+-     * @return
+-     */
+-    public static Long getUserId() {
+-        Object value = LOGIN_USER_CONTEXT_THREAD_LOCAL.get().get(GlobalConstants.USER_ID);
+-        if (Objects.isNull(value)) {
+-            return null;
+-        }
+-        return Long.valueOf(value.toString());
+-    }
+-
+-    /**
+-     * 删除 ThreadLocal
+-     */
+-    public static void remove() {
+-        LOGIN_USER_CONTEXT_THREAD_LOCAL.remove();
+-    }
+-
+-}
+Index: mall/mall-framework/mall-spring-boot-starter-jackson/target/maven-archiver/pom.properties
+===================================================================
+diff --git a/mall/mall-framework/mall-spring-boot-starter-jackson/target/maven-archiver/pom.properties b/mall/mall-framework/mall-spring-boot-starter-jackson/target/maven-archiver/pom.properties
+deleted file mode 100644
+--- a/mall/mall-framework/mall-spring-boot-starter-jackson/target/maven-archiver/pom.properties	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,3 +0,0 @@
+-artifactId=mall-spring-boot-starter-jackson
+-groupId=com.coder
+-version=1.0-SNAPSHOT
+Index: mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/constant/GlobalConstants.java
+===================================================================
+diff --git a/mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/constant/GlobalConstants.java b/mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/constant/GlobalConstants.java
+deleted file mode 100644
+--- a/mall/mall-framework/mall-common/src/main/java/com/coder/framework/common/constant/GlobalConstants.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,10 +0,0 @@
+-package com.coder.framework.common.constant;
+-
+-public interface GlobalConstants {
+-
+-    /**
+-     * 用户 ID
+-     */
+-    String USER_ID = "userId";
+-}
+-
+Index: mall/mall-user/src/main/java/com/coder/mall/user/custom/mybatisplus/MybatisMetaObjectHandler.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/custom/mybatisplus/MybatisMetaObjectHandler.java b/mall/mall-user/src/main/java/com/coder/mall/user/custom/mybatisplus/MybatisMetaObjectHandler.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/custom/mybatisplus/MybatisMetaObjectHandler.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,20 +0,0 @@
+-package com.coder.mall.user.custom.mybatisplus;
+-
+-import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+-import org.apache.ibatis.reflection.MetaObject;
+-import org.springframework.stereotype.Component;
+-
+-import java.util.Date;
+-
+-@Component
+-public class MybatisMetaObjectHandler implements MetaObjectHandler {
+-    @Override
+-    public void insertFill(MetaObject metaObject) {
+-        this.strictInsertFill(metaObject, "createTime", Date.class, new Date());
+-    }
+-
+-    @Override
+-    public void updateFill(MetaObject metaObject) {
+-        this.strictUpdateFill(metaObject, "updateTime", Date.class, new Date());
+-    }
+-}
+Index: mall/mall-user/src/main/java/com/coder/mall/user/utils/CodeUtil.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/utils/CodeUtil.java b/mall/mall-user/src/main/java/com/coder/mall/user/utils/CodeUtil.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/utils/CodeUtil.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,16 +0,0 @@
+-package com.coder.mall.user.utils;
+-
+-import java.util.Random;
+-
+-//生成随机验证码的工具
+-public class CodeUtil {
+-    public static String getRandomCode(Integer length) {
+-        StringBuilder builder = new StringBuilder();
+-        Random random = new Random();
+-        for (int i = 0; i < length; i++) {
+-            int num = random.nextInt(10);
+-            builder.append(num);
+-        }
+-        return builder.toString();
+-    }
+-}
+Index: mall/mall-framework/mall-spring-boot-starter-biz-context/pom.xml
+===================================================================
+diff --git a/mall/mall-framework/mall-spring-boot-starter-biz-context/pom.xml b/mall/mall-framework/mall-spring-boot-starter-biz-context/pom.xml
+deleted file mode 100644
+--- a/mall/mall-framework/mall-spring-boot-starter-biz-context/pom.xml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,54 +0,0 @@
+-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+-    <modelVersion>4.0.0</modelVersion>
+-
+-    <!-- 指定父项目 -->
+-    <parent>
+-        <groupId>com.coder</groupId>
+-        <artifactId>mall-framework</artifactId>
+-        <version>1.0-SNAPSHOT</version>
+-    </parent>
+-
+-    <!-- 指定打包方式 -->
+-    <packaging>jar</packaging>
+-
+-    <artifactId>mall-spring-boot-starter-biz-context</artifactId>
+-    <name>${project.artifactId}</name>
+-    <description>上下文组件</description>
+-
+-    <dependencies>
+-        <dependency>
+-            <groupId>com.coder</groupId>
+-            <artifactId>mall-common</artifactId>
+-            <version>1.0-SNAPSHOT</version>
+-        </dependency>
+-
+-        <!-- Spring 核心 -->
+-        <dependency>
+-            <groupId>org.springframework.boot</groupId>
+-            <artifactId>spring-boot-starter</artifactId>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>org.springframework</groupId>
+-            <artifactId>spring-web</artifactId>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>jakarta.servlet</groupId>
+-            <artifactId>jakarta.servlet-api</artifactId>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>com.alibaba</groupId>
+-            <artifactId>transmittable-thread-local</artifactId>
+-        </dependency>
+-
+-        <dependency>
+-            <groupId>io.github.openfeign</groupId>
+-            <artifactId>feign-core</artifactId>
+-        </dependency>
+-
+-
+-    </dependencies>
+-</project>
+\ No newline at end of file
+Index: mall/mall-framework/pom.xml
+===================================================================
+diff --git a/mall/mall-framework/pom.xml b/mall/mall-framework/pom.xml
+deleted file mode 100644
+--- a/mall/mall-framework/pom.xml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,28 +0,0 @@
+-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+-    <modelVersion>4.0.0</modelVersion>
+-
+-    <!-- 指定父项目 -->
+-    <parent>
+-        <groupId>com.coder</groupId>
+-        <artifactId>mall</artifactId>
+-        <version>1.0-SNAPSHOT</version>
+-    </parent>
+-
+-    <!-- 多模块项目需要配置打包方式为 pom -->
+-    <packaging>pom</packaging>
+-
+-    <artifactId>mall-framework</artifactId>
+-    <name>${project.artifactId}</name>
+-    <description>平台基础设施层：封装一些常用功能，供各个业务线拿来即用</description>
+-
+-    <modules>
+-        <!-- 通用工具组件 -->
+-        <module>mall-common</module>
+-        <!-- 接口日志组件 -->
+-        <module>mall-spring-boot-starter-biz-operationlog</module>
+-        <!-- Jackson 组件 -->
+-        <module>mall-spring-boot-starter-jackson</module>
+-    </modules>
+-
+-</project>
+Index: mall/mall-gateway/src/main/java/com/coder/mall/gateway/enums/ResponseCodeEnum.java
+===================================================================
+diff --git a/mall/mall-gateway/src/main/java/com/coder/mall/gateway/enums/ResponseCodeEnum.java b/mall/mall-gateway/src/main/java/com/coder/mall/gateway/enums/ResponseCodeEnum.java
+deleted file mode 100644
+--- a/mall/mall-gateway/src/main/java/com/coder/mall/gateway/enums/ResponseCodeEnum.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,24 +0,0 @@
+-package com.coder.mall.gateway.enums;
+-
+-import com.coder.framework.common.exception.BaseExceptionInterface;
+-import lombok.AllArgsConstructor;
+-import lombok.Getter;
+-
+-@Getter
+-@AllArgsConstructor
+-public enum ResponseCodeEnum implements BaseExceptionInterface {
+-
+-    // ----------- 通用异常状态码 -----------
+-    SYSTEM_ERROR("500", "系统繁忙，请稍后再试"),
+-    UNAUTHORIZED("401", "权限不足"),
+-
+-
+-    // ----------- 业务异常状态码 -----------
+-    ;
+-
+-    // 异常码
+-    private final String errorCode;
+-    // 错误信息
+-    private final String errorMessage;
+-
+-}
+\ No newline at end of file
+Index: mall/mall-user/src/main/java/com/coder/mall/user/service/UsersService.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/service/UsersService.java b/mall/mall-user/src/main/java/com/coder/mall/user/service/UsersService.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/service/UsersService.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,26 +0,0 @@
+-package com.coder.mall.user.service;
+-
+-import com.coder.mall.user.domain.domain.Users;
+-import com.baomidou.mybatisplus.extension.service.IService;
+-import com.coder.mall.user.model.vo.LoginVo;
+-import com.coder.mall.user.model.vo.RegisterVo;
+-
+-import java.util.List;
+-
+-/**
+-* @author Kevin
+-* @description 针对表【users(用户表)】的数据库操作Service
+-* @createDate 2025-02-02 21:11:25
+-*/
+-public interface UsersService extends IService<Users> {
+-
+-    void sendCode(String mobile);
+-
+-    String login(LoginVo loginVo);
+-
+-    String register(RegisterVo registerVo);
+-
+-    String logout();
+-
+-    List<Users> getBatchUsers(List<Long> userIds);
+-}
+Index: mall/mall-user/src/main/java/com/coder/mall/user/service/impl/UsersServiceImpl.java
+===================================================================
+diff --git a/mall/mall-user/src/main/java/com/coder/mall/user/service/impl/UsersServiceImpl.java b/mall/mall-user/src/main/java/com/coder/mall/user/service/impl/UsersServiceImpl.java
+deleted file mode 100644
+--- a/mall/mall-user/src/main/java/com/coder/mall/user/service/impl/UsersServiceImpl.java	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ /dev/null	(revision dbbc85db06175752b0d296613007b32498075e9a)
+@@ -1,142 +0,0 @@
+-package com.coder.mall.user.service.impl;
+-
+-import cn.dev33.satoken.stp.StpUtil;
+-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+-import com.coder.mall.user.custom.constant.RedisConstant;
+-import com.coder.mall.user.domain.domain.Users;
+-import com.coder.mall.user.enums.ResultCode;
+-import com.coder.mall.user.enums.UserStatus;
+-import com.coder.mall.user.exception.UserException;
+-import com.coder.mall.user.model.vo.LoginVo;
+-import com.coder.mall.user.model.vo.RegisterVo;
+-import com.coder.mall.user.service.SmsService;
+-import com.coder.mall.user.service.UsersService;
+-import com.coder.mall.user.domain.mapper.UsersMapper;
+-import com.coder.mall.user.utils.CodeUtil;
+-import com.coder.mall.user.utils.MD5Util;
+-import org.springframework.beans.factory.annotation.Autowired;
+-import org.springframework.data.redis.core.StringRedisTemplate;
+-import org.springframework.stereotype.Service;
+-import org.springframework.util.StringUtils;
+-
+-import java.util.List;
+-import java.util.concurrent.TimeUnit;
+-
+-/**
+- * @author Kevin
+- * @description 针对表【users(用户表)】的数据库操作Service实现
+- * @createDate 2025-02-02 21:11:25
+- */
+-@Service
+-public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements UsersService {
+-
+-    @Autowired
+-    private SmsService smsService;
+-    @Autowired
+-    private StringRedisTemplate stringRedisTemplate;
+-    @Autowired
+-    private UsersMapper usersMapper;
+-
+-    @Override
+-    public void sendCode(String mobile) {
+-        //生成一个6位数的验证码，以短信的形式放到手机上；并且以手机号作为key验证码作为value保存到redis中，以供后续验证验证码是否有效
+-        String key = RedisConstant.PREFIX + mobile;
+-        String code = CodeUtil.getRandomCode(6);
+-        //查看Redis中是否存在这个key
+-        Boolean hasKey = stringRedisTemplate.hasKey(key);
+-        if (hasKey) {
+-            Long ttl = stringRedisTemplate.getExpire(key, TimeUnit.SECONDS);//获取该key对应的TTL（间隔）
+-            if (ttl > RedisConstant.CODE_TTL_SEC - RedisConstant.CODE_RESEND_TIME_SEC) {
+-                throw new UserException(ResultCode.SEND_SMS_TOO_OFTEN);
+-            }
+-        }
+-        smsService.sendSms(mobile, code);//把code以短信验证码的形式发送给phone
+-        stringRedisTemplate.opsForValue().set(key, code, RedisConstant.CODE_TTL_SEC, TimeUnit.SECONDS);
+-    }
+-
+-    @Override
+-    public String login(LoginVo loginVo) {
+-        //1.验证手机号和验证码是否为空
+-        if (!StringUtils.hasLength(loginVo.getMobile())) {
+-            throw new UserException(ResultCode.PHONE_EMPTY);
+-        }
+-        if (!StringUtils.hasLength(loginVo.getCode())) {
+-            throw new UserException(ResultCode.CODE_EMPTY);
+-        }
+-        //2.查询Redis中是否存在这个验证码code
+-        String key = RedisConstant.PREFIX + loginVo.getMobile();
+-        String code = stringRedisTemplate.opsForValue().get(key);
+-        if (!StringUtils.hasLength(code)) {
+-            throw new UserException(ResultCode.CODE_EXPIRED);
+-        }
+-        //3.验证验证码是否正确
+-        if (!loginVo.getCode().equals(code)) {
+-            throw new UserException(ResultCode.CODE_ERROR);
+-        }
+-        //4.查询数据库中是否存在这个手机号对应的用户
+-        LambdaQueryWrapper<Users> queryWrapper = new LambdaQueryWrapper<>();
+-        queryWrapper.eq(Users::getMobile, loginVo.getMobile());
+-        Users user = usersMapper.selectOne(queryWrapper);
+-        //5.如果不存在
+-        if (user == null) {
+-            throw new UserException(ResultCode.ACCOUNT_NOT_EXIST_ERROR);
+-        } else {
+-            //是否禁用
+-            if (user.getUserStatus() == UserStatus.DISABLE) {
+-                throw new UserException(ResultCode.ACCOUNT_DISABLED_ERROR);
+-            }
+-        }
+-        //6.如果存在，返回token
+-        StpUtil.login(user.getId());
+-        return "登录成功！";
+-//        return JwtUtil.createToken(user.getId(), user.getMobile());
+-    }
+-
+-    @Override
+-    public String register(RegisterVo registerVo) {
+-        if (!StringUtils.hasLength(registerVo.getMobile())) {
+-            throw new UserException(ResultCode.PHONE_EMPTY);
+-        }
+-        if (!StringUtils.hasLength(registerVo.getCode())) {
+-            throw new UserException(ResultCode.CODE_EMPTY);
+-        }
+-        String key = RedisConstant.PREFIX + registerVo.getMobile();
+-        String code = stringRedisTemplate.opsForValue().get(key);
+-        if (!StringUtils.hasLength(code)) {
+-            throw new UserException(ResultCode.CODE_EXPIRED);
+-        }
+-        if (!registerVo.getCode().equals(code)) {
+-            throw new UserException(ResultCode.CODE_ERROR);
+-        }
+-        LambdaQueryWrapper<Users> queryWrapper = new LambdaQueryWrapper<>();
+-        queryWrapper.eq(Users::getMobile, registerVo.getMobile());
+-        Users user = usersMapper.selectOne(queryWrapper);
+-        if (user != null) {
+-            throw new UserException(ResultCode.ACCOUNT_EXIST_ERROR);
+-        }
+-        user = new Users();
+-        user.setMobile(registerVo.getMobile());
+-        user.setUserType(registerVo.getUserType());
+-        user.setPassword(MD5Util.encrypt(registerVo.getPassword()));
+-        user.setNickname("Coder-" + registerVo.getMobile().substring(7));
+-        user.setUserStatus(UserStatus.ENABLE);
+-        usersMapper.insert(user);
+-        return "注册成功！";
+-    }
+-
+-    @Override
+-    public String logout() {
+-        StpUtil.logout();
+-        return "欢迎下次光临！";
+-    }
+-
+-    @Override
+-    public List<Users> getBatchUsers(List<Long> userIds) {
+-        return usersMapper.selectBatchIds(userIds);
+-    }
+-}
+-
+-
+-
+-
+Index: mall-checkout/src/main/resources/application.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>server:\r\n  port: 8080  # 订单服务端口\r\n\r\nspring:\r\n  application:\r\n    name: mall-checkout\r\n\r\n\r\n\r\n  # MySQL配置\r\n  datasource:\r\n    driver-class-name: com.mysql.cj.jdbc.Driver\r\n    url: jdbc:mysql://localhost:3306/mall?useSSL=false&serverTimezone=UTC\r\n    username: root\r\n    password: 123456\r\n    jpa:\r\n      hibernate:\r\n        ddl-auto: update\r\n      show-sql: true\r\n      properties:\r\n        hibernate:\r\n          format_sql: true\r\n\r\n    logging:\r\n      level:\r\n        org:\r\n          hibernate:\r\n            SQL: DEBUG\r\n            type:\r\n              descriptor:\r\n                sql:\r\n                  BasicBinder: TRACE\r\n\r\n\r\n  # Redis配置\r\n    redis:\r\n      port: 6379\r\n      password: 132133\r\n      database: 0\r\n      timeout: 5000\r\n      lettuce:\r\n        pool:\r\n          max-active: 8\r\n          max-wait: -1\r\n          max-idle: 8\r\n          min-idle: 0\r\n\r\n\r\n\r\n\r\n\r\n  # Nacos配置\r\n  cloud:\r\n    nacos:\r\n      discovery:\r\n        server-addr: localhost:8848\r\n        namespace: public\r\n\r\n  # 日志配置\r\n  logging:\r\n    level:\r\n      com.douyin.orderservice: INFO\r\n      org.springframework: WARN\r\n      com.coder.mall.order: DEBUG\r\n\r\n\r\n\r\n  # RabbitMQ配置\r\n  rabbitmq:\r\n    host: localhost\r\n    port: 5672\r\n    username: guest\r\n    password: guest\r\n    virtual-host: /\r\n\r\n\r\n  # RabbitMQ自定义队列配置\r\n    order:\r\n      queue-name: order.queue\r\n      exchange-name: order.exchange\r\n      routing-key: order.routing.key\r\n\r\n  # Sa-Token配置\r\n  sa-token:\r\n    token-name: token\r\n    timeout: 2592000\r\n    active-timeout: -1\r\n    is-concurrent: true\r\n    is-share: true\r\n    token-style: uuid\r\n    is-log: true\r\n\r\n  # MyBatis配置\r\n  mybatis:\r\n    mapper-locations: classpath:mapper/*.xml\r\n    type-aliases-package: com.coder.mall.order.model.entity\r\n    configuration:\r\n      map-underscore-to-camel-case: true\r\n      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl\r\n\r\n  # MyBatis-Plus配置\r\n  mybatis-plus:\r\n    mapper-locations: classpath:mapper/*.xml\r\n    type-aliases-package: com.coder.mall.order.model.entity\r\n    configuration:\r\n      map-underscore-to-camel-case: true\r\n      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl\r\n\r\nalipay:\r\n  gatewayUrl: https://openapi-sandbox.dl.alipaydev.com/gateway.do\r\n  appId: your appId\r\n  alipayPublicKey: your alipayPublicKey\r\n  appPrivateKey: your appPrivateKey\r\n  returnUrl: http://localhost:8060/#/pages/money/paySuccess\r\n  notifyUrl:\r\n\r\n\r\nbank:\r\n  notify:\r\n    secret: 12345 # 银行提供的签名密钥\r\n    retry:\r\n      max-attempts: 5            # 最大重试次数\r\n      interval: 30000            # 重试间隔(ms)\r\n\r\nexternal:\r\n  order-service:\r\n    url: http://localhost:8080/api/v1/orders\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/mall-checkout/src/main/resources/application.yml b/mall-checkout/src/main/resources/application.yml
+--- a/mall-checkout/src/main/resources/application.yml	(revision dbbc85db06175752b0d296613007b32498075e9a)
++++ b/mall-checkout/src/main/resources/application.yml	(date 1740821518887)
+@@ -9,10 +9,10 @@
+ 
+   # MySQL配置
+   datasource:
+-    driver-class-name: com.mysql.cj.jdbc.Driver
+-    url: jdbc:mysql://localhost:3306/mall?useSSL=false&serverTimezone=UTC
+-    username: root
+-    password: 123456
++    driver-class-name:
++    url:
++    username:
++    password:
+     jpa:
+       hibernate:
+         ddl-auto: update
+@@ -35,7 +35,7 @@
+   # Redis配置
+     redis:
+       port: 6379
+-      password: 132133
++      password:
+       database: 0
+       timeout: 5000
+       lettuce:
+@@ -49,12 +49,7 @@
+ 
+ 
+ 
+-  # Nacos配置
+-  cloud:
+-    nacos:
+-      discovery:
+-        server-addr: localhost:8848
+-        namespace: public
++
+ 
+   # 日志配置
+   logging:
+@@ -106,13 +101,7 @@
+       map-underscore-to-camel-case: true
+       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+ 
+-alipay:
+-  gatewayUrl: https://openapi-sandbox.dl.alipaydev.com/gateway.do
+-  appId: your appId
+-  alipayPublicKey: your alipayPublicKey
+-  appPrivateKey: your appPrivateKey
+-  returnUrl: http://localhost:8060/#/pages/money/paySuccess
+-  notifyUrl:
++
+ 
+ 
+ bank:

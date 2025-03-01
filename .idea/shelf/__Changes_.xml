@@ -1,0 +1,314 @@
+<changelist name="在变基之前未提交的更改_[Changes]" date="1740821914605" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/在变基之前未提交的更改_[Changes]/shelved.patch" />
+  <option name="DESCRIPTION" value="在变基之前未提交的更改 [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-spring-boot-starter-jackson/target/classes/com/coder/framework/jackson/config/JacksonAutoConfiguration.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-spring-boot-starter-biz-context/src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-spring-boot-starter-biz-operationlog/src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/exception/UserException.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-common/target/classes/com/coder/common/response/Response.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-common/target/classes/com/coder/common/exception/BizException.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-common/target/classes/com/coder/framework/common/util/ParamUtils.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-common/target/classes/com/coder/common/util/JsonUtils.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-spring-boot-starter-biz-operationlog/target/classes/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/enums/BaseEnum.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/custom/config/WebMvcConfiguration.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/service/SmsService.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-test/target/classes/com/coder/mall/test/config/RedisTemplateConfig.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/custom/config/Knife4jConfiguration.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/enums/ResultCode.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-common/target/classes/com/coder/common/constant/DateConstants.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-test/target/test-classes/com/coder/mall/test/AppTest.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-spring-boot-starter-jackson/target/mall-spring-boot-starter-jackson-1.0-SNAPSHOT.jar" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/custom/config/SmsClientConfiguration.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-common/target/classes/com/coder/common/util/ParamUtils.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-common/target/classes/com/coder/common/exception/BaseExceptionInterface.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/domain/domain/Users.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-test/target/classes/com/coder/mall/test/App.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/model/vo/LoginVo.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/service/impl/UsersServiceImpl.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-spring-boot-starter-biz-operationlog/target/classes/com/coder/framework/biz/operationlog/config/ApiOperationLogAutoConfiguration.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/custom/converter/StringToBaseEnumConverterFactory$1.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/custom/converter/StringToBaseEnumConverterFactory.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-common/target/classes/com/coder/framework/common/util/JsonUtils.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/App.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/custom/sms/SmsProperties.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/domain/mapper/UsersMapper.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/custom/constant/RedisConstant.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/exception/UserExceptionHandler.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-spring-boot-starter-jackson/src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/enums/UserStatus.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-spring-boot-starter-biz-operationlog/target/classes/com/coder/framework/biz/operationlog/aspect/ApiOperationLogAspect.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/service/impl/SmsServiceImpl.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-common/target/classes/com/coder/framework/common/util/DateUtils.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/utils/MD5Util.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/enums/Gender.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-test/target/classes/com/coder/mall/test/controller/TestController.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-common/target/classes/com/coder/framework/common/exception/BaseExceptionInterface.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/model/vo/RegisterVo.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/enums/Verified.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/controller/UserController.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-common/target/classes/com/coder/common/constant/GlobalConstants.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-test/target/classes/com/coder/mall/test/User.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-common/target/classes/com/coder/framework/common/constant/DateConstants.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-spring-boot-starter-jackson/target/classes/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-spring-boot-starter-jackson/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-common/target/classes/com/coder/common/util/DateUtils.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-common/target/classes/com/coder/framework/common/constant/GlobalConstants.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/service/UsersService.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/custom/mybatisplus/MybatisMetaObjectHandler.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-common/target/classes/com/coder/framework/common/response/Response.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/utils/JwtUtil.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/utils/CodeUtil.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-user/target/classes/com/coder/mall/user/enums/UserType.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-common/target/classes/com/coder/framework/common/exception/BizException.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-spring-boot-starter-biz-operationlog/target/classes/com/coder/framework/biz/operationlog/aspect/ApiOperationLog.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="mall/mall-framework/mall-spring-boot-starter-jackson/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+</changelist>

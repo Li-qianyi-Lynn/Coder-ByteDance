@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6f3644c0-fc25-48a0-9f78-d38c79fb2652" name="更改" comment="pull" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Exception" />
+        <option value="AnnotationType" />
+        <option value="spring-beans.schema" />
+        <option value="Class" />
+        <option value="Interface" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Merge.Settings">
+    <option name="BRANCH" value="origin/main" />
+  </component>
+  <component name="Git.Rebase.Settings">
+    <option name="NEW_BASE" value="origin/main" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;JUSTgyx&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/JUSTgyx/mall.git&quot;,
+    &quot;accountId&quot;: &quot;7965cd61-a2d1-475d-a310-79f8bf5bcef4&quot;
+  }
+}</component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="userSettingsFile" value="D:\develop\maven\apache-maven-3.9.9\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="MavenRunner">
+    <option name="skipTests" value="true" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2sA7zdS2sAqIr0NnPNI3aAY1dQP" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="showExcludedFiles" value="false" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showScratchesAndConsoles" value="false" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.App.executor": "Run",
+    "Docker.mall-checkout.mongodb: Compose 部署.executor": "Run",
+    "Docker.mall-checkout.mysql: Compose 部署.executor": "Run",
+    "JUnit.All in mall-spring-boot-starter-biz-redis.executor": "Debug",
+    "JUnit.All in mall-test (1).executor": "Debug",
+    "JUnit.All in mall-test.executor": "Debug",
+    "JUnit.AppTest.executor": "Run",
+    "JUnit.mall-checkout中的所有.executor": "Run",
+    "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
+    "Maven.mall [clean].executor": "Run",
+    "Maven.mall [install].executor": "Run",
+    "Maven.mall-common [clean].executor": "Run",
+    "Maven.mall-common [install].executor": "Run",
+    "Maven.mall-framework [clean].executor": "Run",
+    "Maven.mall-framework [install].executor": "Run",
+    "Maven.mall-spring-boot-starter-jackson [clean].executor": "Run",
+    "Maven.mall-spring-boot-starter-jackson [install].executor": "Run",
+    "Maven.mall-spring-boot-starter-redis [install].executor": "Run",
+    "Maven.xiaoha-framework [clean].executor": "Run",
+    "Maven.xiaoha-framework [install].executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Spring Boot.App.executor": "Run",
+    "Spring Boot.MallApplication.executor": "Run",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_directory_selection": "C:/Users/14276/Desktop/新建文件夹 (4)/mall/mall-checkout/src/test/java",
+    "last_opened_file_path": "C:/Users/14276/Desktop/新建文件夹 (5)",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.28886846",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "ChangesTree.GroupingKeys": [
+      "directory"
+    ],
+    "DatabaseDriversLRU": [
+      "mysql"
+    ]
+  }
+}]]></component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\workspace\java_workspace\mall\mall-framework\mall-common\src\main\java\com\coder\common" />
+      <recent name="D:\workspace\java_workspace\mall\mall-framework\xiaoha-spring-boot-starter-jackson\src\main" />
+      <recent name="D:\workspace\java_workspace\mall\mall-framework\mall-spring-boot-starter-biz-operationlog\src\main" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.coder.mall.checkout.service" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.MallApplication">
+    <configuration default="true" type="lua.app" factoryName="Lua Application">
+      <option name="program" value="lua.exe" />
+      <option name="file" value="" />
+      <option name="workingDir" value="$PROJECT_DIR$/src/main/java" />
+      <option name="debuggerType" value="1" />
+      <option name="params" value="" />
+      <option name="charset" value="UTF-8" />
+      <option name="showConsole" value="true" />
+      <method v="2" />
+    </configuration>
+    <configuration name="AppTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="mall-checkout" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.coder.mall.checkout.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.coder.mall.checkout" />
+      <option name="MAIN_CLASS_NAME" value="com.coder.mall.checkout.AppTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="App" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="mall-test" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.coder.mall.test.App" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.coder.mall.test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MallApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="mall-checkout" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.coder.mall.checkout.MallApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.coder.mall.checkout.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml">
+        <settings />
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="mall-checkout.mongodb: Compose 部署" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="envFilePath" value="" />
+          <option name="services">
+            <list>
+              <option value="mongodb" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="mall-checkout/docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="mall-checkout.mysql: Compose 部署" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="mysql" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="mall-checkout/docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.MallApplication" />
+        <item itemvalue="Spring Boot.App" />
+        <item itemvalue="JUnit.AppTest" />
+        <item itemvalue="Docker.mall-checkout.mysql: Compose 部署" />
+        <item itemvalue="Docker.mall-checkout.mongodb: Compose 部署" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-18abd8497189-intellij.indexing.shared.core-IU-241.14494.240" />
+        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-IU-241.14494.240" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="" name="Changes" comment="" />
+      <changelist id="" name="11" comment="" />
+      <created>1737886790580</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1737886790580</updated>
+      <workItem from="1737886791525" duration="1197000" />
+      <workItem from="1737887995870" duration="3220000" />
+      <workItem from="1737891235550" duration="3077000" />
+      <workItem from="1737894325610" duration="1829000" />
+      <workItem from="1740199579732" duration="564000" />
+      <workItem from="1740200229954" duration="4751000" />
+      <workItem from="1740210072762" duration="26916000" />
+      <workItem from="1740331584723" duration="6168000" />
+      <workItem from="1740703917796" duration="4795000" />
+      <workItem from="1740796420014" duration="14315000" />
+    </task>
+    <task id="LOCAL-00001" summary="Changes">
+      <option name="closed" value="true" />
+      <created>1740336572404</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1740336572404</updated>
+    </task>
+    <task id="LOCAL-00002" summary="check-out基本功能的实现">
+      <option name="closed" value="true" />
+      <created>1740336831968</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1740336831968</updated>
+    </task>
+    <task id="LOCAL-00003" summary="check-out基本功能的实现">
+      <option name="closed" value="true" />
+      <created>1740336933594</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1740336933594</updated>
+    </task>
+    <task id="LOCAL-00004" summary="check-out基本功能的优化">
+      <option name="closed" value="true" />
+      <created>1740708606436</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1740708606436</updated>
+    </task>
+    <task id="LOCAL-00005" summary="check-out基本功能的优化2">
+      <option name="closed" value="true" />
+      <created>1740823245547</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1740823245547</updated>
+    </task>
+    <task id="LOCAL-00006" summary="check-out基本功能的优化2">
+      <option name="closed" value="true" />
+      <created>1740823849317</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1740823849317</updated>
+    </task>
+    <task id="LOCAL-00007" summary="check-out基本功能的优化2">
+      <option name="closed" value="true" />
+      <created>1740838782832</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1740838782832</updated>
+    </task>
+    <task id="LOCAL-00008" summary="pull">
+      <option name="closed" value="true" />
+      <created>1740839794604</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1740839794604</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="main1" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Initial commit" />
+    <MESSAGE value="Changes" />
+    <MESSAGE value="check-out基本功能的实现" />
+    <MESSAGE value="check-out基本功能的优化" />
+    <MESSAGE value="check-out基本功能的优化2" />
+    <MESSAGE value="pull" />
+    <option name="LAST_COMMIT_MESSAGE" value="pull" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="com.fasterxml.jackson.databind.exc.InvalidDefinitionException" package="com.fasterxml.jackson.databind.exc" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

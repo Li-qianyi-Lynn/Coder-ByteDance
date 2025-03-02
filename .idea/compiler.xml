@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="mall-spring-boot-starter-biz-operationlog" />
+        <module name="mall-cart" />
+        <module name="mall-user" />
+        <module name="mall-auth" />
+        <module name="mall-oss" />
+        <module name="mall-test" />
+        <module name="mall-order" />
+        <module name="mall-checkout" />
+        <module name="mall-common" />
+        <module name="mall-spring-boot-starter-jackson" />
+        <module name="mall-product" />
+        <module name="mall-gateway" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>

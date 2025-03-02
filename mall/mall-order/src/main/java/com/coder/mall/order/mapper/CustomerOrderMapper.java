@@ -73,4 +73,6 @@ public interface CustomerOrderMapper {
      */
     int updatePaymentStatus(@Param("orderNo") String orderNo, 
                            @Param("paymentStatus") OrderStatus paymentStatus);
+
+  
 }

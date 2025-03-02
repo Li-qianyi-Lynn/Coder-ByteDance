@@ -1,8 +1,9 @@
 package com.coder.mall.user.exception;
 
-import com.coder.common.response.Response;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.coder.framework.common.response.Response;
 
 @RestControllerAdvice
 public class UserExceptionHandler {

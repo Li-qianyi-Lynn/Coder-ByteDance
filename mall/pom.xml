@@ -131,6 +131,13 @@
         <scope>import</scope>
       </dependency>
 
+      <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-maven-plugin</artifactId>
+      <version>3.0.2.RELEASE</version>
+      </dependency>
+
+
       <!-- Spring Cloud Alibaba 官方依赖管理 -->
       <dependency>
         <groupId>com.alibaba.cloud</groupId>

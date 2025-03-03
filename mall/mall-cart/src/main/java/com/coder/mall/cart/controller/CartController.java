@@ -1,5 +1,6 @@
 package com.coder.mall.cart.controller;
 
+import com.coder.framework.biz.context.holder.LoginUserContextHolder;
 import com.coder.mall.cart.model.dto.CartProductItem;
 import com.coder.mall.cart.model.dto.CartResponse;
 import com.coder.mall.cart.model.dto.ProductDTO;
@@ -24,10 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static javax.security.auth.callback.ConfirmationCallback.OK;
@@ -56,6 +54,11 @@ public class CartController {
      */
     @PostMapping("/addProductItemForCart")
     public ResponseEntity<AddProductItemResp> addProductItem(@RequestBody @Validated AddProductItemReq request) {
+        Long userId = LoginUserContextHolder.getUserId();
+        if (!Objects.equals(userId, request.getUserId())){
+            // 如果 userId 不匹配，则设置 request 中的 userId 为当前用户 ID
+            request.setUserId(userId);
+        }
         cartRedisService.addProductItem(request);
         logger.info("Added item to cart: " + request.getProductId());
         return ResponseEntity.ok(new AddProductItemResp(HttpStatus.OK.value(), "Item added to cart successfully."));
@@ -69,6 +72,11 @@ public class CartController {
      */
     @GetMapping("/listOfCart/{userId}")
     public ResponseEntity<GetCartResp> getCart(@PathVariable Long userId) {
+        Long userIdToken = LoginUserContextHolder.getUserId();
+        if (!Objects.equals(userId, userIdToken)){
+            // 如果 userId 不匹配，则设置 request 中的 userId 为当前用户 ID
+            userId = userIdToken;
+        }
         // 从 Redis 获取购物车数据
         Cart cart = cartRedisService.getCart(userId);
         List<Cart> carts = new ArrayList<>();
@@ -85,6 +93,11 @@ public class CartController {
      */
     @DeleteMapping("/deleteItemOfCart")
     public ResponseEntity<ApiResponse> deleteProductOfCart(@RequestBody DeleteItemRequest deleteItem) {
+        Long userId = LoginUserContextHolder.getUserId();
+        if (!Objects.equals(userId, deleteItem.getUserId())){
+            // 如果 userId 不匹配，则设置 request 中的 userId 为当前用户 ID
+            deleteItem.setUserId(userId);
+        }
         // 删除购物车中的某商品项
         cartRedisService.deleteCartItem(deleteItem);
         // 创建 ApiResponse 对象，返回 code 和 message
@@ -114,6 +127,11 @@ public class CartController {
      */
     @DeleteMapping("/emptyCart/{userId}")
     public ResponseEntity<Void> emptyCart(@PathVariable Long userId) {
+        Long userIdToken = LoginUserContextHolder.getUserId();
+        if (!Objects.equals(userId, userIdToken)){
+            // 如果 userId 不匹配，则设置 request 中的 userId 为当前用户 ID
+            userId = userIdToken;
+        }
         // 调用 RedisService 来清空购物车数据
         cartRedisService.clearCart(userId);
         logger.info("Cart emptied for user: " + userId);
@@ -128,6 +146,11 @@ public class CartController {
      */
     @PutMapping("/updateQuantityOfCart")
     public ResponseEntity updateCart(@RequestBody @Validated UpdateItemRequest request) {
+        Long userId = LoginUserContextHolder.getUserId();
+        if (!Objects.equals(userId, request.getUserId())){
+            // 如果 userId 不匹配，则设置 request 中的 userId 为当前用户 ID
+            request.setUserId(userId);
+        }
         // 更新购物车中某商品的数量
         cartRedisService.updateCart(request);
         return ResponseEntity.ok("Cart item updated successfully.");
@@ -143,6 +166,11 @@ public class CartController {
      */
     @PostMapping("/save/{userId}")
     public ResponseEntity<AddProductItemResp> saveCart(@PathVariable @NonNull Long userId) {
+        Long userIdToken = LoginUserContextHolder.getUserId();
+        if (!Objects.equals(userId, userIdToken)){
+            // 如果 userId 不匹配，则设置 request 中的 userId 为当前用户 ID
+            userId = userIdToken;
+        }
         cartRedisService.saveCart(userId);
         logger.info("Save cart to mongoDB: " + userId);
         return ResponseEntity.ok(new AddProductItemResp(HttpStatus.OK.value(), "save cart to mongoDB successfully."));

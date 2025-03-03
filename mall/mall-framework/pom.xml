@@ -23,6 +23,7 @@
         <module>mall-spring-boot-starter-biz-operationlog</module>
         <!-- Jackson 组件 -->
         <module>mall-spring-boot-starter-jackson</module>
+        <module>mall-spring-boot-starter-biz-context</module>
     </modules>
 
 </project>

@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6f3644c0-fc25-48a0-9f78-d38c79fb2652" name="更改" comment="pull" />
+    <list default="true" id="6f3644c0-fc25-48a0-9f78-d38c79fb2652" name="更改" comment="pull">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mall-checkout/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/mall-checkout/pom.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -23,6 +27,7 @@
         <option value="spring-beans.schema" />
         <option value="Class" />
         <option value="Interface" />
+        <option value="package.json" />
       </list>
     </option>
   </component>
@@ -76,59 +81,59 @@
     <option name="showLibraryContents" value="true" />
     <option name="showScratchesAndConsoles" value="false" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.App.executor": "Run",
-    "Docker.mall-checkout.mongodb: Compose 部署.executor": "Run",
-    "Docker.mall-checkout.mysql: Compose 部署.executor": "Run",
-    "JUnit.All in mall-spring-boot-starter-biz-redis.executor": "Debug",
-    "JUnit.All in mall-test (1).executor": "Debug",
-    "JUnit.All in mall-test.executor": "Debug",
-    "JUnit.AppTest.executor": "Run",
-    "JUnit.mall-checkout中的所有.executor": "Run",
-    "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
-    "Maven.mall [clean].executor": "Run",
-    "Maven.mall [install].executor": "Run",
-    "Maven.mall-common [clean].executor": "Run",
-    "Maven.mall-common [install].executor": "Run",
-    "Maven.mall-framework [clean].executor": "Run",
-    "Maven.mall-framework [install].executor": "Run",
-    "Maven.mall-spring-boot-starter-jackson [clean].executor": "Run",
-    "Maven.mall-spring-boot-starter-jackson [install].executor": "Run",
-    "Maven.mall-spring-boot-starter-redis [install].executor": "Run",
-    "Maven.xiaoha-framework [clean].executor": "Run",
-    "Maven.xiaoha-framework [install].executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.App.executor": "Run",
-    "Spring Boot.MallApplication.executor": "Run",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_directory_selection": "C:/Users/14276/Desktop/新建文件夹 (4)/mall/mall-checkout/src/test/java",
-    "last_opened_file_path": "C:/Users/14276/Desktop/新建文件夹 (5)",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.28886846",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.App.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.mall-checkout.mongodb: Compose 部署.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.mall-checkout.mysql: Compose 部署.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.All in mall-spring-boot-starter-biz-redis.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.All in mall-test (1).executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.All in mall-test.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.AppTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.mall-checkout中的所有.executor&quot;: &quot;Run&quot;,
+    &quot;Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.mall [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.mall [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.mall-common [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.mall-common [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.mall-framework [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.mall-framework [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.mall-spring-boot-starter-jackson [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.mall-spring-boot-starter-jackson [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.mall-spring-boot-starter-redis [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.xiaoha-framework [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.xiaoha-framework [install].executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.App.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.MallApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_directory_selection&quot;: &quot;C:/Users/14276/Desktop/新建文件夹 (4)/mall/mall-checkout/src/test/java&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/14276/Desktop/新建文件夹 (3)&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.28886846&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "ChangesTree.GroupingKeys": [
-      "directory"
+  &quot;keyToStringList&quot;: {
+    &quot;ChangesTree.GroupingKeys&quot;: [
+      &quot;directory&quot;
     ],
-    "DatabaseDriversLRU": [
-      "mysql"
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="ReactorSettings">
     <option name="notificationShown" value="true" />
   </component>
@@ -248,8 +253,7 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="" name="Changes" comment="" />
-      <changelist id="" name="11" comment="" />
+      <changelist id="6f3644c0-fc25-48a0-9f78-d38c79fb2652" name="更改" comment="pull" />
       <created>1737886790580</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -263,7 +267,8 @@
       <workItem from="1740210072762" duration="26916000" />
       <workItem from="1740331584723" duration="6168000" />
       <workItem from="1740703917796" duration="4795000" />
-      <workItem from="1740796420014" duration="14315000" />
+      <workItem from="1740796420014" duration="17023000" />
+      <workItem from="1740965993233" duration="941000" />
     </task>
     <task id="LOCAL-00001" summary="Changes">
       <option name="closed" value="true" />
@@ -329,7 +334,39 @@
       <option name="project" value="LOCAL" />
       <updated>1740839794604</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="pull">
+      <option name="closed" value="true" />
+      <created>1740840423951</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1740840423951</updated>
+    </task>
+    <task id="LOCAL-00010" summary="pull">
+      <option name="closed" value="true" />
+      <created>1740840800016</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1740840800016</updated>
+    </task>
+    <task id="LOCAL-00011" summary="pull">
+      <option name="closed" value="true" />
+      <created>1740841168817</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1740841168817</updated>
+    </task>
+    <task id="LOCAL-00012" summary="pull">
+      <option name="closed" value="true" />
+      <created>1740841403541</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1740841403541</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

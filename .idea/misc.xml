@@ -7,20 +7,20 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/mall-framework/mall-spring-boot-starter-biz-context/pom.xml" />
         <option value="$PROJECT_DIR$/mall-framework/xiaoha-spring-boot-starter-jackson/pom.xml" />
+        <option value="$PROJECT_DIR$/mall-product/pom.xml" />
+        <option value="$PROJECT_DIR$/mall-order/pom.xml" />
+        <option value="$PROJECT_DIR$/mall-test/pom.xml" />
+        <option value="$PROJECT_DIR$/mall-auth/pom.xml" />
+        <option value="$PROJECT_DIR$/mall-framework/pom.xml" />
+        <option value="$PROJECT_DIR$/mall-checkout/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
       <set>
-        <option value="$PROJECT_DIR$/mall-auth/pom.xml" />
         <option value="$PROJECT_DIR$/mall-cart/pom.xml" />
-        <option value="$PROJECT_DIR$/mall-checkout/pom.xml" />
         <option value="$PROJECT_DIR$/mall-framework/mall-spring-boot-starter-biz-redis/pom.xml" />
-        <option value="$PROJECT_DIR$/mall-framework/pom.xml" />
         <option value="$PROJECT_DIR$/mall-gateway/pom.xml" />
-        <option value="$PROJECT_DIR$/mall-order/pom.xml" />
         <option value="$PROJECT_DIR$/mall-oss/pom.xml" />
-        <option value="$PROJECT_DIR$/mall-product/pom.xml" />
-        <option value="$PROJECT_DIR$/mall-test/pom.xml" />
         <option value="$PROJECT_DIR$/mall-user/pom.xml" />
       </set>
     </option>

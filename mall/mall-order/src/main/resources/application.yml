@@ -11,7 +11,7 @@ spring:
     redis:
       host: 114.55.129.110  # 云服务器地址
       port: 6379
-      password: XXXXXX
+      password: 132133
       database: 0
       timeout: 5000
       lettuce:
@@ -57,7 +57,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://114.55.129.110:3306/mall?useSSL=false&serverTimezone=UTC
     username: root
-    password: XXXXXX
+    password: 132133
     hikari:
       minimum-idle: 5
       maximum-pool-size: 15
@@ -113,7 +113,9 @@ spring:
 
 # MyBatis配置
 mybatis:
-  mapper-locations: classpath:mapper/*.xml
+  mapper-locations: 
+    - classpath:mapper/*.xml
+    - classpath:com/coder/mall/order/mapper/*.xml
   type-aliases-package: com.coder.mall.order.model.entity
   configuration:
     map-underscore-to-camel-case: true

@@ -19,8 +19,6 @@
         <module>mall-kv-api</module>
         <!-- 短文本存储业务层 -->
         <module>mall-kv-biz</module>
-        <module>mall-kv-api</module>
-        <module>mall-kv-biz</module>
     </modules>
 
     <artifactId>mall-kv</artifactId>

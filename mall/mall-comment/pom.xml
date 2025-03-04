@@ -15,7 +15,6 @@
     <modules>
         <module>mall-comment-api</module>
         <module>mall-comment-biz</module>
-        <module>mall-comment-biz</module>
     </modules>
 
     <artifactId>mall-comment</artifactId>

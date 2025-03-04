@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.coder.mall.order.mapper.CustomerOrderMapper">
+    <resultMap id="BaseResultMap" type="com.coder.mall.order.model.entity.CustomerOrder">
+        <id column="order_id" property="orderId"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="user_id" property="userId"/>
+        <result column="total_cost" property="totalCost"/>
+        <!-- <result column="actual" property="actual"/> -->
+        <result column="status" property="status"/>
+        <result column="recipient_info" property="recipientInfo"/>
+        <result column="order_items" property="orderItems"/>
+        <result column="payment_info" property="paymentInfo"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="pay_time" property="payTime"/>
+        <result column="delivery_time" property="deliveryTime"/>
+        <result column="complete_time" property="completeTime"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        order_id, order_no, user_id, total_cost, status,
+        recipient_info, order_items, payment_info, create_time, update_time,
+        pay_time, delivery_time, complete_time, deleted
+    </sql>
+
+    <insert id="insert" parameterType="com.coder.mall.order.model.entity.CustomerOrder">
+        INSERT INTO customer_orders (
+            order_no, user_id, total_cost, status,
+            recipient_info, order_items, payment_info, create_time, update_time, deleted
+        ) VALUES (
+            #{orderNo}, #{userId}, #{totalCost}, #{status},
+            #{recipientInfo}, #{orderItems}, #{paymentInfo}, #{createTime}, #{updateTime},
+            COALESCE(#{deleted}, 0)
+        )
+    </insert>
+
+
+    <select id="selectByUserId" resultMap="BaseResultMap">
+    SELECT * FROM customer_orders
+    WHERE user_id = #{userId,jdbcType=BIGINT}  <!-- 修改jdbcType -->
+    </select>
+
+    <select id="selectByOrderNoAndUserId" resultMap="BaseResultMap">
+    SELECT * FROM customer_orders
+    WHERE order_no = #{orderNo} 
+    AND user_id = #{userId,jdbcType=BIGINT}  <!-- 修改jdbcType -->
+    </select>
+
+    <select id="selectByUserIdWithPage" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM customer_orders 
+        WHERE user_id = #{userId} AND deleted = 0
+        ORDER BY create_time DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <update id="updateStatus">
+        UPDATE customer_orders 
+        SET status = #{status}, 
+            update_time = NOW()
+        WHERE order_no = #{orderNo} 
+        AND deleted = 0
+    </update>
+
+
+    <update id="updateStatusAndDeletedByOrderNo">
+        UPDATE customer_orders 
+        SET status = #{status},
+            deleted = #{deleted},
+            update_time = NOW()
+        WHERE order_no = #{orderNo} 
+        AND deleted = 0
+    </update>
+
+    <select id="selectByOrderNo" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM customer_orders 
+        WHERE order_no = #{orderNo} 
+        AND deleted = 0
+    </select>
+
+    <select id="countByUserId" resultType="int">
+        SELECT COUNT(*)
+        FROM customer_orders
+        WHERE user_id = #{userId} 
+        AND deleted = 0
+    </select>
+
+    <select id="selectHistoryOrders" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM customer_orders
+        WHERE user_id = #{userId}
+        AND deleted = 0
+        <if test="startDate != null">
+            AND create_time >= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND create_time &lt;= #{endDate}
+        </if>
+        ORDER BY create_time DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="countHistoryOrders" resultType="int">
+        SELECT COUNT(*)
+        FROM customer_orders
+        WHERE user_id = #{userId}
+        AND deleted = 0
+        <if test="startDate != null">
+            AND create_time >= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND create_time &lt;= #{endDate}
+        </if>
+    </select>
+
+
+    <select id="countHistoryOrdersForDealer" resultType="int">
+        SELECT COUNT(DISTINCT o.order_no)
+        FROM customer_orders o
+        JOIN order_item i ON o.order_no = i.order_no
+        JOIN product p ON i.product_id = p.product_id
+        WHERE p.dealer_id = #{dealerId}
+        AND o.create_time BETWEEN #{startDate} AND #{endDate}
+    </select>
+
+        <!-- 查询用户订单总数 -->
+    <select id="countCustomerOrders" resultType="int">
+        SELECT COUNT(*)
+        FROM customer_orders
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 查询用户订单列表 -->
+    <select id="selectCustomerOrders" resultType="com.coder.mall.order.model.entity.CustomerOrder">
+        SELECT *
+        FROM customer_orders
+        WHERE user_id = #{userId}
+        ORDER BY create_time DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <update id="updateOrder" parameterType="com.coder.mall.order.model.entity.CustomerOrder">
+    UPDATE customer_orders
+    SET 
+        total_cost = #{totalCost},
+        recipient_info = #{recipientInfo},
+        payment_info = #{paymentInfo},
+        order_items = #{orderItems},
+        extra_info = #{extraInfo},
+        update_time = #{updateTime}
+    WHERE 
+        order_no = #{orderNo}
+        AND user_id = #{userId}
+    </update>
+
+
+    <update id="updatePaymentInfo">
+        UPDATE customer_orders
+        SET payment_time = #{paymentTime},
+            status = #{paymentStatus},
+            update_time = NOW()
+        WHERE order_no = #{orderNo}
+    </update>
+ 
+    <update id="updatePaymentStatus">
+        UPDATE customer_orders
+        SET status = #{paymentStatus},
+            update_time = NOW()
+        WHERE order_no = #{orderNo}
+    </update>
+ 
+
+
+</mapper>

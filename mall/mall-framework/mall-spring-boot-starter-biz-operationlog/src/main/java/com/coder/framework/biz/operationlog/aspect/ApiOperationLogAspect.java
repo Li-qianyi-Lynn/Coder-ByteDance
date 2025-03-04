@@ -1,6 +1,6 @@
 package com.coder.framework.biz.operationlog.aspect;
 
-import com.coder.common.util.JsonUtils;
+import com.coder.framework.common.util.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

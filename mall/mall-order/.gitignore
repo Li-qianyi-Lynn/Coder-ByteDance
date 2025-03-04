@@ -1,0 +1,28 @@
+# IntelliJ IDEA files
+*.iml
+.idea/
+*.iws
+*.ipr
+
+# Compiled class files
+*.class
+
+# Maven target directory
+target/
+
+# Gradle build directory
+build/
+
+# Logs
+*.log
+
+# macOS system files
+.DS_Store
+
+# Eclipse files
+.classpath
+.project
+.settings/
+
+# Visual Studio Code files
+.vscode/

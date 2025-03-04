@@ -1,0 +1,2 @@
+com.coder.framework.biz.context.config.ContextAutoConfiguration
+com.coder.framework.biz.context.config.FeignContextAutoConfiguration

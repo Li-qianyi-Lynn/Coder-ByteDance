@@ -4,7 +4,7 @@ spring:
     # 数据库连接信息
     url: jdbc:mysql://114.55.129.110/mall?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=false&serverTimezone=Asia/Shanghai
     username: root # 数据库用户名
-    password: 132133
+    password: XXXXXX
     type: com.alibaba.druid.pool.DruidDataSource
     druid: # Druid 连接池
       initial-size: 5 # 初始化连接池大小
@@ -42,7 +42,7 @@ spring:
       database: 0 # Redis 数据库索引（默认为 0）
       host: 127.0.0.1 # Redis 服务器地址
       port: 6379 # Redis 服务器连接端口
-      password: 132133 # Redis 服务器连接密码（默认为空）
+      password: XXXXXX # Redis 服务器连接密码（默认为空）
       timeout: 5s # 读超时时间
       connect-timeout: 5s # 链接超时时间
       lettuce:
